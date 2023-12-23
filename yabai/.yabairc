@@ -1,0 +1,71 @@
+#!/usr/bin/env sh
+
+#
+# for this to work you must configure sudo such that
+# it will be able to run the command without password
+#
+# see this wiki page for information:
+#  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
+#
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+#
+
+# global settings
+yabai -m config                                 \
+    mouse_follows_focus          on            \
+    focus_follows_mouse          off            \
+    window_origin_display        default        \
+    window_placement             second_child   \
+    window_shadow                on             \
+    window_animation_duration    0.0            \
+    window_opacity_duration      0.0            \
+    active_window_opacity        1.0            \
+    normal_window_opacity        0.90           \
+    window_opacity               off            \
+    insert_feedback_color        0xffd75f5f     \
+    split_ratio                  0.50           \
+    split_type                   auto           \
+    auto_balance                 off            \
+    top_padding                  15             \
+    bottom_padding               15             \
+    left_padding                 15             \
+    right_padding                15             \
+    window_gap                   15             \
+    layout                       bsp            \
+    mouse_modifier               fn             \
+    mouse_action1                move           \
+    mouse_action2                resize        \
+    mouse_drop_action            swap
+
+yabai -m rule --add app="System Settings" manage=off layer=above
+yabai -m rule --add app="^Karabiner" manage=off
+yabai -m rule --add app="^Finder$" manage=off layer=above
+yabai -m rule --add app="^Disk Utility$" manage=off 
+yabai -m rule --add app="^Activity Monitor$" manage=off
+yabai -m rule --add app="^Spotify$" manage=off sticky=on layer=above
+yabai -m rule --add app="^Clock$" manage=off sticky=on layer=above
+yabai -m rule --add app="^Calendar$" manage=off
+
+# float settings windows
+yabai -m rule --add title='Settings$' manage=off
+yabai -m rule --add title='Preferences$' manage=off
+yabai -m rule --add title='^Install' manage=off
+yabai -m rule --add title='^About' manage=off
+yabai -m rule --add title='^Check Point' manage=off
+yabai -m rule --add title='^DevTools' manage=off layer=above
+
+# DBeaver exceptions
+yabai -m rule --add title='^Filter by' manage=off layer=above
+yabai -m rule --add title='^Data Transfer$' manage=off layer=above
+
+# Apps assigned to fixed spaces
+ yabai -m rule --add app="^Microsoft\ Teams\ \(work\ or\ school\)" space=2
+ yabai -m rule --add app="^Outlook$" space=1
+
+## Jetbrains apps
+apps="^(IntelliJ\ IDEA|WebStorm|RubyMine|PyCharm|DataGrip)$"
+yabai -m rule --add app="${apps}" manage=off
+
+
+echo "yabai configuration loaded.."

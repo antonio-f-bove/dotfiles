@@ -1,0 +1,7 @@
+add_newline = true # blank line bwtween prompts
+
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+
+[line_break]
+disabled = false # one line prompt

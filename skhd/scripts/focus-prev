@@ -1,0 +1,6 @@
+first_space_in_display=$(yabai -m query --spaces --display | jq first.index)
+current_space=$(yabai -m query --spaces --space | jq .index)
+
+if [ "$current_space" != "$first_space_in_display" ]; then
+  yabai -m space --focus prev
+fi

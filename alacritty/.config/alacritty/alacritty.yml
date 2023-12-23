@@ -1,0 +1,29 @@
+live_config_reload: true
+
+window:
+  opacity: 0.85
+  padding:
+    x: 6
+    y: 6
+  dynamic_padding: false
+  decorations: buttonless
+
+font:
+  normal:
+    family: JetBrainsMono Nerd Font
+    style: Regular
+  italic:
+    family: JetBrainsMono Nerd Font
+    style: Italic
+  bold:
+    family: JetBrainsMono Nerd Font
+    style: Bold
+
+  size: 13.0
+  AppleFontSmoothing: true
+
+key_bindings:
+  - { key: Q, mods: Alt, chars: "\x1bq" } # use Alt as a modifier for telescope.nvim
+  # - { key: J, mods: Command, chars: "\x00\x0a" } # open t - tmux smart session manager
+# mouse:
+#   hide_when_typing: true
