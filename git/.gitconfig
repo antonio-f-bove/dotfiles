@@ -1,0 +1,5 @@
+[user]
+	email = above@gualaclosures.com
+	name = anto
+[core]
+	excludesfile = /Users/anto/.gitignore_global
