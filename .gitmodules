@@ -1,9 +1,0 @@
-[submodule "tmux/.tmux/plugins/t-smart-tmux-session-manager"]
-	path = tmux/.tmux/plugins/t-smart-tmux-session-manager
-	url = https://github.com/joshmedeski/t-smart-tmux-session-manager
-[submodule "nvim/.config/nvim"]
-	path = nvim/.config/nvim
-	url = https://github.com/NvChad/NvChad
-[submodule "tmux/.tmux/plugins/tpm"]
-	path = tmux/.tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
