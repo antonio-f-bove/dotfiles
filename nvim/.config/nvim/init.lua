@@ -70,7 +70,19 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  'tpope/vim-fugitive',
+  {
+    'tpope/vim-fugitive',
+    config = function ()
+      local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode', { clear = true })
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function ()
+          vim.cmd(':startinsert')
+        end,
+        group = enter_commit_mess_in_insert_mode,
+        pattern = 'gitcommit'
+      })
+    end
+  },
   'tpope/vim-rhubarb', -- TODO: learn about it
 
   -- Detect tabstop and shiftwidth automatically
@@ -293,6 +305,11 @@ require('lazy').setup({
 
   -- TODO: might want to install:
   -- - marks related (marks.nvim?)
+
+  {
+    'RRethy/vim-illuminate',
+    opts = {},
+  },
 
   {
     'echasnovski/mini.bufremove',
