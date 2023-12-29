@@ -72,6 +72,12 @@ require('lazy').setup({
   -- Git related plugins
   {
     'tpope/vim-fugitive',
+    lazy = true,
+    cmd = {'G', 'Gwrite' },
+    keys = {
+      { '<leader>gp', '<cmd> G pull <cr>' },
+      { '<leader>gP', '<cmd> G push <cr>' },
+    },
     config = function ()
       local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode', { clear = true })
       vim.api.nvim_create_autocmd('FileType', {
@@ -306,10 +312,8 @@ require('lazy').setup({
   -- TODO: might want to install:
   -- - marks related (marks.nvim?)
 
-  {
-    'RRethy/vim-illuminate',
-    opts = {},
-  },
+  -- TODO: add mappings to jump between references ]] and [[
+  'RRethy/vim-illuminate',
 
   {
     'echasnovski/mini.bufremove',
