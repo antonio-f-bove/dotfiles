@@ -72,16 +72,17 @@ require('lazy').setup({
   -- Git related plugins
   {
     'tpope/vim-fugitive',
-    lazy = true,
-    cmd = {'G', 'Gwrite' },
+    -- lazy = true,
+    cmd = {'G', 'Gwrite', 'Gvdiffsplit' },
     keys = {
       { '<leader>gp', '<cmd> G pull <cr>' },
       { '<leader>gP', '<cmd> G push <cr>' },
     },
-    config = function ()
-      local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode', { clear = true })
+  config = function()
+      local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode',
+        { clear = true })
       vim.api.nvim_create_autocmd('FileType', {
-        callback = function ()
+      callback = function()
           vim.cmd(':startinsert')
         end,
         group = enter_commit_mess_in_insert_mode,
@@ -130,20 +131,8 @@ require('lazy').setup({
     },
   },
 
-  -- {
-  --   "smjonas/inc-rename.nvim",
-  --   opts = {},
-  --   lazy = true,
-  --   keys = {
-  --     -- {'<leader>rn', ':IncRename ', desc = 'IncRename'}
-  --     {'<leader>rn', function ()
-  --       return ':IncRename ' .. vim.fn.expand('<cword>')
-  --     end, desc = 'IncRename'}
-  --   }
-  -- },
+  { 'folke/which-key.nvim',   opts = {} },
 
-  -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -171,7 +160,8 @@ require('lazy').setup({
             return ']c'
           end
           vim.schedule(function()
-            gs.next_hunk()
+          gs.next_hunk({ preview = true })
+            vim.cmd(':normal zz <cr>')
           end)
           return '<Ignore>'
         end, { expr = true, desc = 'Jump to next hunk' })
@@ -181,7 +171,8 @@ require('lazy').setup({
             return '[c'
           end
           vim.schedule(function()
-            gs.prev_hunk()
+          gs.prev_hunk({ preview = true })
+            vim.cmd(':normal zz <cr>')
           end)
           return '<Ignore>'
         end, { expr = true, desc = 'Jump to previous hunk' })
@@ -220,22 +211,6 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    -- config = function()
-    --   vim.cmd.colorscheme 'onedark'
-    -- end,
-  },
-  { "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'catppuccin-mocha'
-    end,
-  },
-
-  {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -248,11 +223,7 @@ require('lazy').setup({
         globalstatus = true,
       },
       -- TODO: max line num instead of col num https://github.com/nvim-lualine/lualine.nvim
-      -- also figure out how to display 'recording @' message
-      -- sections = {
-        -- lualine_z = {
-        -- }
-      -- }
+      -- also figure out how to display 'recording @' message when using noice
     },
   },
 
@@ -262,11 +233,27 @@ require('lazy').setup({
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = 'ibl',
-    opts = {},
+  config = function()
+      require 'ibl'.setup({
+        indent = {
+          char = "▏", -- This is a slightly thinner char than the default one, check :help ibl.config.indent.char
+        },
+        scope = {
+          enabled = false,
+          show_start = false,
+          show_end = false,
+        }
+      })
+      -- BUG: 
+      -- disable indentation on the first level
+      -- local hooks = require("ibl.hooks")
+      -- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
+      -- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
+    end,
   },
 
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',
+  {
+    'numToStr/Comment.nvim',
     opts = {
       toggler = {
         line = '<leader>/',
@@ -312,14 +299,11 @@ require('lazy').setup({
   -- TODO: might want to install:
   -- - marks related (marks.nvim?)
 
-  -- TODO: add mappings to jump between references ]] and [[
-  'RRethy/vim-illuminate',
-
-  {
-    'echasnovski/mini.bufremove',
-    version = 'false',
-    opts = {},
-  },
+  -- {
+  --   'echasnovski/mini.bufremove',
+  --   version = 'false',
+  --   opts = {},
+  -- },
 
   -- {
   -- NOTE: I don't know! I love it but somethigs I don't like I havn't been able to change
@@ -582,21 +566,22 @@ vim.keymap.set('n', '<leader>fr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
+      'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
 
     highlight = { enable = true },
     indent = { enable = true },
-    autotag = { enaable = true },
+  autotag = { enable = true },
     incremental_selection = {
       enable = true,
       keymaps = {
         init_selection = '<cr>',
         node_incremental = '<cr>',
-        scope_incremental ='<M-cr>', -- FIX: alacritty might not allow it
-        node_decremental =  '<bs>',
+      scope_incremental = '<M-cr>', -- FIX: alacritty might not allow it
+        node_decremental = '<bs>',
       },
     },
     textobjects = {
@@ -609,8 +594,8 @@ vim.defer_fn(function()
           ['ia'] = '@parameter.inner',
           ['af'] = '@function.outer',
           ['if'] = '@function.inner',
-          ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
+          -- ['ac'] = '@class.outer',
+          -- ['ic'] = '@class.inner',
         },
       },
       move = {
@@ -618,19 +603,19 @@ vim.defer_fn(function()
         set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = {
           [']m'] = '@function.outer',
-          [']]'] = '@class.outer',
+          -- [']]'] = '@class.outer',
         },
         goto_next_end = {
           [']M'] = '@function.outer',
-          [']['] = '@class.outer',
+        -- [']['] = '@class.outer',
         },
         goto_previous_start = {
           ['[m'] = '@function.outer',
-          ['[['] = '@class.outer',
+        -- ['[['] = '@class.outer',
         },
         goto_previous_end = {
           ['[M'] = '@function.outer',
-          ['[]'] = '@class.outer',
+        -- ['[]'] = '@class.outer',
         },
       },
       swap = {
