@@ -233,7 +233,7 @@ require('lazy').setup({
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = 'ibl',
-  config = function()
+    config = function()
       require 'ibl'.setup({
         indent = {
           char = "▏", -- This is a slightly thinner char than the default one, check :help ibl.config.indent.char
@@ -244,11 +244,10 @@ require('lazy').setup({
           show_end = false,
         }
       })
-      -- BUG: 
       -- disable indentation on the first level
-      -- local hooks = require("ibl.hooks")
-      -- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
-      -- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
+      local hooks = require("ibl.hooks")
+      hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
+      hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
     end,
   },
 
@@ -327,7 +326,7 @@ require('lazy').setup({
   --   }
   -- },
 
--- {
+  -- {
   --   'shortcuts/no-neck-pain.nvim',
   --   -- config = function ()
   --   --   vim.api.nvim_create_autocmd('')
@@ -343,7 +342,7 @@ require('lazy').setup({
   --   -- lazy = true,
   -- },
 
--- {
+  -- {
   --   "smjonas/inc-rename.nvim",
   --   opts = {},
   --   lazy = true,
@@ -382,9 +381,27 @@ require('lazy').setup({
     "folke/zen-mode.nvim",
     lazy = true,
     keys = {
-      { '<leader>zz', '<cmd> ZenMode <cr>', 'ZenMode'},
+      { '<leader>zz', '<cmd> ZenMode <cr>', 'ZenMode' },
     },
-    opts = {}
+    opts = {
+      window = {
+        backdrop = 1,
+        options = {
+          number = false,
+          relativenumber = false,
+          signcolumn = "no",
+        },
+      },
+      plugins = {
+        options = {
+          -- ruler = true,
+          -- showcmd = true,
+          laststatus = 0,
+        },
+        tmux = { enabled = true },
+        gitsigns = { enabled = false },
+      },
+    }
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -456,12 +473,12 @@ require('telescope').setup {
     },
     mappings = {
       i = {
-        ['<c-x>'] = require'telescope.actions'.delete_buffer,
-        ['<c-s>'] = require'telescope.actions'.select_horizontal,
+        ['<c-x>'] = require 'telescope.actions'.delete_buffer,
+        ['<c-s>'] = require 'telescope.actions'.select_horizontal,
       },
       n = {
-        ['<c-x>'] = require'telescope.actions'.delete_buffer,
-        ['<c-s>'] = require'telescope.actions'.select_horizontal,
+        ['<c-x>'] = require 'telescope.actions'.delete_buffer,
+        ['<c-s>'] = require 'telescope.actions'.select_horizontal,
       },
     },
   },
@@ -546,7 +563,7 @@ vim.keymap.set('n', '<leader>fr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
       'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -554,13 +571,13 @@ vim.defer_fn(function()
 
     highlight = { enable = true },
     indent = { enable = true },
-  autotag = { enable = true },
+    autotag = { enable = true },
     incremental_selection = {
       enable = true,
       keymaps = {
         init_selection = '<cr>',
         node_incremental = '<cr>',
-      scope_incremental = '<M-cr>', -- FIX: alacritty might not allow it
+        scope_incremental = '<M-cr>', -- FIX: alacritty might not allow it
         node_decremental = '<bs>',
       },
     },
@@ -587,15 +604,15 @@ vim.defer_fn(function()
         },
         goto_next_end = {
           [']M'] = '@function.outer',
-        -- [']['] = '@class.outer',
+          -- [']['] = '@class.outer',
         },
         goto_previous_start = {
           ['[m'] = '@function.outer',
-        -- ['[['] = '@class.outer',
+          -- ['[['] = '@class.outer',
         },
         goto_previous_end = {
           ['[M'] = '@function.outer',
-        -- ['[]'] = '@class.outer',
+          -- ['[]'] = '@class.outer',
         },
       },
       swap = {
