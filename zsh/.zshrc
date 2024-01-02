@@ -1,5 +1,4 @@
 eval "$(starship init zsh)"
-eval $(thefuck --alias fuck)
 eval "$(zoxide init zsh)"
 
 PATH="/usr/local/bin:$PATH"
