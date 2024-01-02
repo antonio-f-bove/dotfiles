@@ -327,53 +327,33 @@ require('lazy').setup({
   --   }
   -- },
 
-  {
-    'mbbill/undotree',
-    opts = {},
-    lazy = true,
-    keys = {
-      { '<leader>u', '<cmd> UndotreeToggle <cr>', desc = ':UndotreeToggle' },
-    },
-  },
+-- {
+  --   'shortcuts/no-neck-pain.nvim',
+  --   -- config = function ()
+  --   --   vim.api.nvim_create_autocmd('')
+  --   -- end,
+  --   opts = {
+  --     width = 140,
+  --     -- minSideBufferWidth = 40,
+  --     -- killAllBuffersOnDisable = true,
+  --     autocmds = {
+  --       enableOnVimEnter = true,
+  --     },
+  --   },
+  --   -- lazy = true,
+  -- },
 
-  { 'rmagatti/gx-extended.nvim',
-    lazy = true,
-    keys = { 'gx' },
-    opts = {
-      open_fn = require'lazy.util'.open,
-      extensions = {
-        -- BUG: doesn't seem to work
-        { -- match github repos in lazy.nvim plugin specs
-          patterns = { '*/plugins/**/*.lua' },
-          name = "neovim plugins",
-          match_to_url = function(line_string)
-            local line = string.match(line_string, '["|\'].*/.*["|\']')
-            local repo = vim.split(line, ':')[1]:gsub('["|\']', '')
-            local url = 'https://github.com/' .. repo
-            return line and repo and url or nil
-          end,
-        },
-      },
-    }
-  },
-
-  {
-    "christoomey/vim-tmux-navigator",
-    lazy = true,
-    cmd = {
-      "TmuxNavigateLeft",
-      "TmuxNavigateDown",
-      "TmuxNavigateUp",
-      "TmuxNavigateRight",
-      "TmuxNavigatePrevious",
-    },
-    keys = {
-      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
-    },
-  },
+-- {
+  --   "smjonas/inc-rename.nvim",
+  --   opts = {},
+  --   lazy = true,
+  --   keys = {
+  --     -- {'<leader>rn', ':IncRename ', desc = 'IncRename'}
+  --     {'<leader>rn', function ()
+  --       return ':IncRename ' .. vim.fn.expand('<cword>')
+  --     end, desc = 'IncRename'}
+  --   }
+  -- },
 
   {
     'windwp/nvim-autopairs',
