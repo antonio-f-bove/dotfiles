@@ -34,10 +34,15 @@ end)
 
 set('n', '<tab>', '<cmd> bnext <cr>')
 set('n', '<s-tab>', '<cmd> bprev <cr>')
-set('n', '<leader><tab>', '<cmd> tabclose <cr>')
+-- set('n', '<leader><tab>', '<cmd> tabclose <cr>')
 
 set({'n', 'v', 'o'}, 'gh', '^')
 set({'n', 'v', 'o'}, 'gl', '$')
+
+set('n', '>', '>>')
+set('n', '<', '<<')
+set('v', '>', '>gv')
+set('v', '<', '<gv')
 
 -- Movement in INSERT mode
 set('i', '<c-h>', '<Left>')
@@ -63,6 +68,7 @@ set('n', '_', '<c-w>_')
 
 -- Toggles
 set('n', '<leader>tr', function() toggle_option('relativenumber') end)
+set('n', '<leader>ti', '<cmd> IBLToggle <cr>')
 -- TODO: toggle wrap, spell
 
 -- Noice stuff
