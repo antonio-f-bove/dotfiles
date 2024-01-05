@@ -106,7 +106,6 @@ require('lazy').setup({
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
@@ -129,6 +128,19 @@ require('lazy').setup({
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
     },
+  },
+
+  {
+    'nvimtools/none-ls.nvim',
+    lazy = true,
+    config = function ()
+      local none_ls = require'null-ls'
+      none_ls.setup({
+        sources = {
+          none_ls.builtins.diagnostics.ruff,
+        }
+      })
+    end
   },
 
   { 'folke/which-key.nvim',   opts = {} },
@@ -160,8 +172,8 @@ require('lazy').setup({
             return ']c'
           end
           vim.schedule(function()
-          gs.next_hunk({ preview = true })
-            vim.cmd(':normal zz <cr>')
+            gs.next_hunk({ preview = true })
+            vim.cmd('norm! zz')
           end)
           return '<Ignore>'
         end, { expr = true, desc = 'Jump to next hunk' })
@@ -171,8 +183,8 @@ require('lazy').setup({
             return '[c'
           end
           vim.schedule(function()
-          gs.prev_hunk({ preview = true })
-            vim.cmd(':normal zz <cr>')
+            gs.prev_hunk({ preview = true })
+            vim.cmd('norm! zz')
           end)
           return '<Ignore>'
         end, { expr = true, desc = 'Jump to previous hunk' })
@@ -211,20 +223,43 @@ require('lazy').setup({
   },
 
   {
-    -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = true,
-        theme = 'catppuccin-macchiato',
-        component_separators = '|',
-        section_separators = '',
-        globalstatus = true,
-      },
-      -- TODO: max line num instead of col num https://github.com/nvim-lualine/lualine.nvim
-      -- also figure out how to display 'recording @' message when using noice
-    },
+    lazy = false,
+    config = function ()
+      local theme = require'lualine.themes.catppuccin-macchiato'
+      theme.normal.c.bg = nil
+
+      require'lualine'.setup({
+        options = {
+          icons_enabled = true,
+          theme = 'catppuccin-macchiato',
+          component_separators = '|',
+          section_separators = '',
+          globalstatus = true,
+        },
+        sections = {
+          lualine_x = {
+            {
+              require'noice'.api.statusline.mode.get_hl,
+              cond = require'noice'.api.statusline.mode.has,
+              color = { fg = '#ff9e64' }
+            },
+            -- {
+            --   require("noice").api.status.search.get_hl,
+            --   cond = require("noice").api.status.search.has,
+            --   color = { fg = "#ff9e64" },
+            -- },
+            {
+              'searchcount',
+              maxcount = 999,
+              timeout = 500,
+            }
+          }
+        }
+      })
+    end,
+    -- TODO: max line num instead of col num https://github.com/nvim-lualine/lualine.nvim
+    -- also figure out how to display 'recording @' message when using noice
   },
 
   {
@@ -298,49 +333,69 @@ require('lazy').setup({
   -- TODO: might want to install:
   -- - marks related (marks.nvim?)
 
-  -- {
-  --   'echasnovski/mini.bufremove',
-  --   version = 'false',
-  --   opts = {},
-  -- },
+  {
+    'echasnovski/mini.bufremove',
+    version = 'false',
+    opts = {},
+  },
 
-  -- {
-  -- NOTE: I don't know! I love it but somethigs I don't like I havn't been able to change
-  -- Stays off for now
-  --   "folke/noice.nvim",
-  --   event = "VeryLazy",
-  --   opts = {
-  --     presets = {
-  --       bottom_search = true, -- use a classic bottom cmdline for search
-  --       inc_rename = false, -- enables an input dialog for inc-rename.nvim
-  --       lsp_doc_border = false, -- add a border to hover docs and signature help
-  --     },
-  --   },
-  --   dependencies = {
-  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --     "MunifTanjim/nui.nvim",
-  --     -- OPTIONAL:
-  --     --   `nvim-notify` is only needed, if you want to use the notification view.
-  --     --   If not available, we use `mini` as the fallback
-  --     "rcarriga/nvim-notify",
-  --   }
-  -- },
-
-  -- {
-  --   'shortcuts/no-neck-pain.nvim',
-  --   -- config = function ()
-  --   --   vim.api.nvim_create_autocmd('')
-  --   -- end,
-  --   opts = {
-  --     width = 140,
-  --     -- minSideBufferWidth = 40,
-  --     -- killAllBuffersOnDisable = true,
-  --     autocmds = {
-  --       enableOnVimEnter = true,
-  --     },
-  --   },
-  --   -- lazy = true,
-  -- },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      presets = {
+        -- command_palette = true,
+        bottom_search = true, -- use a classic bottom cmdline for search
+        inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        long_message_to_split = true,
+        lsp_doc_border = true, -- add a border to hover docs and signature help
+      },
+      notify = {
+        enabled = false,
+      },
+      -- views = {
+      --
+      -- },
+      routes = {
+        view = 'mini',
+        filter = { event = 'msg_showmode' },
+      },
+      override = {
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        ["vim.lsp.util.stylize_markdown"] = true,
+        ["cmp.entry.get_documentation"] = true,
+      },
+      messages = {
+        enabled = true, -- enables the Noice messages UI
+        -- view_search = false,
+        view = "mini", -- default view for messages
+        view_error = "mini", -- view for errors
+        view_warn = "mini", -- view for warnings
+        view_history = "messages", -- view for :messages
+      },
+      lsp = {
+        message = { view = "mini" }
+      }
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      -- "rcarriga/nvim-notify",
+    },
+    keys = {
+    -- BUG: not working, maybe because oa alacritty
+      {
+        "<c-\\>", function()
+          print('test')
+          require("noice").redirect(vim.fn.getcmdline())
+        end, 'c', { desc = "Redirect Cmdline" }
+      }
+      -- TODO: set keymaps like history, last, etc...
+    }
+  },
 
   -- {
   --   "smjonas/inc-rename.nvim",
@@ -410,22 +465,22 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
+  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/anto/plugins/*.lua`
   --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
   --    up-to-date with whatever is in the kickstart repo.
-  --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
+  --    Uncomment the following line and add your plugins to `lua/anto/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  { import = 'custom.plugins' },
+  { import = 'anto.plugins' },
 }, {})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
-require 'custom.options'
+require 'anto.options'
 
 -- [[ Basic Keymaps ]]
-require 'custom.mappings'
+require 'anto.mappings'
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -678,10 +733,10 @@ end
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+  -- ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
   ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+  -- ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 }
@@ -708,10 +763,11 @@ require('mason-lspconfig').setup()
 local servers = {
   -- clangd = {},
   -- gopls = {},
-  -- pyright = {},
+  pyright = {},
+  ruff_lsp = {},
   -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  tsserver = {},
+  html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
     Lua = {
