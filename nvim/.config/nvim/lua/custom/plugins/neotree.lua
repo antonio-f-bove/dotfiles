@@ -1,6 +1,7 @@
 -- Unless you are still migrating, remove the deprecated commands from v1.x
 vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
 
+-- TODO: add autocommand that closes neotree upon vim exit, neotree buffers getting saved to the session
 return {
   "nvim-neo-tree/neo-tree.nvim",
   version = "*",

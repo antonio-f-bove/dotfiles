@@ -3,3 +3,6 @@
 	name = anto
 [core]
 	excludesfile = /Users/anto/.gitignore_global
+[pull]
+	; ff = only
+	rebase = true
