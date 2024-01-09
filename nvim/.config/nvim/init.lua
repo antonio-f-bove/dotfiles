@@ -387,12 +387,12 @@ require('lazy').setup({
     },
     keys = {
     -- BUG: not working, maybe because oa alacritty
-      {
-        "<c-\\>", function()
-          print('test')
-          require("noice").redirect(vim.fn.getcmdline())
-        end, 'c', { desc = "Redirect Cmdline" }
-      }
+      -- {
+      --   "<c-\\>", function()
+      --     print('test')
+      --     require("noice").redirect(vim.fn.getcmdline())
+      --   end, 'c', { desc = "Redirect Cmdline" }
+      -- }
       -- TODO: set keymaps like history, last, etc...
     }
   },
@@ -412,7 +412,16 @@ require('lazy').setup({
   {
     'windwp/nvim-autopairs',
     event = "InsertEnter",
-    opts = {} -- this is equalent to setup({}) function
+    opts = {},
+    -- config = function()
+    --   -- BUG: doesn't work -> https://github.com/windwp/nvim-autopairs#you-need-to-add-mapping-cr-on-nvim-cmp-setupcheck-readmemd-on-nvim-cmp-repo
+    --   local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+    --   local cmp = require('cmp')
+    --   cmp.event:on(
+    --     'confirm_done',
+    --     cmp_autopairs.on_confirm_done()
+    --   )
+    -- end,
   },
 
   {
@@ -478,6 +487,7 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 require 'anto.options'
+require 'anto.autocmds'
 
 -- [[ Basic Keymaps ]]
 require 'anto.mappings'
@@ -530,6 +540,8 @@ require('telescope').setup {
       i = {
         ['<c-x>'] = require 'telescope.actions'.delete_buffer,
         ['<c-s>'] = require 'telescope.actions'.select_horizontal,
+        ["<C-l>"] = require 'telescope.actions'.cycle_previewers_next,
+				["<C-h>"] = require 'telescope.actions'.cycle_previewers_prev,
       },
       n = {
         ['<c-x>'] = require 'telescope.actions'.delete_buffer,

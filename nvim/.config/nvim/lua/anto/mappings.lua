@@ -4,18 +4,9 @@ local toggle_option = function(...)
 	local opts = {...}
 	for _, option in ipairs(opts) do
 		local curr_val = vim.api.nvim_get_option_value(option, {})
-		print(curr_val)
 		vim.api.nvim_set_option_value(option, not curr_val, {})
 	end
 end
-
--- local close_split = function()
--- 	local api = vim.api
--- 	print('yooooooooooo')
--- 	-- local buftype = vim.bo.readonly
--- 	local buftype = vim.bo.buftype
--- 	print(buftype)
--- end
 
 set('n', '<leader>+', function()
 	vim.cmd('so ' .. vim.fn.expand('%:t'))
@@ -31,14 +22,8 @@ set('n', '<leader>p', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
 
 set({ 'n', 'i' }, '<c-s>', '<cmd> w <cr>', { desc = 'Save file' })
 set('n', 'ZA', '<cmd> xa <cr>', { desc = 'xa' })
--- set('n', 'ZZ', '<cmd> x <cr>', { desc = 'x' })
 set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
--- TODO: close tab if it was the last buffer (or window) in the tab. leaderX to close buffer AND split
--- don't close vim even if it was the last buffer -> empty buffer
-set('n', '<leader>x', '<cmd> bp | conf bd# <cr>') -- -> better bdelete
-set('n', '<leader>X', function()
-	close_split()
-end)
+set('n', '<leader>x', '<cmd> bp | conf bd# <cr>') -- TODO: better bdelete
 
 set('n', '<tab>', '<cmd> bnext <cr>')
 set('n', '<s-tab>', '<cmd> bprev <cr>')
