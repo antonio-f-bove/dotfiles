@@ -64,4 +64,4 @@ set('n', '<leader>tr', function() toggle_option('relativenumber') end)
 set('n', '<leader>ti', '<cmd> IBLToggle <cr>')
 set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end)
 set('n', '<leader>th', function() toggle_option('hlsearch') end)
--- TODO: toggle spell
+set('n', '<leader>ts', function() toggle_option('spell') end)
