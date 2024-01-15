@@ -12,7 +12,7 @@ export TERMINAL="alacritty"
 # export XDG_CONFIG_HOME="$HOME/.config"
 
 # ~/.config/tmux/plugins
-export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
+export PATH=$HOME/.config/tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 
 # colored output
 export CLICOLOR=1
