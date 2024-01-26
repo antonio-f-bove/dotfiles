@@ -54,3 +54,5 @@ vim.opt.autoread = true
 
 -- TODO: auto toggle: '' when only one window, on when window is split. Plus only buftype == '' should show winbar
 vim.opt.winbar = '%=%m %f'
+
+vim.o.conceallevel = 1

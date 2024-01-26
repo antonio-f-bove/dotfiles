@@ -29,6 +29,20 @@ set('n', '<tab>', '<cmd> bnext <cr>')
 set('n', '<s-tab>', '<cmd> bprev <cr>')
 -- set('n', '<leader><tab>', '<cmd> tabclose <cr>')
 
+-- remap bracket navigation
+set({ 'n', 'o', 'x' }, 'L', ']', { remap = true })
+set({ 'n', 'o', 'x' } , 'H', '[', { remap = true })
+
+-- quickfix and loclist movement
+set('n', ']q', '<cmd> cnext <cr>')
+set('n', '[q', '<cmd> cprev <cr>')
+set('n', ']Q', '<cmd> clast <cr>')
+set('n', '[Q', '<cmd> cfirst <cr>')
+set('n', ']l', '<cmd> lnext <cr>')
+set('n', '[l', '<cmd> lprev <cr>')
+set('n', ']L', '<cmd> llast <cr>')
+set('n', '[L', '<cmd> lfirst <cr>')
+
 set({ 'n', 'v', 'o' }, 'gh', '^')
 set({ 'n', 'v', 'o' }, 'gl', '$')
 
@@ -65,3 +79,6 @@ set('n', '<leader>ti', '<cmd> IBLToggle <cr>')
 set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end)
 set('n', '<leader>th', function() toggle_option('hlsearch') end)
 set('n', '<leader>ts', function() toggle_option('spell') end)
+
+-- insert tricks
+-- set('i', '<leader><leader>', '_')

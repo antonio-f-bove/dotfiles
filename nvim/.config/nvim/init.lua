@@ -72,8 +72,8 @@ require('lazy').setup({
   -- Git related plugins
   {
     'tpope/vim-fugitive',
-    -- lazy = true,
-    cmd = {'G', 'Gwrite', 'Gvdiffsplit' },
+    lazy = false,
+    -- cmd = {'G', 'Gwrite', 'Gvdiffsplit' },
     keys = {
       { '<leader>gp', '<cmd> G pull <cr>' },
       { '<leader>gP', '<cmd> G push <cr>' },

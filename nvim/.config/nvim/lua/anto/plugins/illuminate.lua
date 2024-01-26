@@ -24,6 +24,8 @@ return {
 
     map("]]", "next")
     map("[[", "prev")
+    map("]<space>", "next")
+    map("[<space>", "prev")
 
     -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
     vim.api.nvim_create_autocmd("FileType", {
@@ -31,6 +33,8 @@ return {
         local buffer = vim.api.nvim_get_current_buf()
         map("]]", "next", buffer)
         map("[[", "prev", buffer)
+        map("]<space>", "next", buffer)
+        map("[<space>", "prev", buffer)
       end,
     })
   end,
