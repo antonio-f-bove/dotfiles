@@ -774,12 +774,13 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   -- clangd = {},
-  -- gopls = {},
+  gopls = {},
   pyright = {},
   ruff_lsp = {},
   -- rust_analyzer = {},
   tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs'} },
+  -- },
 
   lua_ls = {
     Lua = {
@@ -839,9 +840,17 @@ cmp.setup {
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     -- FIX: I'd like it not only to autocomplete the word but also the boilerplate
     ['<Tab>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
+      behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     },
+    -- ["<c-a>"] = cmp.mapping.complete {
+    --   config = {
+    --     sources = {
+    --       { name = "cody" },
+    --     },
+    --   },
+    -- },
+
     -- ['<Tab>'] = cmp.mapping(function(fallback)
     --   if cmp.visible() then
     --     cmp.select_next_item()
@@ -862,6 +871,7 @@ cmp.setup {
     -- end, { 'i', 's' }),
   },
   sources = {
+    { name = 'cody' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
