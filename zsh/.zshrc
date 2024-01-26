@@ -13,6 +13,10 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 # ; fi
 
+# Go
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+
 ### ---- history config ---------------------------------------
 export HISTSIZE=10000 # How many commands zsh will load to memory.
 export SAVEHIST=10000 # How many commands history will save on file.
@@ -60,21 +64,6 @@ source ${HOME}/dotfiles/zsh/functions/notes.sh
 # source $ZDOTDIR/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 # source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 # fpath=($ZDOTDIR/plugins/zsh-completions/src $fpath)
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 export PATH="/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.2.0/bin:$PATH"
 
