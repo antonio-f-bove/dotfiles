@@ -23,7 +23,6 @@ set('n', '<leader>p', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
 set({ 'n', 'i' }, '<c-s>', '<cmd> w <cr>', { desc = 'Save file' })
 set('n', 'ZA', '<cmd> xa <cr>', { desc = 'xa' })
 set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
-set('n', '<leader>x', '<cmd> bp | conf bd# <cr>') -- TODO: better bdelete
 
 set('n', '<tab>', '<cmd> bnext <cr>')
 set('n', '<s-tab>', '<cmd> bprev <cr>')

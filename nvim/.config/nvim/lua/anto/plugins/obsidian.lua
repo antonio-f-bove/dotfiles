@@ -276,7 +276,6 @@ return {
     -- In general you should be using the native parser unless you run into a bug with it, in which
     -- case you can temporarily switch to the "yq" parser until the bug is fixed.
     yaml_parser = "native",
-  }
-,
+  },
 }
 

@@ -44,9 +44,7 @@ alias vim="nvim"
 alias swap="cd ~/.local/state/nvim/swap && ll"
 alias sessions="cd ~/.local/share/nvim/sessions && ll"
 
-
-# alias pp="cd ${HOME}/notes/prompts && nvim active.md"
-# alias scim="sc-im"
+export MANPAGER='nvim +Man!'
 
 # tmux
 alias ta="tmux attach"
