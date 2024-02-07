@@ -31,3 +31,10 @@ vim.api.nvim_create_autocmd('VimLeavePre', {
   end,
   group = clean_up_group
 })
+
+local no_swap_files_group = vim.api.nvim_create_augroup('NoSwapFiles', { clear = true })
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
+  group = no_swap_files_group,
+  pattern = '*',
+  command = 'checktime',
+})

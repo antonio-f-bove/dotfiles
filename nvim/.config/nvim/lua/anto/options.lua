@@ -48,9 +48,10 @@ vim.opt.scrolloff = 5
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.undofile = true
+
+-- Note: cf. NoSwapFiles augroup
 vim.opt.autoread = true
--- NOTE: should evaluate this one
--- o.autoread
+vim.opt.swapfile = false
 
 -- TODO: auto toggle: '' when only one window, on when window is split. Plus only buftype == '' should show winbar
 vim.opt.winbar = '%=%m %f'
