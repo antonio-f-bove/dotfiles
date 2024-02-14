@@ -1,7 +1,7 @@
 local set = vim.keymap.set
 
 local toggle_option = function(...)
-	local opts = {...}
+	local opts = { ... }
 	for _, option in ipairs(opts) do
 		local curr_val = vim.api.nvim_get_option_value(option, {})
 		vim.api.nvim_set_option_value(option, not curr_val, {})
@@ -27,10 +27,6 @@ set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
 set('n', '<tab>', '<cmd> bnext <cr>')
 set('n', '<s-tab>', '<cmd> bprev <cr>')
 -- set('n', '<leader><tab>', '<cmd> tabclose <cr>')
-
--- remap bracket navigation
-set({ 'n', 'o', 'x' }, 'L', ']', { remap = true })
-set({ 'n', 'o', 'x' } , 'H', '[', { remap = true })
 
 -- quickfix and loclist movement
 set('n', ']q', '<cmd> cnext <cr>')
@@ -78,6 +74,8 @@ set('n', '<leader>ti', '<cmd> IBLToggle <cr>')
 set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end)
 set('n', '<leader>th', function() toggle_option('hlsearch') end)
 set('n', '<leader>ts', function() toggle_option('spell') end)
+
+set('n', '==', '<cmd>Format<cr>')
 
 -- insert tricks
 -- set('i', '<leader><leader>', '_')

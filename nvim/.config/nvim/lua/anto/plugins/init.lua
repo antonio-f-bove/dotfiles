@@ -4,19 +4,6 @@
 -- See the kickstart.nvim README for more information
 return {
   {
-    lazy = true,
-    'navarasu/onedark.nvim',
-    priority = 1000,
-  },
-  { "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'catppuccin-mocha'
-    end,
-  },
-
-  {
     'mbbill/undotree',
     config = function()
       vim.api.nvim_set_var('undotree_SetFocusWhenToggle', true)
@@ -48,21 +35,11 @@ return {
     },
   },
 
-  -- {
-  --   'glacambre/firenvim',
-  --   -- Lazy load firenvim
-  --   -- Explanation: https://github.com/folke/lazy.nvim/discussions/463#discussioncomment-4819297
-  --   lazy = not vim.g.started_by_firenvim,
-  --   module = false,
-  --   build = function()
-  --     vim.fn["firenvim#install"](0)
-  --   end
-  -- },
   {
     'glacambre/firenvim',
     cond = not not vim.g.started_by_firenvim,
     build = function()
-      require("lazy").load({ plugins = {"firenvim"}, wait = true })
+      require("lazy").load({ plugins = { "firenvim" }, wait = true })
       vim.fn["firenvim#install"](0)
     end,
 
@@ -77,5 +54,20 @@ return {
         },
       }
     end
+  },
+  {
+    "chrisgrieser/nvim-spider",
+    keys = {
+      {
+        "H",
+        "<cmd>lua require('spider').motion('b')<CR>",
+        mode = { "n", "o", "x" },
+      },
+      {
+        "L",
+        "<cmd>lua require('spider').motion('w')<CR>",
+        mode = { 'n', 'o', 'x' },
+      },
+    },
   },
 }
