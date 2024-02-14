@@ -83,7 +83,7 @@ require('lazy').setup({
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -110,8 +110,8 @@ require('lazy').setup({
   {
     'nvimtools/none-ls.nvim',
     lazy = true,
-    config = function ()
-      local none_ls = require'null-ls'
+    config = function()
+      local none_ls = require 'none-ls'
       none_ls.setup({
         sources = {
           none_ls.builtins.diagnostics.ruff,
@@ -120,16 +120,16 @@ require('lazy').setup({
     end
   },
 
-  { 'folke/which-key.nvim',   opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
 
   {
     'nvim-lualine/lualine.nvim',
     lazy = false,
-    config = function ()
-      local theme = require'lualine.themes.catppuccin-macchiato'
+    config = function()
+      local theme = require 'lualine.themes.catppuccin-macchiato'
       theme.normal.c.bg = nil
 
-      require'lualine'.setup({
+      require 'lualine'.setup({
         options = {
           icons_enabled = true,
           theme = 'catppuccin-macchiato',
@@ -140,8 +140,8 @@ require('lazy').setup({
         sections = {
           lualine_x = {
             {
-              require'noice'.api.statusline.mode.get_hl,
-              cond = require'noice'.api.statusline.mode.has,
+              require 'noice'.api.statusline.mode.get_hl,
+              cond = require 'noice'.api.statusline.mode.has,
               color = { fg = '#ff9e64' }
             },
             -- {
@@ -226,6 +226,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'windwp/nvim-ts-autotag',
     },
     build = ':TSUpdate',
   },
@@ -236,7 +237,12 @@ require('lazy').setup({
   {
     'echasnovski/mini.bufremove',
     version = 'false',
-    opts = {},
+    config = function()
+      require 'mini.bufremove'.setup()
+    end,
+    keys = {
+      { '<leader>x', '<cmd>lua MiniBufremove.delete()<CR>' },
+    }
   },
 
   {
@@ -245,8 +251,8 @@ require('lazy').setup({
     opts = {
       presets = {
         -- command_palette = true,
-        bottom_search = true, -- use a classic bottom cmdline for search
-        inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        bottom_search = true,  -- use a classic bottom cmdline for search
+        inc_rename = false,    -- enables an input dialog for inc-rename.nvim
         long_message_to_split = true,
         lsp_doc_border = true, -- add a border to hover docs and signature help
       },
@@ -266,11 +272,11 @@ require('lazy').setup({
         ["cmp.entry.get_documentation"] = true,
       },
       messages = {
-        enabled = true, -- enables the Noice messages UI
+        enabled = true,            -- enables the Noice messages UI
         -- view_search = false,
-        view = "mini", -- default view for messages
-        view_error = "mini", -- view for errors
-        view_warn = "mini", -- view for warnings
+        view = "mini",             -- default view for messages
+        view_error = "mini",       -- view for errors
+        view_warn = "mini",        -- view for warnings
         view_history = "messages", -- view for :messages
       },
       lsp = {
@@ -286,7 +292,7 @@ require('lazy').setup({
       -- "rcarriga/nvim-notify",
     },
     keys = {
-    -- BUG: not working, maybe because oa alacritty
+      -- BUG: not working, maybe because oa alacritty
       -- {
       --   "<c-\\>", function()
       --     print('test')
@@ -371,7 +377,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.autoformat',
   -- require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/anto/plugins/*.lua`
@@ -441,7 +447,7 @@ require('telescope').setup {
         ['<c-x>'] = require 'telescope.actions'.delete_buffer,
         ['<c-s>'] = require 'telescope.actions'.select_horizontal,
         ["<C-l>"] = require 'telescope.actions'.cycle_previewers_next,
-				["<C-h>"] = require 'telescope.actions'.cycle_previewers_prev,
+        ["<C-h>"] = require 'telescope.actions'.cycle_previewers_prev,
       },
       n = {
         ['<c-x>'] = require 'telescope.actions'.delete_buffer,
@@ -530,11 +536,10 @@ vim.keymap.set('n', '<leader>fr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
-      'bash', 'markdown', 'markdown_inline', 'java' },
+    ensure_installed = { 'go', 'lua', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
+      'bash', 'markdown', 'markdown_inline', 'java', 'html' },
 
-    -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
 
     highlight = { enable = true },
     indent = { enable = true },
@@ -679,10 +684,11 @@ local servers = {
   ruff_lsp = {},
   -- rust_analyzer = {},
   tsserver = {},
-  html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
   jdtls = {
     -- setup = {}
   },
+  emmet_language_server = {},
 
   lua_ls = {
     Lua = {
@@ -777,8 +783,25 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
+    { name = 'buffer' },
   },
 }
+
+-- TODO: setup command line cmp
+-- `:` cmdline setup.
+-- cmp.setup.cmdline(':', {
+--   mapping = cmp.mapping.preset.cmdline(),
+--   sources = cmp.config.sources({
+--     { name = 'path' }
+--   }, {
+--     {
+--       name = 'cmdline',
+--       option = {
+--         ignore_cmds = { 'Man', '!' }
+--       }
+--     }
+--   })
+-- })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

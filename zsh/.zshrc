@@ -31,12 +31,18 @@ export NVM_DIR="$HOME/.nvm"
 # ---- permanent aliases -------------------------------------
 # alias zz="cd ${HOME}/.config && nvim zsh/.zshrc"
 alias src="source ${HOME}/.zshrc"
-alias ll="ls -la"
-alias la="ls -latr"
+alias ll="ls -latrh"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
+
+alias lg="lazygit"
+alias grep="rg"
+
+# tmux
+alias ta="tmux attach"
+alias tn="tmux new -s"
 
 # nvim
 alias v="nvim"
@@ -45,10 +51,6 @@ alias swap="cd ~/.local/state/nvim/swap && ll"
 alias sessions="cd ~/.local/share/nvim/sessions && ll"
 
 export MANPAGER='nvim +Man!'
-
-# tmux
-alias ta="tmux attach"
-alias tn="tmux new -s"
 
 # ---- custom functions --------------------------------------
 source ${HOME}/dotfiles/zsh/functions/dbconn.sh
