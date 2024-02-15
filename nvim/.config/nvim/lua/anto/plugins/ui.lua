@@ -42,27 +42,11 @@ return {
         },
         window = {
           mappings = {
-            ['<cr>'] = function()
-              local visible_wins = {}
-              for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-                local buf = vim.api.nvim_win_get_buf(win)
-                local is_listed = vim.fn.buflisted(buf) == 1
-                if is_listed then
-                  table.insert(visible_wins, win)
-                end
-              end
-              vim.print(#visible_wins)
-
-              -- local picked_window = visible_wins[1]
-              -- if #visible_wins > 1 then
-              --
-              -- end
-              return 'open'
-            end,
+            ['<cr>'] = (#require 'anto.utils'.list_visible_wins() == 1 and 'open') or 'open_with_window_picker',
             ['<c-v>'] = 'open_vsplit',
             ['v'] = 'open_vsplit',
             ['<c-s>'] = 'open_split',
-            ['s'] = 'open_vsplit',
+            ['s'] = 'open_split',
           }
         }
       })
@@ -70,6 +54,33 @@ return {
     keys = {
       { '<leader>e', '<cmd> Neotree toggle <cr>' },
       { '<c-n>',     '<cmd> Neotree focus <cr>' },
+    }
+  },
+
+  {
+    "folke/zen-mode.nvim",
+    lazy = true,
+    keys = {
+      { '<leader>zz', '<cmd> ZenMode <cr>', 'ZenMode' },
+    },
+    opts = {
+      window = {
+        backdrop = 1,
+        options = {
+          number = false,
+          relativenumber = false,
+          signcolumn = "no",
+        },
+      },
+      plugins = {
+        options = {
+          -- ruler = true,
+          -- showcmd = true,
+          laststatus = 0,
+        },
+        tmux = { enabled = true },
+        gitsigns = { enabled = false },
+      },
     }
   }
 }
