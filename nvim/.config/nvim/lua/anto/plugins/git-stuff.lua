@@ -6,6 +6,8 @@ return {
       { '<leader>gp', '<cmd> G pull <cr>' },
       { '<leader>gP', '<cmd> G push <cr>' },
       { '<leader>ga', ":G commit -a -m '" },
+      { '<leader>gh', "<cmd>%Gclog<cr>" },
+      { '<leader>gq', "<cmd>Gedit<cr>" },
     },
     config = function()
       local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode',

@@ -414,6 +414,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
+local actions = require('telescope.actions')
 require('telescope').setup {
   defaults = {
     sorting_strategy = 'ascending',
@@ -432,15 +433,41 @@ require('telescope').setup {
       preview_cutoff = 120,
     },
     mappings = {
+      -- TODO: add actions.to_fuzzy_refine to toggle fuzzy/non fuzzy search. meant to be used in live_grep
       i = {
-        ['<c-x>'] = require 'telescope.actions'.delete_buffer,
-        ['<c-s>'] = require 'telescope.actions'.select_horizontal,
-        ["<C-l>"] = require 'telescope.actions'.cycle_previewers_next,
-        ["<C-h>"] = require 'telescope.actions'.cycle_previewers_prev,
+        ['<c-x>'] = actions.delete_buffer,
+        ['<c-s>'] = actions.select_horizontal,
+        ['<c-v>'] = actions.select_vertical,
+        ["<c-l>"] = actions.cycle_previewers_next,
+        ["<c-h>"] = actions.cycle_previewers_prev,
+        ["<c-a>"] = actions.toggle_all,
+        ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+        ["<M-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
+        ['<c-e>'] = function(prompt_bufnr)
+          local action_utils = require 'telescope.actions.utils'
+          local action_state = require 'telescope.actions.state'
+          local selected = {}
+          action_utils.map_selections(prompt_bufnr, function(entry, index, row)
+            vim.print(entry)
+            vim.print(index)
+            vim.print(row)
+            -- selected[index] = entry.value
+          end)
+          -- .map_entries(prompt_bufnr, function(entry) vim.print(entry) end)
+        end
       },
       n = {
-        ['<c-x>'] = require 'telescope.actions'.delete_buffer,
-        ['<c-s>'] = require 'telescope.actions'.select_horizontal,
+        ['xx'] = actions.delete_buffer,
+        -- TODO: write implementations
+        -- ['xj'] = actions.delete_buffer_under,
+        -- ['xk'] = actions.delete_buffer_above,
+        ['<c-s>'] = actions.select_horizontal,
+        ['<c-v>'] = actions.select_vertical,
+        ["<c-l>"] = actions.cycle_previewers_next,
+        ["<c-h>"] = actions.cycle_previewers_prev,
+        ["<c-a>"] = actions.toggle_all,
+        ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+        ["<M-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
       },
     },
   },
@@ -684,7 +711,7 @@ local servers = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
       -- HACK: ?? toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-      diagnostics = { disable = { 'missing-fields' } },
+      diagnostics = { disable = { 'missing-fields' }, globals = { 'vim' } },
     },
   },
 }

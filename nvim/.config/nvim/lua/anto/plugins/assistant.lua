@@ -1,3 +1,4 @@
+-- TODO: test codeium
 return {
   {
     "sourcegraph/sg.nvim",

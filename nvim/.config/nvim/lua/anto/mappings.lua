@@ -10,15 +10,16 @@ end
 
 set('n', '<leader>+', function()
 	vim.cmd('so ' .. vim.fn.expand('%:t'))
-	print('INFO: ' .. vim.fn.expand('%:t') .. ' just sourced')
-end, { desc = 'Source file' })
+	-- print('INFO: ' .. vim.fn.expand('%:t') .. ' just sourced')
+end, { desc = 'Save and source file' })
 
 set('i', 'jk', '<c-[>')
 set('n', '<leader><leader>', '<cmd> e # <cr>')
 set('n', 'Q', '@q')
-set('v', 'v', "<esc>m`ggVG")
+set('v', 'v', "<esc>m`ggVG") -- TODO: I want to be able to <c-o> to where visualized all
 
 set('n', '<leader>p', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
+-- set('n', '<leader>d', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
 
 set({ 'n', 'i' }, '<c-s>', '<cmd> w <cr>', { desc = 'Save file' })
 set('n', 'ZA', '<cmd> xa <cr>', { desc = 'xa' })
