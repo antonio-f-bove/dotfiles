@@ -235,17 +235,6 @@ require('lazy').setup({
   -- - marks related (marks.nvim?)
 
   {
-    'echasnovski/mini.bufremove',
-    version = 'false',
-    config = function()
-      require 'mini.bufremove'.setup()
-    end,
-    keys = {
-      { '<leader>x', '<cmd>lua MiniBufremove.delete()<CR>' },
-    }
-  },
-
-  {
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = {
