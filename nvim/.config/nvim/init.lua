@@ -510,6 +510,13 @@ vim.keymap.set('n', '<leader>fa', require('telescope.builtin').git_files, { desc
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
 vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]ind [H]elp' })
 vim.keymap.set('n', '<leader>fc', require('telescope.builtin').grep_string, { desc = '[F]ind current [W]ord' })
+vim.keymap.set('x', '<leader>f',
+  function()
+    local search_string = require 'anto.utils'.get_visual_selection()
+    require('telescope.builtin').grep_string { search = search_string }
+  end,
+  -- '"zy<cmd>Telescope grep_string default_text=' .. vim.fn.escape(vim.fn.getreg('z'), ' ') .. '<cr>',
+  { desc = '[F]ind current [W]ord' })
 vim.keymap.set('n', '<leader>fw', require('telescope.builtin').live_grep, { desc = '[F]ind by [G]rep' })
 vim.keymap.set('n', '<leader>fW', ':LiveGrepGitRoot<cr>', { desc = '[F]ind by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = '[F]ind [D]iagnostics' })
