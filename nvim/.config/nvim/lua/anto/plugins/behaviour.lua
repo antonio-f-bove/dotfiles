@@ -29,6 +29,8 @@ return {
     }
   },
 
+  { 'ethanholz/nvim-lastplace', opts = {} },
+
   {
     'mbbill/undotree',
     config = function()

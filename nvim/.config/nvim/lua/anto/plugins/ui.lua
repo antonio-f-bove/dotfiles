@@ -68,9 +68,9 @@ return {
       window = {
         backdrop = 1,
         options = {
-          number = false,
-          relativenumber = false,
-          signcolumn = "no",
+          -- number = false,
+          -- relativenumber = false,
+          -- signcolumn = "no",
         },
       },
       plugins = {
@@ -83,5 +83,37 @@ return {
         gitsigns = { enabled = false },
       },
     }
+  },
+
+  {
+    "folke/zen-mode.nvim",
+    lazy = true,
+    event = 'VeryLazy',
+    keys = {
+      { '<leader>zz', '<cmd> ZenMode <cr>', 'ZenMode' },
+    },
+    opts = {
+      window = {
+        backdrop = 0,
+        options = {
+          number = true,
+          relativenumber = true,
+          signcolumn = "yes",
+        },
+      },
+      plugins = {
+        -- disable some global vim options (vim.o...)
+        -- comment the lines to not apply the options
+        options = {
+          enabled = false,
+        },
+        tmux = { enabled = false }, -- disables the tmux statusline
+      },
+      on_open = function(win)
+        -- vim.print(win)
+        vim.cmd('Neotree action=close')
+        vim.cmd('UndotreeClose')
+      end,
+    },
   }
 }

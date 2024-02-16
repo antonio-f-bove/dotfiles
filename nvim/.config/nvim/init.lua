@@ -336,33 +336,6 @@ require('lazy').setup({
     }
   },
 
-  {
-    "folke/zen-mode.nvim",
-    lazy = true,
-    keys = {
-      { '<leader>zz', '<cmd> ZenMode <cr>', 'ZenMode' },
-    },
-    opts = {
-      window = {
-        backdrop = 1,
-        options = {
-          number = false,
-          relativenumber = false,
-          signcolumn = "no",
-        },
-      },
-      plugins = {
-        options = {
-          -- ruler = true,
-          -- showcmd = true,
-          laststatus = 0,
-        },
-        tmux = { enabled = true },
-        gitsigns = { enabled = false },
-      },
-    }
-  },
-
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -382,7 +355,7 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 require 'anto.options'
-require 'anto.autocmds'
+require 'anto.autocommands'
 
 -- [[ Basic Keymaps ]]
 require 'anto.mappings'
@@ -515,6 +488,7 @@ vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>fo', require('telescope.builtin').oldfiles, { desc = '[F]ind [o]ld files' })
 vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, { desc = '[F]ind [b]uffers' })
+vim.keymap.set('n', '<leader><tab>', require('telescope.builtin').buffers, { desc = '[F]ind [b]uffers' })
 vim.keymap.set('n', '<leader>f/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
