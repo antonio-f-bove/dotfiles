@@ -326,6 +326,7 @@ require('lazy').setup({
     config = true,
   },
 
+  -- TODO: filter out NOTE comments
   {
     "folke/todo-comments.nvim",
     event = 'VeryLazy',
