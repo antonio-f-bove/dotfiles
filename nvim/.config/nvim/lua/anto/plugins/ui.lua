@@ -43,7 +43,7 @@ return {
         },
         window = {
           mappings = {
-            ['<cr>'] = (#require 'anto.utils'.list_visible_wins() == 1 and 'open') or 'open_with_window_picker',
+            ['<cr>'] = (#require 'anto.utils'.is_vim_single_win() == 1 and 'open') or 'open_with_window_picker',
             ['<c-v>'] = 'open_vsplit',
             ['v'] = 'open_vsplit',
             ['<c-s>'] = 'open_split',

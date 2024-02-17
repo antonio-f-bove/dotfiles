@@ -44,35 +44,15 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
 
 
 -- TODO: make it work with neotree
-local just_called_smart_center = false
 local smart_center_win_group = vim.api.nvim_create_augroup('SmartCenterWin', { clear = true })
 vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
   pattern = '*',
-  callback = function()
-    print 'called'
-    -- debounce
-    if just_called_smart_center then
-      print 'just called!'
-      -- just_called_smart_center = false
-      return
-    end
-
-    print 'executed'
-    just_called_smart_center = true
-    vim.defer_fn(function()
-      just_called_smart_center = false
-      print 'can call again'
-    end, 2000)
-
+  callback = function(args)
     local vim2screen_ratio = utils.get_vim2screen_ratio()
-    local win_list_len = #utils.list_visible_wins()
+    local is_sigle_window = utils.is_vim_single_win()
 
-    if (vim2screen_ratio > 0.75) and (win_list_len == 1) then
-      -- HACK: defer zen-mode opening to get around yabai redrawing more than once
-      -- when maximizing a window (because of gaps!)
-      -- vim.defer_fn(require 'zen-mode'.open, 300)
-      require 'zen-mode'.open()
-      return
+    if (vim2screen_ratio > 0.75) and is_sigle_window then
+      utils.debounce_fn(require 'zen-mode'.open, 'SmartCenter_' .. args.event, 0)
     else
       require 'zen-mode'.close()
     end

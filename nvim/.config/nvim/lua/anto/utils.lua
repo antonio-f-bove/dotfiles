@@ -10,7 +10,7 @@ M.close_other_buffers = function()
   end
 end
 
-M.list_visible_wins = function(tab_id)
+M.is_vim_single_win = function(tab_id)
   if not tab_id then
     tab_id = 0
   end
@@ -24,7 +24,11 @@ M.list_visible_wins = function(tab_id)
     end
   end
 
-  return visible_wins
+  local non_floating = vim.tbl_filter(function(win)
+    return vim.api.nvim_win_get_config(win).relative == ''
+  end, visible_wins)
+
+  return #non_floating == 1
 end
 
 M.get_vim2screen_ratio = function()
@@ -34,6 +38,21 @@ M.get_vim2screen_ratio = function()
     [[yabai -m query --windows --space | jq '.[] | select(.app == "Alacritty") | .frame.w']])
 
   return vim_win_width / tot_screen_width
+end
+
+local throttles = {}
+M.debounce_fn = function(callback, id, debounce_time)
+  if not debounce_time then
+    debounce_time = 100
+  end
+
+  if throttles[id] then
+    return
+  end
+
+  throttles[id] = true
+  vim.defer_fn(function() throttles[id] = nil end, debounce_time)
+  callback()
 end
 
 -- NOTE: shamelessly stolen from https://github.com/ibhagwan/fzf-lua/blob/f7f54dd685cfdf5469a763d3a00392b9291e75f2/lua/fzf-lua/utils.lua#L240
