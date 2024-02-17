@@ -51,7 +51,9 @@ vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
     local win_list_len = #u.list_visible_wins()
 
     if (vim2screen_ratio > 0.75) and (win_list_len == 1) then
-      require 'zen-mode'.open()
+      -- HACK: defer zen-mode opening to get around yabai redrawing more than once
+      -- when maximizing a window (because of gaps!)
+      vim.defer_fn(require 'zen-mode'.open, 300)
       vim.print(vim2screen_ratio, win_list_len)
       return
     else
