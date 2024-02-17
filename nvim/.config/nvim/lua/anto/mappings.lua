@@ -60,6 +60,9 @@ set("n", "<C-u>", "<C-u>zz")
 set("n", "n", "nzzzv")
 set("n", "N", "Nzzzv")
 
+set("n", "<c-o>", "<c-o>zzzv")
+set("n", "<c-i>", "<c-i>zzzv")
+
 -- Better redo
 set('n', '<c-r>', '<Nop>')
 set('n', 'U', '<c-r>')

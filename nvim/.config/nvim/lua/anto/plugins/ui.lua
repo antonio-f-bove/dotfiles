@@ -53,8 +53,8 @@ return {
       })
     end,
     keys = {
-      { '<leader>e', '<cmd> Neotree toggle <cr>' },
-      { '<c-n>',     '<cmd> Neotree focus <cr>' },
+      { '<leader>e',  '<cmd> Neotree toggle <cr>' },
+      { '<c-w><c-w>', '<cmd> Neotree focus <cr>' },
     }
   },
 
@@ -111,8 +111,8 @@ return {
       },
       on_open = function(win)
         -- vim.print(win)
-        vim.cmd('Neotree action=close')
-        vim.cmd('UndotreeClose')
+        -- vim.cmd('Neotree action=close')
+        -- vim.cmd('UndotreeClose')
       end,
     },
   }
