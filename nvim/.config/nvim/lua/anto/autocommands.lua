@@ -52,7 +52,7 @@ vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
     local is_sigle_window = utils.is_vim_single_win()
 
     if (vim2screen_ratio > 0.75) and is_sigle_window then
-      utils.debounce_fn(require 'zen-mode'.open, 'SmartCenter_' .. args.event, 0)
+      require 'zen-mode'.open()
     else
       require 'zen-mode'.close()
     end

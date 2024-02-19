@@ -10,6 +10,10 @@ M.close_other_buffers = function()
   end
 end
 
+-- [[
+-- checks if vim shows only one visible window, excluding zen-mode's floating window and
+-- neo-tree. Should refine this
+-- ]]
 M.is_vim_single_win = function(tab_id)
   if not tab_id then
     tab_id = 0
@@ -40,18 +44,19 @@ M.get_vim2screen_ratio = function()
   return vim_win_width / tot_screen_width
 end
 
-local throttles = {}
-M.debounce_fn = function(callback, id, debounce_time)
+local active_throttles = {}
+M.throttle = function(callback, id, debounce_time)
   if not debounce_time then
     debounce_time = 100
   end
 
-  if throttles[id] then
+  if active_throttles[id] then
+    print 'too soon!'
     return
   end
 
-  throttles[id] = true
-  vim.defer_fn(function() throttles[id] = nil end, debounce_time)
+  active_throttles[id] = true
+  vim.defer_fn(function() active_throttles[id] = nil end, debounce_time)
   callback()
 end
 
