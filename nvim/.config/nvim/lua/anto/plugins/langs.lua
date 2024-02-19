@@ -8,8 +8,6 @@ return {
     },
     config = function()
       require("go").setup()
-
-      vim.cmd('KickstartFormatToggle')
     end,
     event = { "CmdlineEnter" },
     ft = { "go", 'gomod' },

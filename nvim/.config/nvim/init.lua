@@ -159,7 +159,6 @@ require('lazy').setup({
       })
     end,
     -- TODO: max line num instead of col num https://github.com/nvim-lualine/lualine.nvim
-    -- also figure out how to display 'recording @' message when using noice
   },
 
   {
@@ -241,36 +240,37 @@ require('lazy').setup({
       presets = {
         -- command_palette = true,
         bottom_search = true,  -- use a classic bottom cmdline for search
+        command_palette = false,
         inc_rename = false,    -- enables an input dialog for inc-rename.nvim
         long_message_to_split = true,
         lsp_doc_border = true, -- add a border to hover docs and signature help
       },
-      notify = {
-        enabled = false,
-      },
-      -- views = {
-      --
+      -- notify = {
+      --   enabled = false,
       -- },
-      routes = {
-        view = 'mini',
-        filter = { event = 'msg_showmode' },
-      },
+      -- -- views = {
+      -- --
+      -- -- },
+      -- routes = {
+      --   view = 'mini',
+      --   filter = { event = 'msg_showmode' },
+      -- },
       override = {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
         ["vim.lsp.util.stylize_markdown"] = true,
         ["cmp.entry.get_documentation"] = true,
       },
-      messages = {
-        enabled = true,            -- enables the Noice messages UI
-        -- view_search = false,
-        view = "mini",             -- default view for messages
-        view_error = "mini",       -- view for errors
-        view_warn = "mini",        -- view for warnings
-        view_history = "messages", -- view for :messages
-      },
-      lsp = {
-        message = { view = "mini" }
-      }
+      -- messages = {
+      --   enabled = true,            -- enables the Noice messages UI
+      --   -- view_search = false,
+      --   view = "mini",             -- default view for messages
+      --   view_error = "mini",       -- view for errors
+      --   view_warn = "mini",        -- view for warnings
+      --   view_history = "messages", -- view for :messages
+      -- },
+      -- lsp = {
+      --   message = { view = "mini" }
+      -- }
     },
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -278,17 +278,19 @@ require('lazy').setup({
       -- OPTIONAL:
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
-      -- "rcarriga/nvim-notify",
+      "rcarriga/nvim-notify",
     },
     keys = {
+      { '<leader><esc>', '<cmd>Noice dismiss<cr>', { 'n' } },
       -- BUG: not working, maybe because oa alacritty
-      -- {
-      --   "<c-\\>", function()
-      --     print('test')
-      --     require("noice").redirect(vim.fn.getcmdline())
-      --   end, 'c', { desc = "Redirect Cmdline" }
-      -- }
-      -- TODO: set keymaps like history, last, etc...
+      {
+        "<s-enter>",
+        function()
+          require("noice").redirect(vim.fn.getcmdline())
+        end,
+        mode = 'c',
+        { desc = "Redirect Cmdline" }
+      }
     }
   },
 
