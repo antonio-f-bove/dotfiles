@@ -13,6 +13,18 @@ set('n', '<leader>+', function()
 	-- print('INFO: ' .. vim.fn.expand('%:t') .. ' just sourced')
 end, { desc = 'Save and source file' })
 
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+-- Remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
 set('i', 'jk', '<c-[>')
 set('n', '<leader><leader>', '<cmd> e # <cr>')
 set('n', 'Q', '@q')
@@ -81,5 +93,3 @@ set('n', '<leader>ts', function() toggle_option('spell') end)
 
 set('n', '==', '<cmd>Format<cr>')
 
--- insert tricks
--- set('i', '<leader><leader>', '_')

@@ -1,5 +1,13 @@
 local utils = require 'anto.utils'
 
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = '*',
+})
 
 local toggle_cursorline_group = vim.api.nvim_create_augroup('ToggleCursorline', { clear = true })
 vim.api.nvim_create_autocmd('BufEnter', {
