@@ -101,6 +101,7 @@ require('lazy').setup({
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
 
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
@@ -638,16 +639,14 @@ cmp.setup {
     -- end, { 'i', 's' }),
   },
   sources = {
-    { name = 'cody' },
+    -- { name = 'cody' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
-    { name = 'buffer' },
   },
 }
 
--- TODO: setup command line cmp
--- `:` cmdline setup.
+-- TODO: make mappings work as I intend
 -- cmp.setup.cmdline(':', {
 --   mapping = cmp.mapping.preset.cmdline(),
 --   sources = cmp.config.sources({

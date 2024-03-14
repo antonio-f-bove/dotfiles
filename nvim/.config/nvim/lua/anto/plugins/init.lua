@@ -21,6 +21,7 @@ return {
           },
         },
       }
+      -- vim.cmd.colorscheme('catppuccin-latte')
     end
   },
 }

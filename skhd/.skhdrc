@@ -11,6 +11,9 @@ hyper - x : open /Applications/Alacritty.app
 hyper - c : open /Applications/Google\ Chrome.app
 hyper - s : open /Applications/Spotify.app
 hyper - d : open ~/Library/CloudStorage/OneDrive-SharedLibraries-GualaClosuresGroup/Gualaclosures\ -\ Information\ Tecnology\ -\ Documenti/SmartWorking/SmartWorkingPlanning.xlsx
+hyper - z : open /Applications/Obsidian.app
+# hyper - n : open /Applications/Alacritty.app && tmux
+
 meh - a : open /System/Applications/Utilities/Activity\ Monitor.app
 meh - q : open /System/Applications/Utilities/Disk\ Utility.app
 meh - s : open /System/Applications/System\ Settings.app
@@ -38,6 +41,7 @@ meh - space : yabai -m window --toggle zoom-parent
 hyper - h : sh /Users/anto/dotfiles/skhd/scripts/focus-prev
 hyper - l : sh /Users/anto/dotfiles/skhd/scripts/focus-next
 
+# TODO: move scripts to one general directory
 # cycle monitor focus
 hyper - 0x29 : yabai -m display --focus next || yabai -m display --focus first
 hyper - 0x27 : yabai -m display --focus prev || yabai -m display --focus last
