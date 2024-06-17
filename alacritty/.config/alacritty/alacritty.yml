@@ -9,7 +9,7 @@ import:
   # - ~/.config/alacritty/catppuccin/catppuccin-latte.yml
 
 window:
-  # opacity: 0.85
+  opacity: 0.5
   padding:
     x: 6
     y: 6
@@ -28,7 +28,6 @@ font:
     style: Bold
 
   size: 13.0
-  AppleFontSmoothing: true
 
 key_bindings:
   - { key: Q, mods: Alt, chars: "\x1bq" } # use Alt as a modifier for telescope.nvim
