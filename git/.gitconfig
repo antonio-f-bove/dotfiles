@@ -1,8 +1,10 @@
 [user]
 	email = antoniofbove@gmail.com
-	name = anto
+	name = above
 [core]
 	excludesfile = /Users/anto/.gitignore_global
 [pull]
 	; ff = only
 	rebase = false
+[init]
+	defaultBranch = main
