@@ -336,11 +336,11 @@ local responsive_telescope_picker = function(builtin, opts)
   if not opts then
     opts = {}
   end
-  if require 'anto.utils'.get_vim2screen_ratio() < 0.7 then
-    builtin(require('telescope.themes').get_dropdown(opts))
-  else
-    builtin(opts)
-  end
+  -- if require 'anto.utils'.get_vim2screen_ratio() < 0.7 then
+  --   builtin(require('telescope.themes').get_dropdown(opts))
+  -- else
+  builtin(opts)
+  -- end
 end
 
 -- See `:help telescope.builtin`
@@ -543,8 +543,20 @@ local servers = {
   pyright = {},
   ruff_lsp = {},
   -- rust_analyzer = {},
-  tsserver = {},
+  ts_ls = {
+    -- setup = {
+    --   root_dir = require('lspconfig').util.root_pattern("package.json"),
+    --   single_file_support = false
+    -- }
+  },
+  -- denols = {
+  --   setup = {
+  --     root_dir = require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
+  --   }
+  -- },
   html = { filetypes = { 'html', 'twig', 'hbs' } },
+  angularls = {
+  },
   jdtls = {
     -- setup = {}
   },
@@ -660,6 +672,9 @@ cmp.setup {
 --     }
 --   })
 -- })
+
+-- TODO: choose a colorscheme and set toggle transparent command
+vim.cmd.colorscheme('retrobox')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

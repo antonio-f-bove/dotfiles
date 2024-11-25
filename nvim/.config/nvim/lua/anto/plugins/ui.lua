@@ -91,7 +91,7 @@ return {
     },
     config = function()
       -- Unless you are still migrating, remove the deprecated commands from v1.x
-      vim.cmd()
+      -- vim.cmd()
 
       require("neo-tree").setup({
         filesystem = {
@@ -104,7 +104,8 @@ return {
         },
         window = {
           mappings = {
-            ['<cr>'] = (#require 'anto.utils'.is_vim_single_win() == 1 and 'open') or 'open_with_window_picker',
+            -- FIXME: responsive telescope ui!
+            -- ['<cr>'] = (#require 'anto.utils'.is_vim_single_win() == 1 and 'open') or 'open_with_window_picker',
             ['<c-v>'] = 'open_vsplit',
             ['v'] = 'open_vsplit',
             ['<c-s>'] = 'open_split',

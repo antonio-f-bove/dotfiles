@@ -50,20 +50,39 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
   command = 'checktime',
 })
 
+local transparent_vim = vim.api.nvim_create_augroup('TransparentVim', { clear = true })
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = transparent_vim,
+  callback = function(ev)
+    local highlights = {
+      'Normal',
+      'LineNr',
+      'Folded',
+      'NonText',
+      'SpecialKey',
+      'VertSplit',
+      'SignColumn',
+      'EndOfBuffer',
+      -- 'TablineFill', -- this is specific to how I like my tabline to look like
+    }
+    for _, name in pairs(highlights) do vim.cmd.highlight(name .. ' guibg=none ctermbg=none') end
+  end,
+})
+
 
 -- TODO: make it work with neotree
-local smart_center_win_group = vim.api.nvim_create_augroup('SmartCenterWin', { clear = true })
-vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
-  pattern = '*',
-  callback = function(args)
-    local vim2screen_ratio = utils.get_vim2screen_ratio()
-    local is_sigle_window = utils.is_vim_single_win()
-
-    if (vim2screen_ratio > 0.75) and is_sigle_window then
-      require 'zen-mode'.open()
-    else
-      require 'zen-mode'.close()
-    end
-  end,
-  group = smart_center_win_group,
-})
+-- local smart_center_win_group = vim.api.nvim_create_augroup('SmartCenterWin', { clear = true })
+-- vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
+--   pattern = '*',
+--   callback = function(args)
+--     local vim2screen_ratio = utils.get_vim2screen_ratio()
+--     local is_sigle_window = utils.is_vim_single_win()
+--
+--     if (vim2screen_ratio > 0.75) and is_sigle_window then
+--       require 'zen-mode'.open()
+--     else
+--       require 'zen-mode'.close()
+--     end
+--   end,
+--   group = smart_center_win_group,
+-- })
