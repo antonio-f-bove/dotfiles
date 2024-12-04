@@ -8,3 +8,6 @@
 	rebase = false
 [init]
 	defaultBranch = main
+[alias]
+	co = checkout
+	plr = pull --rebase
