@@ -270,10 +270,7 @@ require('telescope').setup {
         end
       },
       n = {
-        ['xx'] = actions.delete_buffer,
-        -- TODO: write implementations
-        -- ['xj'] = actions.delete_buffer_under,
-        -- ['xk'] = actions.delete_buffer_above,
+        ['<c-x>'] = actions.delete_buffer,
         ['<c-s>'] = actions.select_horizontal,
         ['<c-v>'] = actions.select_vertical,
         ["<c-l>"] = actions.cycle_previewers_next,
@@ -337,13 +334,22 @@ local responsive_telescope_picker = function(builtin, opts)
     opts = {}
   end
   -- if require 'anto.utils'.get_vim2screen_ratio() < 0.7 then
-  --   builtin(require('telescope.themes').get_dropdown(opts))
+  --   builtin(require('telescope.themes').et_dropdown(opts))
   -- else
   builtin(opts)
   -- end
 end
 
 -- See `:help telescope.builtin`
+vim.keymap.set('n', '<leader>fj', function()
+  local curr_dir = vim.fn.expand('%:h')
+  local component_name = vim.fn.expand('%:t:r')
+
+  require('telescope.builtin').find_files({
+    search_dirs = { curr_dir },
+    search_file = component_name
+  })
+end, { desc = '[F]ind related files' })
 vim.keymap.set('n', '<leader>fo', function()
   responsive_telescope_picker(require('telescope.builtin').oldfiles)
 end, { desc = '[F]ind [o]ld files' })
@@ -356,7 +362,7 @@ end, { desc = '[F]ind [b]uffers' })
 vim.keymap.set('n', '<leader>f/', function()
   responsive_telescope_picker(require('telescope.builtin').current_buffer_fuzzy_find)
 end, { desc = '[/] Fuzzily search in current buffer' })
--- vim.keymap.set('n', '<leader>f/', telescope_live_grep_open_files, { desc = '[F]ind [/] in Open Files' })
+-- vim.keymap.set('n', '<leader>f/', telescope_live_rep_open_files, { desc = '[F]ind [/] in Open Files' })
 vim.keymap.set('n', '<leader>fs', function()
   responsive_telescope_picker(require('telescope.builtin').builtin)
 end, { desc = '[F]ind [S]elect Telescope' })
@@ -543,17 +549,7 @@ local servers = {
   pyright = {},
   ruff_lsp = {},
   -- rust_analyzer = {},
-  ts_ls = {
-    -- setup = {
-    --   root_dir = require('lspconfig').util.root_pattern("package.json"),
-    --   single_file_support = false
-    -- }
-  },
-  -- denols = {
-  --   setup = {
-  --     root_dir = require('lspconfig').util.root_pattern("deno.json", "deno.jsonc")
-  --   }
-  -- },
+  ts_ls = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   angularls = {
   },
