@@ -20,8 +20,11 @@ set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Diagnostic keymaps
-set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+local severity = require('vim.diagnostic').severity
+set('n', '[d', function() vim.diagnostic.goto_prev({ severity = severity.ERROR }) end,
+	{ desc = 'Go to previous diagnostic message' })
+set('n', ']d', function() vim.diagnostic.goto_next({ severity = severity.ERROR }) end,
+	{ desc = 'Go to next diagnostic message' })
 set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
@@ -92,4 +95,3 @@ set('n', '<leader>th', function() toggle_option('hlsearch') end)
 set('n', '<leader>ts', function() toggle_option('spell') end)
 
 set('n', '==', '<cmd>Format<cr>')
-

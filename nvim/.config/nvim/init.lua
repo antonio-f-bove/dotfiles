@@ -544,19 +544,18 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- clangd = {},
-  gopls = {},
-  pyright = {},
-  ruff_lsp = {},
-  -- rust_analyzer = {},
   ts_ls = {},
-  html = { filetypes = { 'html', 'twig', 'hbs' } },
-  angularls = {
-  },
-  jdtls = {
-    -- setup = {}
-  },
-  emmet_language_server = {},
+  angularls = {},
+  -- clangd = {},
+  -- gopls = {},
+  -- pyright = {},
+  -- ruff_lsp = {},
+  -- rust_analyzer = {},
+  -- html = { filetypes = { 'html', 'twig', 'hbs' } },
+  -- jdtls = {
+  --   -- setup = {}
+  -- },
+  -- emmet_language_server = {},
 
   lua_ls = {
     Lua = {
@@ -584,14 +583,26 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require('lspconfig')[server_name].setup {
+    local config = {
       capabilities = capabilities,
       on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
     }
+
+    local util = require('lspconfig.util')
+    if server_name == 'angularls' then
+      config.root_dir = function(fname)
+        return util.root_pattern('project.json')(fname)
+            or util.root_pattern('angular.json')(fname)
+      end
+    end
+
+    require('lspconfig')[server_name].setup(config)
   end,
 }
+
+
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
