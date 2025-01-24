@@ -71,18 +71,19 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 
 
 -- TODO: make it work with neotree
--- local smart_center_win_group = vim.api.nvim_create_augroup('SmartCenterWin', { clear = true })
--- vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
---   pattern = '*',
---   callback = function(args)
---     local vim2screen_ratio = utils.get_vim2screen_ratio()
---     local is_sigle_window = utils.is_vim_single_win()
---
---     if (vim2screen_ratio > 0.75) and is_sigle_window then
---       require 'zen-mode'.open()
---     else
---       require 'zen-mode'.close()
---     end
---   end,
---   group = smart_center_win_group,
--- })
+local smart_center_win_group = vim.api.nvim_create_augroup('SmartCenterWin', { clear = true })
+vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
+  pattern = '*',
+  callback = function(args)
+    local vim2screen_ratio = vim.o.columns / vim.o.lines
+    local is_sigle_window = utils.is_vim_single_win()
+    print('ratio:' .. vim2screen_ratio .. '|is_single:', is_sigle_window)
+
+    if (vim2screen_ratio > 3.1) and is_sigle_window then
+      require 'zen-mode'.open()
+    else
+      require 'zen-mode'.close()
+    end
+  end,
+  group = smart_center_win_group,
+})

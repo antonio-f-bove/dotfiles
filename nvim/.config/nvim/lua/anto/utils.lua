@@ -35,14 +35,13 @@ M.is_vim_single_win = function(tab_id)
   return #non_floating == 1
 end
 
-M.get_vim2screen_ratio = function()
-  -- vim.fn.system("yabai -m query --windows --space | jq '. | length'")
-  local tot_screen_width = vim.fn.system("yabai -m query --displays --display | jq '.frame.w'")
-  local vim_win_width = vim.fn.system(
-    [[yabai -m query --windows --space | jq '.[] | select(.app == "Alacritty") | .frame.w']])
-
-  return vim_win_width / tot_screen_width
-end
+-- M.get_vim2screen_ratio = function()
+--   local tot_screen_width = vim.fn.system("yabai -m query --displays --display | jq '.frame.w'")
+--   local vim_win_width = vim.fn.system(
+--     [[yabai -m query --windows --space | jq '.[] | select(.app == "Alacritty") | .frame.w']])
+--
+--   return vim_win_width / tot_screen_width
+-- end
 
 local active_throttles = {}
 M.throttle = function(callback, id, debounce_time)
