@@ -551,7 +551,8 @@ local servers = {
   -- pyright = {},
   -- ruff_lsp = {},
   -- rust_analyzer = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs' } },
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
+  tailwindcss = {},
   -- jdtls = {
   --   -- setup = {}
   -- },
