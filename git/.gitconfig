@@ -5,9 +5,11 @@
 	excludesfile = /Users/anto/.gitignore_global
 [pull]
 	; ff = only
-	rebase = false
+	rebase = true
 [init]
 	defaultBranch = main
 [alias]
 	co = checkout
 	plr = pull --rebase
+[rebase]
+	autostash = true
