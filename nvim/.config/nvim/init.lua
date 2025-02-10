@@ -386,12 +386,16 @@ vim.keymap.set('x', '<leader>f', function()
     { search = require 'anto.utils'.get_visual_selection() })
 end, { desc = '[F]ind visual selection' })
 vim.keymap.set('n', '<leader>fw', function()
-  responsive_telescope_picker(require('telescope.builtin').live_grep)
+  require('telescope.builtin').live_grep({ glob_pattern = '!node_modules/**' })
 end, { desc = '[F]ind by [G]rep' })
 -- vim.keymap.set('n', '<leader>fW', ':LiveGrepGitRoot<cr>', { desc = '[F]ind by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>fd', function()
   responsive_telescope_picker(require('telescope.builtin').diagnostics)
 end, { desc = '[F]ind [D]iagnostics' })
+-- TODO: doesn't seem to work
+-- vim.keymap.set('n', '<leader>FD', function()
+--   require('telescope.builtin').diagnostics({ bufnr = nil })
+-- end, { desc = '[F]ind workspace [D]iagnostics' })
 vim.keymap.set('n', '<leader>fr', function()
   responsive_telescope_picker(require('telescope.builtin').resume)
 end, { desc = '[F]ind [R]esume' })
@@ -494,7 +498,7 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation', noremap = true, silent = true })
   -- HACK: conficted with tmux navigator
   -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 

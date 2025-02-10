@@ -25,8 +25,6 @@ set('n', '[d', function() vim.diagnostic.goto_prev({ severity = severity.ERROR }
 	{ desc = 'Go to previous diagnostic message' })
 set('n', ']d', function() vim.diagnostic.goto_next({ severity = severity.ERROR }) end,
 	{ desc = 'Go to next diagnostic message' })
-set('n', '<leader>df', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 set('i', 'jk', '<c-[>')
 set('n', '<leader><leader>', '<cmd> e # <cr>')
@@ -34,7 +32,7 @@ set('n', 'Q', '@q')
 set('v', 'v', "<esc>m`ggVG") -- TODO: I want to be able to <c-o> to where visualized all
 
 set('n', '<leader>p', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
--- set('n', '<leader>d', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
+set('n', '<leader>*', '/<c-r>"<cr>', { desc = 'Find last yanked word' })
 
 set({ 'n', 'i' }, '<c-s>', '<cmd> w <cr>', { desc = 'Save file' })
 set('n', 'ZA', '<cmd> xa <cr>', { desc = 'xa' })
@@ -45,8 +43,9 @@ set('n', '<s-tab>', '<cmd> bprev <cr>')
 -- set('n', '<leader><tab>', '<cmd> tabclose <cr>')
 
 -- quickfix and loclist movement
-set('n', ']q', '<cmd> cnext <cr>')
-set('n', '[q', '<cmd> cprev <cr>')
+set('n', '<c-n>', '<cmd> cnext <cr>')
+set('n', '<c-p>', '<cmd> cprev <cr>')
+
 set('n', ']Q', '<cmd> clast <cr>')
 set('n', '[Q', '<cmd> cfirst <cr>')
 set('n', ']l', '<cmd> lnext <cr>')
@@ -88,10 +87,10 @@ set('n', '|', '<c-w>|')
 set('n', '_', '<c-w>_')
 
 -- Toggles
-set('n', '<leader>tr', function() toggle_option('relativenumber') end)
-set('n', '<leader>ti', '<cmd> IBLToggle <cr>')
-set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end)
-set('n', '<leader>th', function() toggle_option('hlsearch') end)
-set('n', '<leader>ts', function() toggle_option('spell') end)
+set('n', '<leader>tr', function() toggle_option('relativenumber') end, { desc = 'Toggle relnum' })
+set('n', '<leader>ti', '<cmd> IBLToggle <cr>', { desc = 'Toggle indent line' })
+set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end, { desc = 'Toggle wrap' })
+set('n', '<leader>th', function() toggle_option('hlsearch') end, { desc = 'Toggle hlsearch' })
+set('n', '<leader>ts', function() toggle_option('spell') end, { desc = 'Toggle spell' })
 
-set('n', '==', '<cmd>Format<cr>')
+-- set('n', '==', '<cmd>Format<cr>')
