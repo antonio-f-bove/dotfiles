@@ -53,8 +53,8 @@ set('n', '[l', '<cmd> lprev <cr>')
 set('n', ']L', '<cmd> llast <cr>')
 set('n', '[L', '<cmd> lfirst <cr>')
 
-set({ 'n', 'v', 'o' }, 'gh', '^')
-set({ 'n', 'v', 'o' }, 'gl', '$')
+-- set({ 'n', 'v', 'o' }, 'gh', '^')
+-- set({ 'n', 'v', 'o' }, 'gl', '$')
 
 set('n', '>', '>>')
 set('n', '<', '<<')

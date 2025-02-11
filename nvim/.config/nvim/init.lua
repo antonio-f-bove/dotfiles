@@ -163,6 +163,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'nvim-treesitter/nvim-treesitter-context',
       'windwp/nvim-ts-autotag',
     },
     build = ':TSUpdate',
@@ -190,14 +191,13 @@ require('lazy').setup({
     config = true,
   },
 
-  -- TODO: filter out NOTE comments
   {
     "folke/todo-comments.nvim",
     event = 'VeryLazy',
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
     keys = {
-      { '<leader>ft', '<cmd> TodoTelescope keywords=TODO,FIX,BUG,HACK,WARN  <cr>', '[F]ind [T]odos' },
+      { '<leader>ft', '<cmd> TodoTelescope keywords=TODO,FIXME,BUG,HACK,WARN,INFO <cr>', '[F]ind [T]odos' },
     }
   },
 
@@ -330,9 +330,7 @@ local function telescope_live_grep_open_files()
 end
 
 local responsive_telescope_picker = function(builtin, opts)
-  if not opts then
-    opts = {}
-  end
+  opts = opts or {}
   -- if require 'anto.utils'.get_vim2screen_ratio() < 0.7 then
   --   builtin(require('telescope.themes').et_dropdown(opts))
   -- else
@@ -468,6 +466,19 @@ vim.defer_fn(function()
       },
     },
   }
+
+  require 'treesitter-context'.setup {
+    enable = true,
+    max_lines = 2,
+    -- trim_scope = '',
+    line_numbers = true,
+    mode = 'cursor',
+    on_attach = function(buf)
+      local filetype = vim.bo[buf].filetype
+      return filetype ~= 'html'
+    end
+  }
+  vim.keymap.set('n', '<leader>tc', '<cmd>TSContextToggle<cr>', { desc = 'Toggle context', silent = true })
 end, 0)
 
 -- [[ Configure LSP ]]
@@ -556,6 +567,7 @@ local servers = {
   -- ruff_lsp = {},
   -- rust_analyzer = {},
   html = { filetypes = { 'html', 'twig', 'hbs' } },
+  cssls = {},
   tailwindcss = {},
   -- jdtls = {
   --   -- setup = {}
