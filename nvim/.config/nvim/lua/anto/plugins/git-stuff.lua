@@ -6,8 +6,40 @@ return {
       { '<leader>gp', '<cmd> G pull <cr>' },
       { '<leader>gP', '<cmd> G push <cr>' },
       { '<leader>ga', ":G commit -a -m '" },
-      { '<leader>gh', "<cmd>%Gclog<cr>" },
-      { '<leader>gq', "<cmd> Gedit | ccl <cr>" },
+      {
+        '<leader>gh', function()
+        vim.keymap.del('n', '<c-n>')
+        vim.keymap.del('n', '<c-p>')
+
+        vim.keymap.set('n', '<c-n>', function()
+          local cursor_pos = vim.api.nvim_win_get_cursor(0)
+          -- print(unpack(cursor_pos))
+          vim.cmd('cnext')
+          vim.api.nvim_win_set_cursor(0, cursor_pos)
+        end)
+
+        vim.keymap.set('n', '<c-p>', function()
+          local cursor_pos = vim.api.nvim_win_get_cursor(0)
+          -- print(unpack(cursor_pos))
+          vim.cmd('cprev')
+          vim.api.nvim_win_set_cursor(0, cursor_pos)
+        end)
+
+        local cursor_pos = vim.api.nvim_win_get_cursor(0)
+        vim.cmd('0Gclog')
+        vim.api.nvim_win_set_cursor(0, cursor_pos)
+      end
+      },
+      { '<leader>gq', function()
+        -- "<cmd> Gedit | ccl <cr>" },
+        vim.keymap.del('n', '<c-n>')
+        vim.keymap.del('n', '<c-p>')
+        vim.keymap.set('n', '<c-n>', '<cmd> cnext <cr>')
+        vim.keymap.set('n', '<c-p>', '<cmd> cprev <cr>')
+        vim.cmd('Gedit')
+        vim.cmd('ccl')
+      end
+      },
     },
     config = function()
       local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode',
