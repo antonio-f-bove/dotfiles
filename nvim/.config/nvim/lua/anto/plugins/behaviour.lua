@@ -3,12 +3,12 @@ return {
     "chrisgrieser/nvim-spider",
     keys = {
       {
-        "H",
+        "gh",
         "<cmd>lua require('spider').motion('b')<CR>",
         mode = { "n", "o", "x" },
       },
       {
-        "L",
+        "gl",
         "<cmd>lua require('spider').motion('w')<CR>",
         mode = { 'n', 'o', 'x' },
       },

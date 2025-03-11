@@ -339,21 +339,12 @@ local responsive_telescope_picker = function(builtin, opts)
 end
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>fj', function()
-  local curr_dir = vim.fn.expand('%:h')
-  local component_name = vim.fn.expand('%:t:r')
-
-  require('telescope.builtin').find_files({
-    search_dirs = { curr_dir },
-    search_file = component_name
-  })
-end, { desc = '[F]ind related files' })
 vim.keymap.set('n', '<leader>fo', function()
   responsive_telescope_picker(require('telescope.builtin').oldfiles)
 end, { desc = '[F]ind [o]ld files' })
-vim.keymap.set('n', '<leader>fb', function()
-  responsive_telescope_picker(require('telescope.builtin').buffers)
-end, { desc = '[F]ind [b]uffers' })
+-- vim.keymap.set('n', '<leader>fb', function()
+--   responsive_telescope_picker(require('telescope.builtin').buffers)
+-- end, { desc = '[F]ind [b]uffers' })
 vim.keymap.set('n', '<leader><tab>', function()
   responsive_telescope_picker(require('telescope.builtin').buffers)
 end, { desc = '[F]ind [b]uffers' })
@@ -386,10 +377,18 @@ end, { desc = '[F]ind visual selection' })
 vim.keymap.set('n', '<leader>fw', function()
   require('telescope.builtin').live_grep({ glob_pattern = '!node_modules/**' })
 end, { desc = '[F]ind by [G]rep' })
--- vim.keymap.set('n', '<leader>fW', ':LiveGrepGitRoot<cr>', { desc = '[F]ind by [G]rep on Git Root' })
+
 vim.keymap.set('n', '<leader>fd', function()
-  responsive_telescope_picker(require('telescope.builtin').diagnostics)
+  require('telescope.builtin').diagnostics({ bufnr = 0, severity = vim.diagnostic.severity.ERROR })
+  -- responsive_telescope_picker(require('telescope.builtin').diagnostics)
 end, { desc = '[F]ind [D]iagnostics' })
+
+vim.keymap.set('n', '<leader>FD', function()
+  require('telescope.builtin').diagnostics({ bufnr = nil, severity = vim.diagnostic.severity.ERROR })
+  -- responsive_telescope_picker(require('telescope.builtin').diagnostics,
+  --   { bufnr = nil, severity = vim.diagnostic.severity.ERROR, no_unlisted = false })
+end, { desc = '[F]ind All [D]iagnostics' })
+
 -- TODO: doesn't seem to work
 -- vim.keymap.set('n', '<leader>FD', function()
 --   require('telescope.builtin').diagnostics({ bufnr = nil })
@@ -458,10 +457,10 @@ vim.defer_fn(function()
       swap = {
         enable = true,
         swap_next = {
-          ['<leader>a'] = '@parameter.inner',
+          ['<leader>a>'] = '@parameter.inner',
         },
         swap_previous = {
-          ['<leader>A'] = '@parameter.inner',
+          ['<leader>a<'] = '@parameter.inner',
         },
       },
     },
@@ -502,7 +501,9 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  nmap('gr', function()
+    require('telescope.builtin').lsp_references({ show_line = false })
+  end, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -698,7 +699,8 @@ cmp.setup {
 -- })
 
 -- TODO: choose a colorscheme and set toggle transparent command
-vim.cmd.colorscheme('retrobox')
+-- vim.cmd.colorscheme('retrobox')
+vim.cmd.colorscheme('kanagawa-paper')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
