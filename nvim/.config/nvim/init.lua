@@ -123,19 +123,19 @@ require('lazy').setup({
 
   { 'folke/which-key.nvim', opts = {} },
 
-  -- {
-  --   'numToStr/Comment.nvim',
-  --   opts = {
-  --     toggler = {
-  --       line = '<leader>/',
-  --       block = '<leader>?',
-  --     },
-  --     opleader = {
-  --       line = '<leader>/',
-  --       block = '<leader>?',
-  --     },
-  --   },
-  -- },
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        line = '<leader>/',
+        block = '<leader>?',
+      },
+      opleader = {
+        line = '<leader>/',
+        block = '<leader>?',
+      },
+    },
+  },
 
   -- Fuzzy Finder (files, lsp, etc)
   {

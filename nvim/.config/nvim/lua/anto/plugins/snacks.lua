@@ -70,6 +70,7 @@ return {
       -- { "<leader>fC",    function() Snacks.picker.files() end,   desc = "find config" },
       { "<leader><tab>", function() Snacks.picker.buffers() end,       desc = "" },
       { "<leader>fr",    function() Snacks.picker.resume() end,        desc = "" },
+      -- TODO: fj (files in same directory? same name?)
 
       -- TODO: abstract! I want to be able to also navigate node_modules
       {
@@ -79,9 +80,11 @@ return {
         end,
         desc = ""
       },
+      -- { '<leader>sl', function() Snacks.picker.lazy() end,                  desc = "" },
 
-      -- TODO: git stuff
+      -- git
       { "<leader>gb", function() Snacks.picker.git_branches() end,          desc = "Git Branches" },
+      -- TODO: confirm => show instead of checkout
       { "<leader>gl", function() Snacks.picker.git_log() end,               desc = "Git Log" },
       { "<leader>gL", function() Snacks.picker.git_log_line() end,          desc = "Git Log Line" },
       { "<leader>gs", function() Snacks.picker.git_status() end,            desc = "Git Status" },
