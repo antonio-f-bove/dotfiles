@@ -29,12 +29,12 @@ set('n', ']d', function() vim.diagnostic.goto_next({ severity = severity.ERROR }
 set('i', 'jk', '<c-[>')
 set('n', '<leader><leader>', '<cmd> e # <cr>')
 set('n', 'Q', '@q')
-set('v', 'v', "<esc>m`ggVG") -- TODO: I want to be able to <c-o> to where visualized all
+-- set('v', 'v', "<esc>m`ggVG") -- TODO: I want to be able to <c-o> to where visualized all
 
 set('n', '<leader>p', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
 set('n', '<leader>*', '/<c-r>"<cr>', { desc = 'Find last yanked word' })
 
-set({ 'n', 'i' }, '<c-s>', '<cmd> w <cr>', { desc = 'Save file' })
+set({ 'n', 'i' }, '<c-s>', '<cmd> wa <cr>', { desc = 'Save all files' })
 set('n', 'ZA', '<cmd> xa <cr>', { desc = 'xa' })
 set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
 
@@ -88,9 +88,7 @@ set('n', '_', '<c-w>_')
 
 -- Toggles
 set('n', '<leader>tr', function() toggle_option('relativenumber') end, { desc = 'Toggle relnum' })
-set('n', '<leader>ti', '<cmd> IBLToggle <cr>', { desc = 'Toggle indent line' })
+-- set('n', '<leader>ti', '<cmd> IBLToggle <cr>', { desc = 'Toggle indent line' })
 set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end, { desc = 'Toggle wrap' })
 set('n', '<leader>th', function() toggle_option('hlsearch') end, { desc = 'Toggle hlsearch' })
 set('n', '<leader>ts', function() toggle_option('spell') end, { desc = 'Toggle spell' })
-
--- set('n', '==', '<cmd>Format<cr>')

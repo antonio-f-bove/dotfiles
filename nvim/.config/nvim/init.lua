@@ -123,19 +123,19 @@ require('lazy').setup({
 
   { 'folke/which-key.nvim', opts = {} },
 
-  {
-    'numToStr/Comment.nvim',
-    opts = {
-      toggler = {
-        line = '<leader>/',
-        block = '<leader>?',
-      },
-      opleader = {
-        line = '<leader>/',
-        block = '<leader>?',
-      },
-    },
-  },
+  -- {
+  --   'numToStr/Comment.nvim',
+  --   opts = {
+  --     toggler = {
+  --       line = '<leader>/',
+  --       block = '<leader>?',
+  --     },
+  --     opleader = {
+  --       line = '<leader>/',
+  --       block = '<leader>?',
+  --     },
+  --   },
+  -- },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -191,16 +191,6 @@ require('lazy').setup({
     config = true,
   },
 
-  {
-    "folke/todo-comments.nvim",
-    event = 'VeryLazy',
-    dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {},
-    keys = {
-      { '<leader>ft', '<cmd> TodoTelescope keywords=TODO,FIXME,BUG,HACK,WARN,INFO <cr>', '[F]ind [T]odos' },
-    }
-  },
-
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -217,185 +207,12 @@ require('lazy').setup({
 }, {})
 
 -- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
 require 'anto.options'
 require 'anto.autocommands'
 
 -- [[ Basic Keymaps ]]
 require 'anto.mappings'
 
--- [[ Configure Telescope ]]
--- See `:help telescope` and `:help telescope.setup()`
-local actions = require('telescope.actions')
-require('telescope').setup {
-  defaults = {
-    sorting_strategy = 'ascending',
-    layout_strategy = 'horizontal',
-    layout_config = {
-      horizontal = {
-        prompt_position = 'top',
-        preview_width = 0.55,
-        results_width = 0.8
-      },
-      vertical = {
-        mirror = false,
-      },
-      width = 0.87,
-      height = 0.80,
-      preview_cutoff = 120,
-    },
-    mappings = {
-      -- TODO: add actions.to_fuzzy_refine to toggle fuzzy/non fuzzy search. meant to be used in live_grep
-      i = {
-        ['<c-x>'] = actions.delete_buffer,
-        ['<c-s>'] = actions.select_horizontal,
-        ['<c-v>'] = actions.select_vertical,
-        ["<c-l>"] = actions.cycle_previewers_next,
-        ["<c-h>"] = actions.cycle_previewers_prev,
-        ["<c-a>"] = actions.toggle_all,
-        ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-        ["<M-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
-        ['<c-e>'] = function(prompt_bufnr)
-          local action_utils = require 'telescope.actions.utils'
-          local action_state = require 'telescope.actions.state'
-          local selected = {}
-          action_utils.map_selections(prompt_bufnr, function(entry, index, row)
-            vim.print(entry)
-            vim.print(index)
-            vim.print(row)
-            -- selected[index] = entry.value
-          end)
-          -- .map_entries(prompt_bufnr, function(entry) vim.print(entry) end)
-        end
-      },
-      n = {
-        ['<c-x>'] = actions.delete_buffer,
-        ['<c-s>'] = actions.select_horizontal,
-        ['<c-v>'] = actions.select_vertical,
-        ["<c-l>"] = actions.cycle_previewers_next,
-        ["<c-h>"] = actions.cycle_previewers_prev,
-        ["<c-a>"] = actions.toggle_all,
-        ["<c-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-        ["<M-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
-      },
-    },
-  },
-}
-
--- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
-
--- Telescope live_grep in git root
--- Function to find the git root directory based on the current buffer's path
-local function find_git_root()
-  -- Use the current buffer's path as the starting point for the git search
-  local current_file = vim.api.nvim_buf_get_name(0)
-  local current_dir
-  local cwd = vim.fn.getcwd()
-  -- If the buffer is not associated with a file, return nil
-  if current_file == '' then
-    current_dir = cwd
-  else
-    -- Extract the directory from the current file's path
-    current_dir = vim.fn.fnamemodify(current_file, ':h')
-  end
-
-  -- Find the Git root directory from the current file's path
-  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
-  if vim.v.shell_error ~= 0 then
-    print 'Not a git repository. Searching on current working directory'
-    return cwd
-  end
-  return git_root
-end
-
--- Custom live_grep function to search in git root
-local function live_grep_git_root()
-  local git_root = find_git_root()
-  if git_root then
-    require('telescope.builtin').live_grep {
-      search_dirs = { git_root },
-    }
-  end
-end
-
--- vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
-
-local function telescope_live_grep_open_files()
-  require('telescope.builtin').live_grep {
-    grep_open_files = true,
-    prompt_title = 'Live Grep in Open Files',
-  }
-end
-
-local responsive_telescope_picker = function(builtin, opts)
-  opts = opts or {}
-  -- if require 'anto.utils'.get_vim2screen_ratio() < 0.7 then
-  --   builtin(require('telescope.themes').et_dropdown(opts))
-  -- else
-  builtin(opts)
-  -- end
-end
-
--- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>fo', function()
-  responsive_telescope_picker(require('telescope.builtin').oldfiles)
-end, { desc = '[F]ind [o]ld files' })
--- vim.keymap.set('n', '<leader>fb', function()
---   responsive_telescope_picker(require('telescope.builtin').buffers)
--- end, { desc = '[F]ind [b]uffers' })
-vim.keymap.set('n', '<leader><tab>', function()
-  responsive_telescope_picker(require('telescope.builtin').buffers)
-end, { desc = '[F]ind [b]uffers' })
-vim.keymap.set('n', '<leader>f/', function()
-  responsive_telescope_picker(require('telescope.builtin').current_buffer_fuzzy_find)
-end, { desc = '[/] Fuzzily search in current buffer' })
--- vim.keymap.set('n', '<leader>f/', telescope_live_rep_open_files, { desc = '[F]ind [/] in Open Files' })
-vim.keymap.set('n', '<leader>fs', function()
-  responsive_telescope_picker(require('telescope.builtin').builtin)
-end, { desc = '[F]ind [S]elect Telescope' })
-vim.keymap.set('n', '<leader>fk', function()
-  responsive_telescope_picker(require('telescope.builtin').keymaps)
-end, { desc = '[F]ind [K]eymaps' })
-vim.keymap.set('n', '<leader>fa', function()
-  responsive_telescope_picker(require('telescope.builtin').git_files)
-end, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>ff', function()
-  responsive_telescope_picker(require('telescope.builtin').find_files)
-end, { desc = '[F]ind [F]iles' })
-vim.keymap.set('n', '<leader>fh', function()
-  responsive_telescope_picker(require('telescope.builtin').help_tags)
-end, { desc = '[F]ind [H]elp' })
-vim.keymap.set('n', '<leader>fc', function()
-  responsive_telescope_picker(require('telescope.builtin').grep_string)
-end, { desc = '[F]ind current [W]ord' })
-vim.keymap.set('x', '<leader>f', function()
-  responsive_telescope_picker(require('telescope.builtin').grep_string,
-    { search = require 'anto.utils'.get_visual_selection() })
-end, { desc = '[F]ind visual selection' })
-vim.keymap.set('n', '<leader>fw', function()
-  require('telescope.builtin').live_grep({ glob_pattern = '!node_modules/**' })
-end, { desc = '[F]ind by [G]rep' })
-
-vim.keymap.set('n', '<leader>fd', function()
-  require('telescope.builtin').diagnostics({ bufnr = 0, severity = vim.diagnostic.severity.ERROR })
-  -- responsive_telescope_picker(require('telescope.builtin').diagnostics)
-end, { desc = '[F]ind [D]iagnostics' })
-
-vim.keymap.set('n', '<leader>FD', function()
-  require('telescope.builtin').diagnostics({ bufnr = nil, severity = vim.diagnostic.severity.ERROR })
-  -- responsive_telescope_picker(require('telescope.builtin').diagnostics,
-  --   { bufnr = nil, severity = vim.diagnostic.severity.ERROR, no_unlisted = false })
-end, { desc = '[F]ind All [D]iagnostics' })
-
--- TODO: doesn't seem to work
--- vim.keymap.set('n', '<leader>FD', function()
---   require('telescope.builtin').diagnostics({ bufnr = nil })
--- end, { desc = '[F]ind workspace [D]iagnostics' })
-vim.keymap.set('n', '<leader>fr', function()
-  responsive_telescope_picker(require('telescope.builtin').resume)
-end, { desc = '[F]ind [R]esume' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -430,8 +247,8 @@ vim.defer_fn(function()
           ['ia'] = '@parameter.inner',
           ['af'] = '@function.outer',
           ['if'] = '@function.inner',
-          -- ['ac'] = '@class.outer',
-          -- ['ic'] = '@class.inner',
+          ['ac'] = '@class.outer',
+          ['ic'] = '@class.inner',
         },
       },
       move = {
@@ -473,10 +290,12 @@ vim.defer_fn(function()
     line_numbers = true,
     mode = 'cursor',
     on_attach = function(buf)
+      -- exclude html
       local filetype = vim.bo[buf].filetype
       return filetype ~= 'html'
     end
   }
+  -- Toggle
   vim.keymap.set('n', '<leader>tc', '<cmd>TSContextToggle<cr>', { desc = 'Toggle context', silent = true })
 end, 0)
 
@@ -500,27 +319,10 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ra', vim.lsp.buf.rename, '[R]ename [a]ll')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-  nmap('gr', function()
-    require('telescope.builtin').lsp_references({ show_line = false })
-  end, '[G]oto [R]eferences')
-  nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-  nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
   -- See `:help K` for why this keymap
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Hover Documentation', noremap = true, silent = true })
   -- HACK: conficted with tmux navigator
   -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-  -- Lesser used LSP functionality
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, '[W]orkspace [L]ist Folders')
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
@@ -529,22 +331,22 @@ local on_attach = function(_, bufnr)
 end
 
 -- document existing key chains
-require('which-key').register {
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  -- ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-  -- ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-  ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
-  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-}
--- register which-key VISUAL mode
--- required for visual <leader>hs (hunk stage) to work
-require('which-key').register({
-  ['<leader>'] = { name = 'VISUAL <leader>' },
-  ['<leader>h'] = { 'Git [H]unk' },
-}, { mode = 'v' })
+-- require('which-key').register {
+--   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+--   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+--   -- ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+--   ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+--   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+--   -- ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+--   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
+--   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+-- }
+-- -- register which-key VISUAL mode
+-- -- required for visual <leader>hs (hunk stage) to work
+-- require('which-key').register({
+--   ['<leader>'] = { name = 'VISUAL <leader>' },
+--   ['<leader>h'] = { 'Git [H]unk' },
+-- }, { mode = 'v' })
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -570,10 +372,6 @@ local servers = {
   html = { filetypes = { 'html', 'twig', 'hbs' } },
   cssls = {},
   tailwindcss = {},
-  -- jdtls = {
-  --   -- setup = {}
-  -- },
-  -- emmet_language_server = {},
 
   lua_ls = {
     Lua = {
@@ -616,6 +414,12 @@ mason_lspconfig.setup_handlers {
       end
     end
 
+    if server_name == 'tailwindcss' then
+      config.root_dir = function(fname)
+        return util.root_pattern("tailwind.config.cjs", "tailwind.config.js", "postcss.config.js")(fname)
+      end
+    end
+
     require('lspconfig')[server_name].setup(config)
   end,
 }
@@ -648,58 +452,14 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     },
-    -- ["<c-a>"] = cmp.mapping.complete {
-    --   config = {
-    --     sources = {
-    --       { name = "cody" },
-    --     },
-    --   },
-    -- },
-
-    -- ['<Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_next_item()
-    --   elseif luasnip.expand_or_locally_jumpable() then
-    --     luasnip.expand_or_jump()
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
-    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_prev_item()
-    --   elseif luasnip.locally_jumpable(-1) then
-    --     luasnip.jump(-1)
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
   },
   sources = {
-    -- { name = 'cody' },
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
   },
 }
 
--- TODO: make mappings work as I intend
--- cmp.setup.cmdline(':', {
---   mapping = cmp.mapping.preset.cmdline(),
---   sources = cmp.config.sources({
---     { name = 'path' }
---   }, {
---     {
---       name = 'cmdline',
---       option = {
---         ignore_cmds = { 'Man', '!' }
---       }
---     }
---   })
--- })
-
--- TODO: choose a colorscheme and set toggle transparent command
--- vim.cmd.colorscheme('retrobox')
 vim.cmd.colorscheme('kanagawa-paper')
 
 -- The line beneath this is called `modeline`. See `:help modeline`

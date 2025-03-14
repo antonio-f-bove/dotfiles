@@ -68,32 +68,3 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     for _, name in pairs(highlights) do vim.cmd.highlight(name .. ' guibg=none ctermbg=none') end
   end,
 })
-
-
-local win_resize_enabled = false
-vim.api.nvim_create_user_command('SmartCenterWinToggle', function()
-  win_resize_enabled = not win_resize_enabled
-  print('Setting autocentering to: ' .. tostring(win_resize_enabled))
-end, {})
-
--- TODO: make it work with neotree
-local smart_center_win_group = vim.api.nvim_create_augroup('SmartCenterWin', { clear = true })
-vim.api.nvim_create_autocmd({ 'VimResized', 'VimEnter' }, {
-  pattern = '*',
-  callback = function(args)
-    if not win_resize_enabled then
-      return
-    end
-
-    local vim2screen_ratio = vim.o.columns / vim.o.lines
-    local is_sigle_window = utils.is_vim_single_win()
-    -- print('ratio:' .. vim2screen_ratio .. '|is_single:', is_sigle_window)
-
-    if (vim2screen_ratio > 3.1) and is_sigle_window then
-      require 'zen-mode'.open()
-    else
-      require 'zen-mode'.close()
-    end
-  end,
-  group = smart_center_win_group,
-})

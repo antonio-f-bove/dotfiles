@@ -1,35 +1,4 @@
 return {
-  {
-    "chrisgrieser/nvim-spider",
-    keys = {
-      {
-        "gh",
-        "<cmd>lua require('spider').motion('b')<CR>",
-        mode = { "n", "o", "x" },
-      },
-      {
-        "gl",
-        "<cmd>lua require('spider').motion('w')<CR>",
-        mode = { 'n', 'o', 'x' },
-      },
-    },
-  },
-
-  {
-    'echasnovski/mini.bufremove',
-    version = 'false',
-    config = function()
-      require 'mini.bufremove'.setup()
-    end,
-    keys = {
-      { '<leader>x', '<cmd>lua MiniBufremove.delete()<CR>' },
-      { '<leader>XO', function()
-        require 'anto.utils'.close_other_buffers()
-      end },
-    }
-  },
-
-  { 'ethanholz/nvim-lastplace', opts = {} },
 
   {
     'mbbill/undotree',
@@ -42,24 +11,6 @@ return {
     lazy = true,
     keys = {
       { '<leader>u', '<cmd> UndotreeToggle <cr>', desc = ':UndotreeToggle' },
-    },
-  },
-
-  {
-    "christoomey/vim-tmux-navigator",
-    lazy = true,
-    cmd = {
-      "TmuxNavigateLeft",
-      "TmuxNavigateDown",
-      "TmuxNavigateUp",
-      "TmuxNavigateRight",
-      "TmuxNavigatePrevious",
-    },
-    keys = {
-      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
     },
   },
 
