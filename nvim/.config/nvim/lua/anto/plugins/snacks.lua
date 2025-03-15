@@ -69,6 +69,7 @@ return {
       { "<leader>fk",    function() Snacks.picker.keymaps() end,       desc = "" },
       -- { "<leader>fC",    function() Snacks.picker.files() end,   desc = "find config" },
       { "<leader><tab>", function() Snacks.picker.buffers() end,       desc = "" },
+      { "<leader>f/",    function() Snacks.picker.lines() end,         desc = "" },
       { "<leader>fr",    function() Snacks.picker.resume() end,        desc = "" },
       -- TODO: fj (files in same directory? same name?)
 
