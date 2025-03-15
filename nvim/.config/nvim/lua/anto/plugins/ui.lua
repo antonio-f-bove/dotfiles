@@ -65,7 +65,7 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     lazy = false,
     config = function()
-      local kanagawa_paper = require 'lualine.themes.kanagawa-paper'
+      local theme = require 'lualine.themes.kanagawa-paper-ink'
 
       local function show_macro_recording()
         local recording_register = vim.fn.reg_recording()
@@ -81,7 +81,7 @@ return {
       require 'lualine'.setup({
         options = {
           icons_enabled = true,
-          theme = kanagawa_paper,
+          theme = theme,
           component_separators = '|',
           section_separators = '',
           globalstatus = true,
