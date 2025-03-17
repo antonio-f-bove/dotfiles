@@ -92,3 +92,6 @@ set('n', '<leader>tr', function() toggle_option('relativenumber') end, { desc = 
 set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end, { desc = 'Toggle wrap' })
 set('n', '<leader>th', function() toggle_option('hlsearch') end, { desc = 'Toggle hlsearch' })
 set('n', '<leader>ts', function() toggle_option('spell') end, { desc = 'Toggle spell' })
+
+-- fix buffer's treesitter hightlight problem
+set('n', '<leader>te', '<cmd> write | edit | TSBufEnable highlight <cr>')
