@@ -21,6 +21,7 @@ return {
       picker = {
         enabled = true,
         sources = picker_sources,
+        -- TODO: <c-a> should inverse selection if some entries are selected already
         -- win = {
         --   list = {
         --     ['<c-j>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
@@ -81,24 +82,34 @@ return {
         end,
         desc = ""
       },
-      -- { '<leader>sl', function() Snacks.picker.lazy() end,                  desc = "" },
+      { '<leader>sp', function() Snacks.picker.lazy() end,             desc = "" },
 
       -- git
-      { "<leader>gb", function() Snacks.picker.git_branches() end,          desc = "Git Branches" },
+      { "<leader>gb", function() Snacks.picker.git_branches() end,     desc = "Git Branches" },
       -- TODO: confirm => show instead of checkout
-      { "<leader>gl", function() Snacks.picker.git_log() end,               desc = "Git Log" },
-      { "<leader>gL", function() Snacks.picker.git_log_line() end,          desc = "Git Log Line" },
-      { "<leader>gs", function() Snacks.picker.git_status() end,            desc = "Git Status" },
-      { "<leader>gS", function() Snacks.picker.git_stash() end,             desc = "Git Stash" },
-      { "<leader>gd", function() Snacks.picker.git_diff() end,              desc = "Git Diff (Hunks)" },
-      { "<leader>gf", function() Snacks.picker.git_log_file() end,          desc = "Git Log File" },
+      { "<leader>gl", function() Snacks.picker.git_log() end,          desc = "Git Log" },
+      { "<leader>gL", function() Snacks.picker.git_log_line() end,     desc = "Git Log Line" },
+      { "<leader>gs", function() Snacks.picker.git_status() end,       desc = "Git Status" },
+      { "<leader>gS", function() Snacks.picker.git_stash() end,        desc = "Git Stash" },
+      { "<leader>gd", function() Snacks.picker.git_diff() end,         desc = "Git Diff (Hunks)" },
+      { "<leader>gf", function() Snacks.picker.git_log_file() end,     desc = "Git Log File" },
 
       -- LSP
-      { "gd",         function() Snacks.picker.lsp_definitions() end,       desc = "Goto Definition" },
-      { "gD",         function() Snacks.picker.lsp_declarations() end,      desc = "Goto Declaration" },
-      { "gr",         function() Snacks.picker.lsp_references() end,        nowait = true,                  desc = "References" },
+      { "gd",         function() Snacks.picker.lsp_definitions() end,  desc = "Goto Definition" },
+      { "gD",         function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
+      {
+        "gr",
+        function()
+          Snacks.picker.lsp_references({
+            include_declaration = false,
+            include_current = true,
+          })
+        end,
+        nowait = true,
+        desc = "References"
+      },
       { "gI",         function() Snacks.picker.lsp_implementations() end,   desc = "Goto Implementation" },
-      { "<leader>S",  function() Snacks.picker.lsp_type_definitions() end,  desc = "Goto T[y]pe Definition" },
+      { "<leader>D",  function() Snacks.picker.lsp_type_definitions() end,  desc = "Goto T[y]pe Definition" },
       { "<leader>ds", function() Snacks.picker.lsp_symbols() end,           desc = "LSP Symbols" },
       { "<leader>dS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
 
