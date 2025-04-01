@@ -85,7 +85,7 @@ return {
       { '<leader>sp', function() Snacks.picker.lazy() end,             desc = "" },
 
       -- git
-      { "<leader>gb", function() Snacks.picker.git_branches() end,     desc = "Git Branches" },
+      -- { "<leader>gb", function() Snacks.picker.git_branches() end,     desc = "Git Branches" },
       -- TODO: confirm => show instead of checkout
       { "<leader>gl", function() Snacks.picker.git_log() end,          desc = "Git Log" },
       { "<leader>gL", function() Snacks.picker.git_log_line() end,     desc = "Git Log Line" },
@@ -115,10 +115,17 @@ return {
 
       -- bufdelete
       { "<leader>x",  function() Snacks.bufdelete.delete() end,             desc = "" },
-      { "<leader>X",  function() Snacks.bufdelete.other() end,              desc = "" },
+      {
+        "<leader>X",
+        function()
+          vim.cmd('only')
+          Snacks.bufdelete.other()
+        end,
+        desc = ""
+      },
 
       -- zen
-      { "<leader>zz", function() Snacks.zen() end,                          desc = "" },
+      { "<leader>zz", function() Snacks.zen() end, desc = "" },
     }
   },
 

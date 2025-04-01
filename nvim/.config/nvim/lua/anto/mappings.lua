@@ -34,7 +34,7 @@ set('n', 'Q', '@q')
 set('n', '<leader>p', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
 set('n', '<leader>*', '/<c-r>"<cr>', { desc = 'Find last yanked word' })
 
-set({ 'n', 'i' }, '<c-s>', '<cmd> wa <cr>', { desc = 'Save all files' })
+set('n', '<c-s>', '<cmd> wa <cr>', { desc = 'Save all files' })
 set('n', 'ZA', '<cmd> xa <cr>', { desc = 'xa' })
 set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
 
@@ -73,6 +73,8 @@ set("n", "<C-d>", "<C-d>zz")
 set("n", "<C-u>", "<C-u>zz")
 set("n", "n", "nzzzv")
 set("n", "N", "Nzzzv")
+set('v', 'J', ":m '>+1<cr>gv=gv")
+set('v', 'K', ":m '<-2<cr>gv=gv")
 
 set("n", "<c-o>", "<c-o>zzzv")
 set("n", "<c-i>", "<c-i>zzzv")

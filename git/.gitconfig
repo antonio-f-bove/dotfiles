@@ -2,14 +2,26 @@
 	email = antoniofbove@gmail.com
 	name = above
 [core]
-	excludesfile = /Users/anto/.gitignore_global
-[pull]
-	; ff = only
-	rebase = true
+	; FIXME: 
+	; excludesfile = "$HOME/.gitignore_global"
+[includeIf "gitdir:~/work/"]
+	path = ~/.gitconfig.work
 [init]
 	defaultBranch = main
-[alias]
-	co = checkout
-	plr = pull --rebase
 [rebase]
 	autostash = true
+[pull]
+	rebase = true
+[alias]
+	co = checkout
+[core]
+	editor = nvim -f
+[branch]
+	sort = -committerdate
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+[help]
+	autocorrect = prompt

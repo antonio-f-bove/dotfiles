@@ -1,0 +1,7 @@
+[user]
+	name = Antonio Bove
+	email = antonio.bove@centricsoftware.com
+[credential]
+	helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+[credential "https://dev.azure.com"]
+	useHttpPath = true

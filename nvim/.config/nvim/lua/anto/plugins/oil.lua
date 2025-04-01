@@ -2,11 +2,20 @@ return {
   'stevearc/oil.nvim',
   ---@module 'oil'
   ---@type oil.SetupOpts
-  opts = {},
+  opts = {
+    view_options = {
+      show_hidden = true,
+    },
+    keymaps = {
+      ["<C-s>"] = { "<cmd>w<cr>" },
+      ["<C-x>"] = { "actions.select", opts = { horizontal = true } },
+      ["<C-v>"] = { "actions.select", opts = { vertical = true } },
+    }
+  },
+  lazy = false,
   -- Optional dependencies
-  dependencies = { { "echasnovski/mini.icons", opts = {} } },
-  -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+  dependencies = { "nvim-tree/nvim-web-devicons" },
   keys = {
-    { "-",         "<cmd>Oil<cr>",                              desc = "Oil" },
+    { "-", "<cmd>Oil<cr>", desc = "Oil" },
   }
 }
