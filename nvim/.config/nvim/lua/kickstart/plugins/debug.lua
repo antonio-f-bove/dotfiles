@@ -51,9 +51,11 @@ return {
     }
 
     dap_js.setup({
-      debugger_path = '~/.local/share/nvim/mason/bin/js-debug-adapter',
+      debugger_path = '/home/anto/packages/vscode-js-debug',
       -- debugger_cmd = { 'js-debug-adapter' },
-      adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }
+      adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost',
+        'node', 'chrome'
+      }
     })
 
     for _, language in ipairs({ 'typescript', 'javascript' }) do
@@ -61,10 +63,16 @@ return {
         {
           type = 'pwa-chrome',
           request = 'launch',
-          name = 'Launch file',
-          program = '${file}',
-          cwd = '${worspaceFolder}',
+          name = 'Launch Chrome for Angular :4200',
+          url = 'http://localhost:4200',
+          -- webRoot = "${workspaceFolder}",
+          webRoot = vim.fn.getcwd(),
+          userDataDir = "${workspaceFolder}/.vscode/vscode-chrome-debug-userdatadir",
+          -- program = '${file}',
+          -- cwd = '${worspaceFolder}',
           -- port = 9222,
+          sourceMaps = true,
+          -- runtimeExecutable = '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe',
         },
         {
           type = 'pwa-chrome',
@@ -75,6 +83,14 @@ return {
           cwd = '${worspaceFolder}',
           -- port = 9222,
         },
+        -- {
+        --   type = "chrome",
+        --   request = "launch",
+        --   name = "localhost (Chrome!)",
+        --   url = "http://localhost:4200",
+        --   webRoot = "${workspaceFolder}",
+        --   sourceMaps = true
+        -- }
       }
     end
 

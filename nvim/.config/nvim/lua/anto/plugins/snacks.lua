@@ -89,6 +89,7 @@ return {
       -- TODO: confirm => show instead of checkout
       { "<leader>gl", function() Snacks.picker.git_log() end,          desc = "Git Log" },
       { "<leader>gL", function() Snacks.picker.git_log_line() end,     desc = "Git Log Line" },
+      -- TODO: picker should grep revision contents instead of file names
       { "<leader>gs", function() Snacks.picker.git_status() end,       desc = "Git Status" },
       { "<leader>gS", function() Snacks.picker.git_stash() end,        desc = "Git Stash" },
       { "<leader>gd", function() Snacks.picker.git_diff() end,         desc = "Git Diff (Hunks)" },
@@ -135,7 +136,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
     keys = {
-      { '<leader>ft', function() Snacks.picker.todo_comments({ keywords = { 'TODO', 'FIXME', 'BUG', 'HACK', 'WARN', 'INFO' } }) end, '[F]ind [T]odos' },
+      { '<leader>ft', function() Snacks.picker.todo_comments({ keywords = { 'TODO', 'FIXME', 'FIX', 'BUG', 'HACK', 'WARN', 'INFO' } }) end, '[F]ind [T]odos' },
     }
   },
 

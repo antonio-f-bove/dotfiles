@@ -108,18 +108,23 @@ require('lazy').setup({
     },
   },
 
-  {
-    'nvimtools/none-ls.nvim',
-    lazy = true,
-    config = function()
-      local none_ls = require 'none-ls'
-      none_ls.setup({
-        sources = {
-          none_ls.builtins.diagnostics.ruff,
-        }
-      })
-    end
-  },
+  -- TODO: figure out null/none-ls
+  -- {
+  --   'nvimtools/none-ls.nvim',
+  --   lazy = true,
+  --   config = function()
+  --     local null_ls = require 'null-ls'
+  --     null_ls.setup({
+  --       debug = true,
+  --       sources = {
+  --         -- null_ls.builtins.diagnostics.ruff,
+  --         null_ls.builtins.completion.luasnip,
+  --         null_ls.builtins.code_actions.refactoring,
+  --         -- null_ls.builtins.formatting.rustywind,
+  --       }
+  --     })
+  --   end
+  -- },
 
   { 'folke/which-key.nvim', opts = {} },
 
@@ -138,25 +143,25 @@ require('lazy').setup({
   },
 
   -- Fuzzy Finder (files, lsp, etc)
-  {
-    'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-      -- Only load if `make` is available. Make sure you have the system
-      -- requirements installed.
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        -- NOTE: If you are having trouble with this installation,
-        --       refer to the README for telescope-fzf-native for more instructions.
-        build = 'make',
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
-    },
-  },
+  -- {
+  --   'nvim-telescope/telescope.nvim',
+  --   branch = '0.1.x',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+  --     -- Only load if `make` is available. Make sure you have the system
+  --     -- requirements installed.
+  --     {
+  --       'nvim-telescope/telescope-fzf-native.nvim',
+  --       -- NOTE: If you are having trouble with this installation,
+  --       --       refer to the README for telescope-fzf-native for more instructions.
+  --       build = 'make',
+  --       cond = function()
+  --         return vim.fn.executable 'make' == 1
+  --       end,
+  --     },
+  --   },
+  -- },
 
   {
     -- Highlight, edit, and navigate code
@@ -195,7 +200,6 @@ require('lazy').setup({
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
   require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/anto/plugins/*.lua`
