@@ -52,6 +52,7 @@ return {
         }
       },
       quickfile = { enabled = true },
+      bigfile = { enabled = true },
     },
     keys = {
       { "<leader>n",     function() Snacks.picker.notifications() end, desc = "Notification History" },
@@ -69,7 +70,7 @@ return {
       { "<leader>fh",    function() Snacks.picker.help() end,          desc = "" },
       { "<leader>fk",    function() Snacks.picker.keymaps() end,       desc = "" },
       -- { "<leader>fC",    function() Snacks.picker.files() end,   desc = "find config" },
-      { "<leader><tab>", function() Snacks.picker.buffers() end,       desc = "" },
+      { "<leader>fb",    function() Snacks.picker.buffers() end,       desc = "" },
       { "<leader>f/",    function() Snacks.picker.lines() end,         desc = "" },
       { "<leader>fr",    function() Snacks.picker.resume() end,        desc = "" },
       -- TODO: fj (files in same directory? same name?)
@@ -78,26 +79,46 @@ return {
       {
         "<leader>sd",
         function()
-          Snacks.picker.files({ dirs = { '/home/anto/.local/share/nvim/lazy' } })
+          local dirs = require 'anto.utils'.get_path_to_deps()
+          -- print(vim.inspect('dirs', dirs))
+          Snacks.picker.files({ dirs = dirs })
         end,
         desc = ""
       },
-      { '<leader>sp', function() Snacks.picker.lazy() end,             desc = "" },
+      { '<leader>sp', function() Snacks.picker.lazy() end,            desc = "" },
 
       -- git
       -- { "<leader>gb", function() Snacks.picker.git_branches() end,     desc = "Git Branches" },
       -- TODO: confirm => show instead of checkout
-      { "<leader>gl", function() Snacks.picker.git_log() end,          desc = "Git Log" },
-      { "<leader>gL", function() Snacks.picker.git_log_line() end,     desc = "Git Log Line" },
+      { "<leader>gl", function() Snacks.picker.git_log() end,         desc = "Git Log" },
+      { "<leader>gL", function() Snacks.picker.git_log_line() end,    desc = "Git Log Line" },
       -- TODO: picker should grep revision contents instead of file names
-      { "<leader>gs", function() Snacks.picker.git_status() end,       desc = "Git Status" },
-      { "<leader>gS", function() Snacks.picker.git_stash() end,        desc = "Git Stash" },
-      { "<leader>gd", function() Snacks.picker.git_diff() end,         desc = "Git Diff (Hunks)" },
-      { "<leader>gf", function() Snacks.picker.git_log_file() end,     desc = "Git Log File" },
+      { "<leader>gs", function() Snacks.picker.git_status() end,      desc = "Git Status" },
+      { "<leader>gS", function() Snacks.picker.git_stash() end,       desc = "Git Stash" },
+      -- { "<leader>gd", function() Snacks.picker.git_diff() end,         desc = "Git Diff (Hunks)" },
+      { "<leader>gf", function() Snacks.picker.git_log_file() end,    desc = "Git Log File" },
 
       -- LSP
-      { "gd",         function() Snacks.picker.lsp_definitions() end,  desc = "Goto Definition" },
-      { "gD",         function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
+      { "gd",         function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
+      {
+        "<leader>gd",
+        function()
+          local params = vim.lsp.util.make_position_params()
+          vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, _)
+            if err or not result then return end
+
+            vim.cmd('vsplit')   -- open a vertical split
+            vim.cmd('wincmd l') -- go to the new window
+
+            -- use the built-in handler to jump to the location
+            vim.lsp.util.jump_to_location(result[1] or result)
+          end)
+
+          -- Snacks.picker.lsp_definitions()
+        end,
+        desc = "Goto Definition in vsplit"
+      },
+      { "gD",         function() Snacks.picker.lsp_declarations() end,      desc = "Goto Declaration" },
       {
         "gr",
         function()

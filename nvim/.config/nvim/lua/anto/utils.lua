@@ -100,4 +100,68 @@ M.get_visual_selection = function()
   return table.concat(lines, "\n")
 end
 
+M.get_path_to_deps = function()
+  local cwd = vim.fn.getcwd()
+  -- print('cwd: ' .. cwd)
+
+  local lang_to_meta_map = {
+    ts = {
+      test = { 'package.json', 'tsconfig.json', 'jsconfig.json' },
+      target = cwd .. '/node_modules',
+    },
+    lua = {
+      -- FIX: this is generic to a lua project, should be more specific to nvim config
+      test = { 'init.lua', 'main.lua', '.luarc.json' },
+      target = vim.fn.expand('~') .. '/.local/share/nvim/lazy',
+    }
+  }
+
+  for _, v in pairs(lang_to_meta_map) do
+    for _, file in ipairs(v.test) do
+      -- print(file)
+      if vim.fn.filereadable(cwd .. '/' .. file) == 1 then
+        return { v.target }
+      end
+    end
+  end
+
+  error('No valid dependency path found for this project!')
+end
+
+M.move_lines = function(direction)
+  -- Get visual selection range
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+
+  -- Get cursor and visual start positions to determine selection direction
+  local cursor_line = vim.fn.line(".")
+  local visual_line = vim.fn.getpos("v")[2]
+  local is_cursor_on_top = cursor_line <= visual_line
+
+  -- Can't move above line 1 or below last line
+  if direction == "up" and start_line == 1 then return end
+  if direction == "down" and end_line == vim.fn.line("$") then return end
+
+  -- Move lines
+  local target_line = (direction == "up" and start_line or end_line) + (direction == "up" and -1 or 1)
+  vim.cmd(string.format(":'<,'>move %d", target_line))
+
+  -- Adjust lines after move
+  local delta = direction == "up" and -1 or 1
+  start_line = start_line + delta
+  end_line = end_line + delta
+
+  -- Reselect lines in the same direction they were originally selected
+  local new_cursor_line = is_cursor_on_top and start_line or end_line
+  local new_anchor_line = is_cursor_on_top and end_line or start_line
+
+  -- Restore selection
+  vim.api.nvim_win_set_cursor(0, { new_cursor_line, 0 })
+  vim.cmd("normal! V")
+  vim.api.nvim_win_set_cursor(0, { new_anchor_line, 0 })
+  vim.cmd("normal! V")
+
+  -- Re-indent
+  vim.cmd("normal! =")
+end
 return M

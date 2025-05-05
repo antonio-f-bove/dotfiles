@@ -8,11 +8,6 @@ local toggle_option = function(...)
 	end
 end
 
-set('n', '<leader>+', function()
-	vim.cmd('so ' .. vim.fn.expand('%:t'))
-	-- print('INFO: ' .. vim.fn.expand('%:t') .. ' just sourced')
-end, { desc = 'Save and source file' })
-
 set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
@@ -73,11 +68,15 @@ set("n", "<C-d>", "<C-d>zz")
 set("n", "<C-u>", "<C-u>zz")
 set("n", "n", "nzzzv")
 set("n", "N", "Nzzzv")
-set('v', 'J', ":m '>+1<cr>gv=gv")
 set('v', 'K', ":m '<-2<cr>gv=gv")
+set('v', 'J', ":m '>+1<cr>gv=gv")
+-- vim.keymap.set("v", "K", function() require('anto.utils').move_lines("up") end, { desc = "Move lines up" })
+-- vim.keymap.set("v", "J", function() require('anto.utils').move_lines("down") end, { desc = "Move lines down" })
 
-set("n", "<c-o>", "<c-o>zzzv")
-set("n", "<c-i>", "<c-i>zzzv")
+set('v', 'gJ', 'J')
+
+-- set("n", "<c-o>", "<c-o>zzzv")
+-- set("n", "<c-i>", "<c-i>zzzv")
 
 -- Better redo
 set('n', '<c-r>', '<Nop>')
@@ -97,3 +96,5 @@ set('n', '<leader>ts', function() toggle_option('spell') end, { desc = 'Toggle s
 
 -- fix buffer's treesitter hightlight problem
 set('n', '<leader>te', '<cmd> write | edit | TSBufEnable highlight <cr>')
+
+set('n', '<leader>zf', 'zfaf', { desc = 'fold aFunction' })
