@@ -35,7 +35,10 @@ set('n', 'ZQ', '<cmd> qa! <cr>', { desc = 'qa!' })
 
 set('n', '<tab>', '<cmd> bnext <cr>')
 set('n', '<s-tab>', '<cmd> bprev <cr>')
--- set('n', '<leader><tab>', '<cmd> tabclose <cr>')
+-- TODO: instead of <c-i>, which is the same as tab!
+-- set('n', '<c-s-o>', function()
+-- 	print('hello')
+-- end)
 
 -- quickfix and loclist movement
 set('n', '<c-n>', '<cmd> cnext <cr>')
@@ -97,4 +100,5 @@ set('n', '<leader>ts', function() toggle_option('spell') end, { desc = 'Toggle s
 -- fix buffer's treesitter hightlight problem
 set('n', '<leader>te', '<cmd> write | edit | TSBufEnable highlight <cr>')
 
-set('n', '<leader>zf', 'zfaf', { desc = 'fold aFunction' })
+set('n', '<leader>zf', 'vafojzf', { desc = 'fold aFunction' }) -- FIXME: why does it not work
+set('n', '<leader>zt', 'vatojzf', { desc = 'fold aTag' })

@@ -15,6 +15,7 @@
 [alias]
 	co = checkout
 	st = status
+	cp = cherry-pick
 [core]
 	editor = nvim -f
 [branch]

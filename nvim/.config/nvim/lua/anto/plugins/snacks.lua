@@ -155,10 +155,26 @@ return {
     "folke/todo-comments.nvim",
     event = 'VeryLazy',
     dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {},
+    opts = {
+      keywords = {
+        ACTIVE = { color = 'info' }
+      }
+    },
     keys = {
       { '<leader>ft', function() Snacks.picker.todo_comments({ keywords = { 'TODO', 'FIXME', 'FIX', 'BUG', 'HACK', 'WARN', 'INFO' } }) end, '[F]ind [T]odos' },
-    }
-  },
 
+      { '<leader>fa', function() Snacks.picker.todo_comments({ keywords = { 'ACTIVE' } }) end,                                              '[F]ind [A]ctive' },
+      -- { '<leader>sa', 'OACTIVE:<esc><leader>/' }
+      { '<leader>sa',
+        function()
+          vim.cmd('normal! OACTIVE: ')
+          require('Comment.api').toggle.linewise()
+          vim.cmd('write!')
+        end,
+        { desc = 'Set ACTIVE' }
+      },
+      -- TODO: Remove all ACTIVE tags
+      -- {'<leader>sA', },
+    },
+  },
 }
