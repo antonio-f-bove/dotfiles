@@ -1,0 +1,35 @@
+[default_sessio]
+name = "home"
+path = "~"
+# startup_command = "nvim tmux.conf"
+
+[[session]]
+name = "tmux"
+path = "~/dotfiles/tmux/.config/tmux/"
+startup_command = "nvim tmux.conf"
+preview_command = "bat --color=always ~/dotfiles/tmux/.config/tmux/tmux.conf"
+
+[[session]]
+name = "nvim"
+path = "~/dotfiles/nvim/.config/nvim/"
+startup_command = "nvim"
+
+[[session]]
+name = "sesh"
+path = "~/dotfiles/sesh/.config/sesh/"
+startup_command = "nvim sesh.toml"
+
+[[session]]
+name = "dotfiles"
+path = "~/dotfiles"
+startup_command = "yazi"
+
+# [[session]]
+# name = "v5"
+# path = "~/dotfiles/sesh/.config/sesh/"
+# startup_command = "nvim sesh.toml"
+#
+# [[session]]
+# name = "sesh"
+# path = "~/dotfiles/sesh/.config/sesh/"
+# startup_command = "nvim sesh.toml"

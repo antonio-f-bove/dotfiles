@@ -1,0 +1,4 @@
+export VAULT_PATH=
+
+# FIX: alias or function to open obsidian and sync notes
+# alias obsidian="<path/to/obsidian> & disown" ???
