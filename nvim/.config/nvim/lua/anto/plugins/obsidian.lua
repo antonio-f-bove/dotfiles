@@ -1,9 +1,12 @@
 local vault_path = vim.fn.getenv('VAULT_PATH')
+-- print('init', vault_path)
 
-local function to_kebab(str)
+local function to_id_string(str)
   return str
-      :lower()
       :gsub('[^%w%s]', '')
+      :lower()
+      :gsub('^%s+', '')
+      :gsub('%s+$', '')
       :gsub('%s+', '-')
 end
 
@@ -89,10 +92,9 @@ return {
           default_tags = { "daily-notes" },
           template = nil
         },
-        new_notes_location = 'inbox',
+        new_notes_location = 'current_dir',
         note_path_func = function(spec)
-          local path = spec.dir / to_kebab(spec.title)
-          print(path)
+          local path = spec.dir / to_id_string(spec.title)
           return path:with_suffix('.md')
         end,
         note_frontmatter_func = function(note)
@@ -122,21 +124,13 @@ return {
         -- FIX: boh?
         -- follow_img_func = function()
         -- end,
-
-
-        mappings = {
-          ['<leader>o'] = {
-            action = pick_obsidian_cmd,
-          },
-          ['<leader><cr>'] = {
-            action = require('obsidian').util.smart_action,
-            opts = { buffer = true, expr = true },
-          }
-        }
       })
+
+      vim.keymap.set({ 'n', 'x' }, '<leader>oo', pick_obsidian_cmd)
 
       -- vim.opt.conceallevel = 2
       vim.opt.wrap = true
+      -- vim.wo.linebreak = true -- ?
     end,
   },
 

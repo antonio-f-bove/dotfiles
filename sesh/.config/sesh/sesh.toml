@@ -1,13 +1,18 @@
-[default_sessio]
-name = "home"
-path = "~"
-# startup_command = "nvim tmux.conf"
+# [default_session]
+# name = "home"
+# path = "~"
 
 [[session]]
 name = "tmux"
 path = "~/dotfiles/tmux/.config/tmux/"
 startup_command = "nvim tmux.conf"
-preview_command = "bat --color=always ~/dotfiles/tmux/.config/tmux/tmux.conf"
+# preview_command = "bat --color=always ~/dotfiles/tmux/.config/tmux/tmux.conf"
+
+[[session]]
+name = "bash"
+path = "~/dotfiles/bash/"
+startup_command = "nvim .bashrc"
+# preview_command = "bat --color=always ~/dotfiles/tmux/.config/tmux/tmux.conf"
 
 [[session]]
 name = "nvim"

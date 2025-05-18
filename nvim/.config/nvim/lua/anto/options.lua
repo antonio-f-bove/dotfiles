@@ -11,14 +11,12 @@ vim.wo.relativenumber = true
 
 vim.wo.wrap = false
 vim.wo.linebreak = false
+vim.o.breakindent = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
 -- vim.o.clipboard = 'unnamedplus'
-
--- Enable break indent
-vim.o.breakindent = true
 
 -- Save undo history
 vim.o.undofile = true

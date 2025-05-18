@@ -354,8 +354,8 @@ exec --no-startup-id dex --autostart --environment i3
 # configure multiple keyboard layouts and hotkey to switch (Alt+CAPSLOCK in this example)
 #exec --no-startup-id setxkbmap -layout 'us,sk' -variant altgr-intl,qwerty -option 'grp:alt_caps_toggle'
 # FIXME: eurkey and repeat rate not working
-exec_always --no-startup-id sleep 1 && setxkbmap eu
-exec_always --no-startup-id sleep 1 && xset r rate 200 25
+exec --no-startup-id xset r rate 200 25
+exec --no-startup-id setxkbmap eu
 
 # start conky:
 #exec_always --no-startup-id conky

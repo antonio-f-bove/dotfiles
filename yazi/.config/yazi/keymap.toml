@@ -1,4 +1,4 @@
 [[manager.prepend_keymap]]
 on = "c"
 run = "tmux new-window nvim \"$@\""
-desc = Open in new tmux window
+desc = "Open in new tmux window"

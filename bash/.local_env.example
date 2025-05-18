@@ -1,4 +1,6 @@
-export VAULT_PATH=
+export VAULT_PATH="$HOME/notes"
 
 # FIX: alias or function to open obsidian and sync notes
 # alias obsidian="<path/to/obsidian> & disown" ???
+
+echo $VAULT_PATH
