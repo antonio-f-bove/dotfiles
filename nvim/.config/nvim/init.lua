@@ -61,34 +61,102 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure plugins ]]
--- NOTE: Here is where you install your plugins.
---  You can configure plugins using the `config` key.
---
---  You can also configure plugins after the setup call,
---    as they will be available in your neovim runtime.
 require('lazy').setup({
 
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
-  --       These are some example plugins that I've included in the kickstart repository.
-  --       Uncomment any of the lines below to enable them.
-  require 'kickstart.plugins.autoformat',
-  require 'kickstart.plugins.debug',
+  -- these plugins are configured below
+  {
+    -- LSP Configuration & Plugins
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      -- Automatically install LSPs to stdpath for neovim
+      { 'williamboman/mason.nvim', config = true },
+      'williamboman/mason-lspconfig.nvim',
 
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/anto/plugins/*.lua`
-  --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-  --    up-to-date with whatever is in the kickstart repo.
-  --    Uncomment the following line and add your plugins to `lua/anto/plugins/*.lua` to get going.
-  --
-  --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
+      -- Useful status updates for LSP
+      { 'j-hui/fidget.nvim',       opts = {} },
+
+      -- Additional lua configuration, makes nvim stuff amazing!
+      'folke/neodev.nvim',
+    },
+  },
+
+  {
+    -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      -- Snippet Engine & its associated nvim-cmp source
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+
+      -- Adds LSP completion capabilities
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+
+      -- Adds a number of user-friendly snippets
+      'rafamadriz/friendly-snippets',
+    },
+  },
+
+  -- TODO: figure out null/none-ls
+  -- {
+  --   'nvimtools/none-ls.nvim',
+  --   lazy = true,
+  --   config = function()
+  --     local null_ls = require 'null-ls'
+  --     null_ls.setup({
+  --       debug = true,
+  --       sources = {
+  --         -- null_ls.builtins.diagnostics.ruff,
+  --         null_ls.builtins.completion.luasnip,
+  --         null_ls.builtins.code_actions.refactoring,
+  --         -- null_ls.builtins.formatting.rustywind,
+  --       }
+  --     })
+  --   end
+  -- },
+
+  { 'folke/which-key.nvim', opts = {} },
+
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        line = '<leader>/',
+        block = '<leader>?',
+      },
+      opleader = {
+        line = '<leader>/',
+        block = '<leader>?',
+      },
+    },
+  },
+
+  {
+    -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'nvim-treesitter/nvim-treesitter-context',
+      'windwp/nvim-ts-autotag',
+    },
+    build = ':TSUpdate',
+  },
+
+  require 'kickstart.plugins.autoformat',
+  -- require 'kickstart.plugins.debug',
+
   { import = 'anto.plugins' },
 }, {})
 
 -- [[ Setting options ]]
 require 'anto.options'
-require 'anto.autocommands'
 
 -- [[ Basic Keymaps ]]
 require 'anto.mappings'
+
+-- [[ Custom commands and autocommands ]]
+require 'anto.autocommands'
 require 'anto.commands'
 
 
@@ -98,8 +166,7 @@ require 'anto.commands'
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'go', 'lua', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim',
-      'bash', 'markdown', 'markdown_inline', 'java', 'html' },
+    ensure_installed = { 'go', 'lua', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'markdown', 'markdown_inline', 'html', 'angular' },
 
     auto_install = true,
 
@@ -180,12 +247,6 @@ end, 0)
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don't have to repeat yourself
-  -- many times.
-  --
-  -- In this case, we create a function that lets us more easily define mappings specific
-  -- for LSP related items. It sets the mode, buffer and description for us each time.
   local nmap = function(keys, func, desc)
     if desc then
       desc = 'LSP: ' .. desc
@@ -225,6 +286,7 @@ end
 --   ['<leader>h'] = { 'Git [H]unk' },
 -- }, { mode = 'v' })
 
+
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
@@ -239,7 +301,7 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  ts_ls = {},
+  -- ts_ls = {},
   angularls = {},
   -- clangd = {},
   -- gopls = {},

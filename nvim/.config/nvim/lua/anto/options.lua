@@ -2,8 +2,13 @@ vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
+-- vim.o.list = true
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
 -- Set highlight on search
 vim.o.hlsearch = true
+
+vim.o.inccommand = 'split' -- preview substitutions live, while typing
 
 -- Make line numbers default
 vim.wo.number = true
