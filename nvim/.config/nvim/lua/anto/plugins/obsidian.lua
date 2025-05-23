@@ -116,25 +116,30 @@ return {
         },
         daily_notes = {
           folder = "dailies",
-          date_format = "%Y-%m-%d",
+          date_format = "%Y-%m-%d-%A",
           default_tags = { "daily-notes" },
           template = nil
         },
         new_notes_location = 'current_dir',
         note_path_func = function(spec)
-          local path = spec.dir / to_id_string(spec.title)
-          return path:with_suffix('.md')
+          local filename = get_date_string() .. '-' .. to_id_string(spec.title)
+          local path = vault_path .. '/' .. filename .. '.md'
+          return path
         end,
         note_frontmatter_func = function(note)
+          local now = get_date_string(true)
+          note:add_field('updated_at', now)
+
           if note.title then
             note:add_field('title', note.title)
           end
 
-          date = get_date_string(true)
+          local out = { id = note.id, tags = note.tags, updated_at = now, title = note.title }
 
-          note:add_field('date', date)
-
-          local out = { id = note.id, tags = note.tags, title = note.title, date = date }
+          -- if note.get_field('created_at') then
+          --   note:add_field('created_at', now)
+          --   out.created_at = now
+          -- end
 
           -- `note.metadata` contains any manually added fields in the frontmatter.
           -- So here we just make sure those fields are kept in the frontmatter.
