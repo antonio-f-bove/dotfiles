@@ -57,6 +57,14 @@ local function pick_obsidian_cmd()
   }):find()
 end
 
+local function get_date_string(human_readable)
+  if human_readable then
+    return os.date("%A %d %b %Y, %H:%M")
+  end
+
+  return os.date("%Y%m%d%H%M")
+end
+
 return {
   {
     "epwalsh/obsidian.nvim",
@@ -75,6 +83,26 @@ return {
       {
         "nvim-telescope/telescope.nvim",
         config = true,
+      },
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+
+        ---@module 'render-markdown'
+        ---@type render.md.UserConfig
+        opts = {
+          heading = {
+            sign = false,
+            -- signs = {},
+            backgrounds = {},
+          },
+          checkbox = {
+            custom = {
+              todo = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
+              cancelled = { raw = '[!]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
+            }
+          },
+        },
       },
     },
     config = function()
@@ -102,7 +130,11 @@ return {
             note:add_field('title', note.title)
           end
 
-          local out = { id = note.id, tags = note.tags, title = note.title }
+          date = get_date_string(true)
+
+          note:add_field('date', date)
+
+          local out = { id = note.id, tags = note.tags, title = note.title, date = date }
 
           -- `note.metadata` contains any manually added fields in the frontmatter.
           -- So here we just make sure those fields are kept in the frontmatter.
@@ -132,26 +164,6 @@ return {
       vim.opt.wrap = true
       -- vim.wo.linebreak = true -- ?
     end,
-  },
-
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    event = {
-      "BufReadPre " .. vault_path .. "/*.md",
-      "BufNewFile " .. vault_path .. "/*.md",
-    },
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
-
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {
-      heading = {
-        sign = false,
-        -- signs = {},
-        backgrounds = {},
-      },
-    },
-    -- INFO: could setup cmp
   },
 
 }
