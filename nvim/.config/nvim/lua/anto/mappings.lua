@@ -27,6 +27,7 @@ set('n', 'Q', '@q')
 -- set('v', 'v', "<esc>m`ggVG") -- TODO: I want to be able to <c-o> to where visualized all
 
 set('n', '<leader>p', '"_diwP', { desc = 'Replace <aword> w/ yanked word' })
+set({ 'v', 'x' }, '<leader>p', '"_dP', { desc = 'Replace <aword> w/ yanked word' })
 set('n', '<leader>*', '/<c-r>"<cr>', { desc = 'Find last yanked word' })
 
 set('n', '<c-s>', '<cmd> wa <cr>', { desc = 'Save all files' })
