@@ -7,7 +7,7 @@ vim.opt.expandtab = true
 
 -- Set highlight on search
 vim.o.hlsearch = true
-vim.o.wrapscan = false
+-- vim.o.wrapscan = false
 
 vim.o.inccommand = 'split' -- preview substitutions live, while typing
 

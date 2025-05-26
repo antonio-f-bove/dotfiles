@@ -1,7 +1,7 @@
 return {
-  { "rebelot/kanagawa.nvim" },
+  { 'rebelot/kanagawa.nvim' },
   {
-    "thesimonho/kanagawa-paper.nvim",
+    'thesimonho/kanagawa-paper.nvim',
     lazy = false,
     priority = 1000,
     opts = {},
@@ -11,8 +11,8 @@ return {
     lazy = true,
   },
   {
-    "catppuccin/nvim",
+    'catppuccin/nvim',
     lazy = true,
-    name = "catppuccin",
+    name = 'catppuccin',
   },
 }

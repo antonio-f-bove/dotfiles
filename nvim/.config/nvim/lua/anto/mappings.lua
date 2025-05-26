@@ -95,7 +95,7 @@ set('n', '_', '<c-w>_')
 set('n', '<leader>tr', function() toggle_option('relativenumber') end, { desc = 'Toggle relnum' })
 -- set('n', '<leader>ti', '<cmd> IBLToggle <cr>', { desc = 'Toggle indent line' })
 set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end, { desc = 'Toggle wrap' })
-set('n', '<leader>th', function() toggle_option('hlsearch') end, { desc = 'Toggle hlsearch' })
+-- set('n', '<leader>th', function() toggle_option('hlsearch') end, { desc = 'Toggle hlsearch' })
 set('n', '<leader>ts', function() toggle_option('spell') end, { desc = 'Toggle spell' })
 
 -- fix buffer's treesitter hightlight problem

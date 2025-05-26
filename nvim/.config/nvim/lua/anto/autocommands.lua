@@ -25,7 +25,6 @@ vim.api.nvim_create_autocmd('BufLeave', {
   pattern = '*',
 })
 
-
 -- NOTE: Takes care of some of the buffers I don't want saved to the session when closing Neovim
 local clean_up_group = vim.api.nvim_create_augroup('CleanUpBuffers', { clear = true })
 vim.api.nvim_create_autocmd('VimLeavePre', {
@@ -40,7 +39,7 @@ vim.api.nvim_create_autocmd('VimLeavePre', {
       end
     end
   end,
-  group = clean_up_group
+  group = clean_up_group,
 })
 
 local no_swap_files_group = vim.api.nvim_create_augroup('NoSwapFiles', { clear = true })
@@ -50,21 +49,23 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
   command = 'checktime',
 })
 
--- local transparent_vim = vim.api.nvim_create_augroup('TransparentVim', { clear = true })
--- vim.api.nvim_create_autocmd('ColorScheme', {
---   group = transparent_vim,
---   callback = function(ev)
---     local highlights = {
---       'Normal',
---       'LineNr',
---       'Folded',
---       'NonText',
---       'SpecialKey',
---       'VertSplit',
---       'SignColumn',
---       'EndOfBuffer',
---       -- 'TablineFill', -- this is specific to how I like my tabline to look like
---     }
---     for _, name in pairs(highlights) do vim.cmd.highlight(name .. ' guibg=none ctermbg=none') end
---   end,
--- })
+local transparent_vim = vim.api.nvim_create_augroup('TransparentVim', { clear = true })
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = transparent_vim,
+  callback = function(ev)
+    local highlights = {
+      'Normal',
+      'LineNr',
+      'Folded',
+      'NonText',
+      'SpecialKey',
+      'VertSplit',
+      'SignColumn',
+      'EndOfBuffer',
+      -- 'TablineFill', -- this is specific to how I like my tabline to look like
+    }
+    for _, name in pairs(highlights) do
+      vim.cmd.highlight(name .. ' guibg=none ctermbg=none')
+    end
+  end,
+})
