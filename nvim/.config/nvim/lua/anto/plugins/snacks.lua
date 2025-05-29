@@ -187,7 +187,8 @@ return {
       {
         '<leader>gb',
         function()
-          Snacks.picker.git_branches()
+          -- vim.notify(vim.fn.getcwd())
+          Snacks.picker.git_branches() -- FIX: checkout on enter is broken
         end,
         desc = 'Git Branches',
       },
@@ -270,7 +271,7 @@ return {
         function()
           Snacks.picker.lsp_references {
             include_declaration = false,
-            include_current = false,
+            include_current = true,
           }
         end,
         nowait = true,

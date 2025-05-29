@@ -16,6 +16,7 @@
 	co = checkout
 	st = status
 	cp = cherry-pick
+	lol = log --oneline
 [core]
 	editor = nvim -f
 [branch]
