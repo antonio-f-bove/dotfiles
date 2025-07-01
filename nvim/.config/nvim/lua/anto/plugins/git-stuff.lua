@@ -5,54 +5,56 @@ return {
     keys = {
       { '<leader>gp', '<cmd> G pull <cr>' },
       { '<leader>gP', '<cmd> G push <cr>' },
-      { '<leader>ga', ":G commit -a -m '" },
+      { '<leader>ga', ':G commit -a -m RESET' },
       {
-        '<leader>gh', function()
-        vim.keymap.del('n', '<c-n>')
-        vim.keymap.del('n', '<c-p>')
+        '<leader>gh',
+        function()
+          vim.keymap.del('n', '<c-n>')
+          vim.keymap.del('n', '<c-p>')
 
-        vim.keymap.set('n', '<c-n>', function()
+          vim.keymap.set('n', '<c-n>', function()
+            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+            -- print(unpack(cursor_pos))
+            vim.cmd 'cnext'
+            vim.api.nvim_win_set_cursor(0, cursor_pos)
+          end)
+
+          vim.keymap.set('n', '<c-p>', function()
+            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+            -- print(unpack(cursor_pos))
+            vim.cmd 'cprev'
+            vim.api.nvim_win_set_cursor(0, cursor_pos)
+          end)
+
           local cursor_pos = vim.api.nvim_win_get_cursor(0)
-          -- print(unpack(cursor_pos))
-          vim.cmd('cnext')
+          vim.cmd '0Gclog'
           vim.api.nvim_win_set_cursor(0, cursor_pos)
-        end)
-
-        vim.keymap.set('n', '<c-p>', function()
-          local cursor_pos = vim.api.nvim_win_get_cursor(0)
-          -- print(unpack(cursor_pos))
-          vim.cmd('cprev')
-          vim.api.nvim_win_set_cursor(0, cursor_pos)
-        end)
-
-        local cursor_pos = vim.api.nvim_win_get_cursor(0)
-        vim.cmd('0Gclog')
-        vim.api.nvim_win_set_cursor(0, cursor_pos)
-      end
+        end,
       },
-      { '<leader>gq', function()
-        -- "<cmd> Gedit | ccl <cr>" },
-        vim.keymap.del('n', '<c-n>')
-        vim.keymap.del('n', '<c-p>')
-        vim.keymap.set('n', '<c-n>', '<cmd> cnext <cr>')
-        vim.keymap.set('n', '<c-p>', '<cmd> cprev <cr>')
-        vim.cmd('Gedit')
-        vim.cmd('ccl')
-      end
+      {
+        '<leader>gq',
+        function()
+          -- "<cmd> Gedit | ccl <cr>" },
+          vim.keymap.del('n', '<c-n>')
+          vim.keymap.del('n', '<c-p>')
+          vim.keymap.set('n', '<c-n>', '<cmd> cnext <cr>')
+          vim.keymap.set('n', '<c-p>', '<cmd> cprev <cr>')
+          vim.cmd 'Gedit'
+          vim.cmd 'ccl'
+        end,
       },
       -- { '<leader>gB', '<cmd>G blame<cr>' }
     },
     config = function()
-      local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode',
-        { clear = true })
+      local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode', { clear = true })
       vim.api.nvim_create_autocmd('FileType', {
         callback = function()
-          vim.cmd(':startinsert')
+          vim.cmd ':startinsert'
         end,
         group = enter_commit_mess_in_insert_mode,
-        pattern = 'gitcommit'
+        pattern = 'gitcommit',
       })
-    end
+    end,
   },
   'tpope/vim-rhubarb',
   {
@@ -83,8 +85,8 @@ return {
             return ']c'
           end
           vim.schedule(function()
-            gs.next_hunk({ preview = true })
-            vim.cmd('norm! zz')
+            gs.next_hunk { preview = true }
+            vim.cmd 'norm! zz'
           end)
           return '<Ignore>'
         end, { expr = true, desc = 'Jump to next hunk' })
@@ -94,8 +96,8 @@ return {
             return '[c'
           end
           vim.schedule(function()
-            gs.prev_hunk({ preview = true })
-            vim.cmd('norm! zz')
+            gs.prev_hunk { preview = true }
+            vim.cmd 'norm! zz'
           end)
           return '<Ignore>'
         end, { expr = true, desc = 'Jump to previous hunk' })

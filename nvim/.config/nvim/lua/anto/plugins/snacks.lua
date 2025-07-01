@@ -143,7 +143,7 @@ return {
       },
       -- { "<leader>fC",    function() Snacks.picker.files() end,   desc = "find config" },
       {
-        '<leader>fb',
+        '<leader><tab>',
         function()
           Snacks.picker.buffers()
         end,

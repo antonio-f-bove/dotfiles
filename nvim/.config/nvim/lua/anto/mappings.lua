@@ -1,11 +1,11 @@
 local set = vim.keymap.set
 
 local toggle_option = function(...)
-	local opts = { ... }
-	for _, option in ipairs(opts) do
-		local curr_val = vim.api.nvim_get_option_value(option, {})
-		vim.api.nvim_set_option_value(option, not curr_val, {})
-	end
+  local opts = { ... }
+  for _, option in ipairs(opts) do
+    local curr_val = vim.api.nvim_get_option_value(option, {})
+    vim.api.nvim_set_option_value(option, not curr_val, {})
+  end
 end
 
 set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -16,10 +16,12 @@ set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Diagnostic keymaps
 local severity = require('vim.diagnostic').severity
-set('n', '[d', function() vim.diagnostic.goto_prev({ severity = severity.ERROR }) end,
-	{ desc = 'Go to previous diagnostic message' })
-set('n', ']d', function() vim.diagnostic.goto_next({ severity = severity.ERROR }) end,
-	{ desc = 'Go to next diagnostic message' })
+set('n', '[d', function()
+  vim.diagnostic.goto_prev { severity = severity.ERROR }
+end, { desc = 'Go to previous diagnostic message' })
+set('n', ']d', function()
+  vim.diagnostic.goto_next { severity = severity.ERROR }
+end, { desc = 'Go to next diagnostic message' })
 
 set('i', 'jk', '<c-[>')
 set('n', '<leader><leader>', '<cmd> e # <cr>')
@@ -67,11 +69,11 @@ set('i', '<c-k>', '<Up>')
 set('i', '<c-l>', '<Right>')
 
 -- primeagen's
-set("n", "J", "mzJ`z")
-set("n", "<C-d>", "<C-d>zz")
-set("n", "<C-u>", "<C-u>zz")
-set("n", "n", "nzzzv")
-set("n", "N", "Nzzzv")
+set('n', 'J', 'mzJ`z')
+set('n', '<C-d>', '<C-d>zz')
+set('n', '<C-u>', '<C-u>zz')
+set('n', 'n', 'nzzzv')
+set('n', 'N', 'Nzzzv')
 set('v', 'K', ":m '<-2<cr>gv=gv")
 set('v', 'J', ":m '>+1<cr>gv=gv")
 -- vim.keymap.set("v", "K", function() require('anto.utils').move_lines("up") end, { desc = "Move lines up" })
@@ -92,14 +94,21 @@ set('n', '|', '<c-w>|')
 set('n', '_', '<c-w>_')
 
 -- Toggles
-set('n', '<leader>tr', function() toggle_option('relativenumber') end, { desc = 'Toggle relnum' })
+set('n', '<leader>tr', function()
+  toggle_option 'relativenumber'
+end, { desc = 'Toggle relnum' })
 -- set('n', '<leader>ti', '<cmd> IBLToggle <cr>', { desc = 'Toggle indent line' })
-set('n', '<leader>tw', function() toggle_option('wrap', 'linebreak') end, { desc = 'Toggle wrap' })
+set('n', '<leader>tw', function()
+  toggle_option('wrap', 'linebreak')
+end, { desc = 'Toggle wrap' })
 -- set('n', '<leader>th', function() toggle_option('hlsearch') end, { desc = 'Toggle hlsearch' })
-set('n', '<leader>ts', function() toggle_option('spell') end, { desc = 'Toggle spell' })
+set('n', '<leader>ts', function()
+  toggle_option 'spell'
+end, { desc = 'Toggle spell' })
 
 -- fix buffer's treesitter hightlight problem
 set('n', '<leader>te', '<cmd> write | edit | TSBufEnable highlight <cr>')
 
-set('n', '<leader>zf', 'vafojzf', { desc = 'fold aFunction' }) -- FIXME: why does it not work
+-- set('n', '<leader>zf', 'vafojzf', { desc = 'fold aFunction' }) -- FIXME: why does it not work
+set('n', '<leader>zf', 'zfai', { desc = 'fold aFunction' }) -- FIXME: why does it not work
 set('n', '<leader>zt', 'vatojzf', { desc = 'fold aTag' })

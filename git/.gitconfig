@@ -30,3 +30,5 @@
 	autocorrect = prompt
 [merge]
 	conflictstyle = zdiff3
+[rerere]
+	enabled = true

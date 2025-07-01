@@ -92,9 +92,12 @@ return {
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
+          -- FIX: toggle inlay hints
           if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             map('<leader>th', function()
+              -- print(vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+              -- print(vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
           end
         end,
@@ -149,7 +152,7 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         ts_ls = {},
         angularls = {},
-        html = { filetypes = { 'html', 'twig', 'hbs' } },
+        html = { filetypes = { 'html', 'twig', 'hbs', 'htmlangular' } },
         cssls = {},
         tailwindcss = {},
 
@@ -193,6 +196,7 @@ return {
         automatic_installation = false,
         handlers = {
           function(server_name)
+            print(server_name)
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling

@@ -144,7 +144,7 @@ require('lazy').setup({
   },
 
   -- require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
 
   { import = 'anto.plugins' },
 }, {})
@@ -244,6 +244,7 @@ vim.defer_fn(function()
 end, 0)
 
 vim.cmd.colorscheme 'kanagawa-paper'
+-- vim.cmd.colorscheme 'cyberdream'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

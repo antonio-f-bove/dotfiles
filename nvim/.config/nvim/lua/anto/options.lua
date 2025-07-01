@@ -43,6 +43,7 @@ vim.o.timeoutlen = 300
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+vim.o.background = 'dark'
 
 vim.opt.scrolloff = 5
 
@@ -58,5 +59,16 @@ vim.opt.winbar = '%=%m %f'
 
 -- vim.o.conceallevel = 1
 vim.o.conceallevel = 0
+
+-- folding cf. https://www.jackfranklin.co.uk/blog/code-folding-in-vim-neovim/
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.o.foldcolumn = '0'
+vim.o.foldtext = ''
+
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+
+vim.o.foldnestmax = 4
 
 -- vim.o.cmdheight = 0

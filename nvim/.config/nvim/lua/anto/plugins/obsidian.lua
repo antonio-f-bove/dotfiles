@@ -1,21 +1,16 @@
-local vault_path = vim.fn.getenv('VAULT_PATH')
+local vault_path = vim.fn.getenv 'VAULT_PATH'
 -- print('init', vault_path)
 
 local function to_id_string(str)
-  return str
-      :gsub('[^%w%s]', '')
-      :lower()
-      :gsub('^%s+', '')
-      :gsub('%s+$', '')
-      :gsub('%s+', '-')
+  return str:gsub('[^%w%s]', ''):lower():gsub('^%s+', ''):gsub('%s+$', ''):gsub('%s+', '-')
 end
 
 local function get_obsidian_commands()
-  local commands = vim.api.nvim_get_commands({})
+  local commands = vim.api.nvim_get_commands {}
   local obsidian_cmds = {}
 
   for name, _ in pairs(commands) do
-    if name:match("^Obsidian") then
+    if name:match '^Obsidian' then
       table.insert(obsidian_cmds, { label = name, command = name })
     end
   end
@@ -25,65 +20,72 @@ local function get_obsidian_commands()
 end
 
 local function pick_obsidian_cmd()
-  local pickers = require("telescope.pickers")
-  local finders = require("telescope.finders")
-  local conf = require("telescope.config").values
-  local actions = require("telescope.actions")
-  local action_state = require("telescope.actions.state")
+  local pickers = require 'telescope.pickers'
+  local finders = require 'telescope.finders'
+  local conf = require('telescope.config').values
+  local actions = require 'telescope.actions'
+  local action_state = require 'telescope.actions.state'
 
   local obsidian_cmds = get_obsidian_commands()
 
-  pickers.new({}, {
-    prompt_title = "Obsidian",
-    finder = finders.new_table {
-      results = obsidian_cmds,
-      entry_maker = function(entry)
-        return {
-          value = entry.command,
-          display = entry.label,
-          ordinal = entry.label,
-        }
+  pickers
+    .new({}, {
+      prompt_title = 'Obsidian',
+      finder = finders.new_table {
+        results = obsidian_cmds,
+        entry_maker = function(entry)
+          return {
+            value = entry.command,
+            display = entry.label,
+            ordinal = entry.label,
+          }
+        end,
+      },
+      sorter = conf.generic_sorter {},
+      attach_mappings = function(bufnum, map)
+        actions.select_default:replace(function()
+          actions.close(bufnum)
+          local selection = action_state.get_selected_entry()
+          vim.cmd(selection.value)
+        end)
+        return true
       end,
-    },
-    sorter = conf.generic_sorter({}),
-    attach_mappings = function(bufnum, map)
-      actions.select_default:replace(function()
-        actions.close(bufnum)
-        local selection = action_state.get_selected_entry()
-        vim.cmd(selection.value)
-      end)
-      return true
-    end,
-  }):find()
+    })
+    :find()
 end
 
 local function get_date_string(human_readable)
   if human_readable then
-    return os.date("%A %d %b %Y, %H:%M")
+    return os.date '%A %d %b %Y, %H:%M'
   end
 
-  return os.date("%Y%m%d%H%M")
+  return os.date '%Y%m%d%H%M'
 end
 
 return {
   {
-    "epwalsh/obsidian.nvim",
-    version = "*", -- recommended, use latest release instead of latest commit
+    -- 'epwalsh/obsidian.nvim',
+    'obsidian-nvim/obsidian.nvim',
+    version = '*', -- recommended, use latest release instead of latest commit
     lazy = true,
     -- ft = "markdown",
     event = {
-      "BufReadPre " .. vault_path .. "/*.md",
-      "BufNewFile " .. vault_path .. "/*.md",
+      'BufReadPre ' .. vault_path .. '/*.md',
+      'BufNewFile ' .. vault_path .. '/*.md',
     },
     dependencies = {
       -- Required.
-      "nvim-lua/plenary.nvim",
+      'nvim-lua/plenary.nvim',
       -- optional
       -- TODO: should replace with snacks?
       {
-        "nvim-telescope/telescope.nvim",
+        'nvim-telescope/telescope.nvim',
         config = true,
       },
+      'saghen/blink.cmp',
+      -- {
+      --   'hrsh7th/nvim-cmp',
+      -- },
       {
         'MeanderingProgrammer/render-markdown.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
@@ -100,25 +102,45 @@ return {
             custom = {
               todo = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
               cancelled = { raw = '[!]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
-            }
+            },
           },
+          completions = { blick = { enabled = true } },
         },
       },
     },
     config = function()
-      require('obsidian').setup({
-        ui = { enable = false, },
+      require('obsidian').setup {
+        ui = { enable = false },
         workspaces = {
           {
-            name = "notes",
+            name = 'notes',
             path = vault_path,
           },
         },
+        picker = {
+          name = 'snacks.pick',
+          note_mappings = {
+            new = '<c-c>',
+            insert_link = '<c-l>',
+          },
+          -- tag_mappings = {
+          --   tag_note= '',
+          --   insert_tag = ,
+          -- },
+        },
+        completion = {
+          nvim_cmp = false,
+          blink = true,
+          min_chars = 2,
+        },
         daily_notes = {
-          folder = "dailies",
-          date_format = "%Y-%m-%d-%A",
-          default_tags = { "daily-notes" },
-          template = nil
+          folder = 'dailies',
+          date_format = '%Y-%m-%d-%A',
+          default_tags = { 'daily-notes' },
+          template = nil,
+        },
+        attachments = {
+          img_folder = 'attachments/',
         },
         new_notes_location = 'current_dir',
         note_path_func = function(spec)
@@ -161,14 +183,14 @@ return {
         -- FIX: boh?
         -- follow_img_func = function()
         -- end,
-      })
+      }
 
       vim.keymap.set({ 'n', 'x' }, '<leader>oo', pick_obsidian_cmd)
 
       -- vim.opt.conceallevel = 2
       vim.opt.wrap = true
-      -- vim.wo.linebreak = true -- ?
+      vim.wo.linebreak = true -- ?
+      vim.o.spell = true
     end,
   },
-
 }
