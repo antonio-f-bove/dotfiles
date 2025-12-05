@@ -57,6 +57,8 @@ vim.opt.swapfile = false
 -- TODO: auto toggle: '' when only one window, on when window is split. Plus only buftype == '' should show winbar
 vim.opt.winbar = '%=%m %f'
 
+vim.o.winborder = 'rounded'
+
 -- vim.o.conceallevel = 1
 vim.o.conceallevel = 0
 
