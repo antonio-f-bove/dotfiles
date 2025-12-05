@@ -1,0 +1,4 @@
+require 'anto.core.options'
+require 'anto.core.keymaps'
+require 'anto.core.commands'
+require 'anto.core.autocommands'

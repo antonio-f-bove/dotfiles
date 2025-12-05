@@ -1,3 +1,6 @@
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 local set = vim.keymap.set
 
 local toggle_option = function(...)
