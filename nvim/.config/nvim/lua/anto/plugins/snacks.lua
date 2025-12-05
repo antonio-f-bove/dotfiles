@@ -21,14 +21,6 @@ return {
       picker = {
         enabled = true,
         sources = picker_sources,
-        -- TODO: <c-a> should inverse selection if some entries are selected already
-        -- win = {
-        --   list = {
-        --     ['<c-j>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
-        --     ['<c-k>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
-        --     ['<c-w>'] = { 'cycle_win', mode = { 'i', 'n' } },
-        --   }
-        -- }
       },
       explorer = {
         -- TODO: wider explorer, on the right? Won't configure
@@ -239,26 +231,26 @@ return {
         end,
         desc = 'Goto Definition',
       },
-      {
-        '<leader>gd',
-        function()
-          local params = vim.lsp.util.make_position_params()
-          vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, _)
-            if err or not result then
-              return
-            end
-
-            vim.cmd 'vsplit' -- open a vertical split
-            vim.cmd 'wincmd l' -- go to the new window
-
-            -- use the built-in handler to jump to the location
-            vim.lsp.util.jump_to_location(result[1] or result)
-          end)
-
-          -- Snacks.picker.lsp_definitions()
-        end,
-        desc = 'Goto Definition in vsplit',
-      },
+      -- {
+      --   '<leader>gd',
+      --   function()
+      --     local params = vim.lsp.util.make_position_params()
+      --     vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, _)
+      --       if err or not result then
+      --         return
+      --       end
+      --
+      --       vim.cmd 'vsplit' -- open a vertical split
+      --       vim.cmd 'wincmd l' -- go to the new window
+      --
+      --       -- use the built-in handler to jump to the location
+      --       vim.lsp.util.jump_to_location(result[1] or result)
+      --     end)
+      --
+      --     -- Snacks.picker.lsp_definitions()
+      --   end,
+      --   desc = 'Goto Definition in vsplit',
+      -- },
       {
         'gD',
         function()
@@ -318,6 +310,7 @@ return {
         '<leader>X',
         function()
           vim.cmd 'only'
+          vim.cmd 'tabonly'
           Snacks.bufdelete.other()
         end,
         desc = '',
@@ -355,22 +348,10 @@ return {
       {
         '<leader>fa',
         function()
-          Snacks.picker.todo_comments { keywords = { 'ACTIVE' } }
+          Snacks.picker.grep {}
         end,
         '[F]ind [A]ctive',
       },
-      -- { '<leader>sa', 'OACTIVE:<esc><leader>/' }
-      {
-        '<leader>sa',
-        function()
-          vim.cmd 'normal! OACTIVE: '
-          require('Comment.api').toggle.linewise()
-          vim.cmd 'write!'
-        end,
-        { desc = 'Set ACTIVE' },
-      },
-      -- TODO: Remove all ACTIVE tags
-      -- {'<leader>sA', },
     },
   },
 }

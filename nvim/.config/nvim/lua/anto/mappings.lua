@@ -112,3 +112,33 @@ set('n', '<leader>te', '<cmd> write | edit | TSBufEnable highlight <cr>')
 -- set('n', '<leader>zf', 'vafojzf', { desc = 'fold aFunction' }) -- FIXME: why does it not work
 set('n', '<leader>zf', 'zfai', { desc = 'fold aFunction' }) -- FIXME: why does it not work
 set('n', '<leader>zt', 'vatojzf', { desc = 'fold aTag' })
+
+set('n', '<leader>gd', function()
+  local params = vim.lsp.util.make_position_params()
+  vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, _)
+    if err then
+      vim.notify('LSP error: ' .. tostring(err), vim.log.levels.ERROR)
+      return
+    end
+
+    if not result or vim.tbl_isempty(result) then
+      vim.notify('No definition found', vim.log.levels.WARN)
+      return
+    end
+
+    -- Handle both single result and array of results
+    local location = vim.tbl_islist(result) and result[1] or result
+
+    -- Save current window
+    local current_win = vim.api.nvim_get_current_win()
+
+    -- close other splits if any
+    vim.cmd 'only'
+
+    -- Open vertical split
+    vim.cmd 'vsplit'
+
+    -- Jump to the definition in the new split
+    vim.lsp.util.jump_to_location(location, 'utf-8')
+  end)
+end, { desc = 'Goto Definition in vsplit' })
