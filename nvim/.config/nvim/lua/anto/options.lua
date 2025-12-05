@@ -62,6 +62,7 @@ vim.o.conceallevel = 0
 
 -- folding cf. https://www.jackfranklin.co.uk/blog/code-folding-in-vim-neovim/
 vim.o.foldmethod = 'expr'
+-- vim.o.foldmethod = 'manual'
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.foldcolumn = '0'
 vim.o.foldtext = ''
