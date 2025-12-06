@@ -1,11 +1,8 @@
 -- INFO: great stackoverflow solution
 -- https://vi.stackexchange.com/questions/22543/parsing-winlayout-for-toggling-multiple-windows-at-once/22545#22545
 
--- Storage for the layout state
-local state = {
-  buf_layout = nil,
-  resize_cmd = nil,
-}
+-- Storage for the layout state (now a list of states)
+local state = {}
 
 -- Recursive function to add buffer numbers to the layout tree
 local function add_buf_to_layout(layout)
@@ -23,11 +20,14 @@ local function add_buf_to_layout(layout)
 end
 
 -- Save the current layout
-local function save_buffer_layout()
-  state.buf_layout = vim.fn.winlayout()
-  state.resize_cmd = vim.fn.winrestcmd()
-  add_buf_to_layout(state.buf_layout)
-  print 'Buffer layout saved.'
+local function save_buffer_layout(bufnr)
+  local new_state = {
+    buf_layout = vim.fn.winlayout(),
+    resize_cmd = vim.fn.winrestcmd(),
+    bufnr = bufnr,
+  }
+  add_buf_to_layout(new_state.buf_layout)
+  table.insert(state, new_state)
 end
 
 -- Recursive function to apply the layout
@@ -67,10 +67,26 @@ local function apply_layout(layout)
 end
 
 -- Restore the layout
-local function restore_buffer_layout()
-  if not state.buf_layout then
-    print 'No layout saved.'
-    return
+local function restore_buffer_layout(bufnr)
+  local state_to_restore
+  if bufnr then
+    -- Find the state with the matching buf_number
+    for i, s in ipairs(state) do
+      if s.bufnr == bufnr then
+        -- HERE: instead of removing just this element, we should truncate the list at i (excluding i)
+        state_to_restore = table.remove(state, i)
+        break
+      end
+    end
+  else
+    -- Pop the last state
+    if #state > 0 then
+      state_to_restore = table.remove(state)
+    end
+  end
+
+  if not state_to_restore then
+    return false
   end
 
   -- Create a clean slate: new buffer, only window
@@ -78,19 +94,21 @@ local function restore_buffer_layout()
   vim.cmd 'wincmd o'
 
   -- Recursively restore buffers
-  apply_layout(state.buf_layout)
+  apply_layout(state_to_restore.buf_layout)
 
   -- Resize windows
-  if state.resize_cmd and state.resize_cmd ~= '' then
-    vim.cmd(state.resize_cmd)
+  if state_to_restore.resize_cmd and state_to_restore.resize_cmd ~= '' then
+    vim.cmd(state_to_restore.resize_cmd)
   end
+
+  return true
 end
 
 -- Register User Commands
 vim.api.nvim_create_user_command('SaveBufferLayout', save_buffer_layout, {})
 vim.api.nvim_create_user_command('RestoreBufferLayout', restore_buffer_layout, {})
 
--- return {
---   save_buffer_layout = save_buffer_layout,
---   restore_buffer_layout = restore_buffer_layout,
--- }
+return {
+  save = save_buffer_layout,
+  restore = restore_buffer_layout,
+}
