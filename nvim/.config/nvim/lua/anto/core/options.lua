@@ -1,3 +1,6 @@
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
@@ -63,8 +66,8 @@ vim.o.winborder = 'rounded'
 vim.o.conceallevel = 0
 
 -- folding cf. https://www.jackfranklin.co.uk/blog/code-folding-in-vim-neovim/
-vim.o.foldmethod = 'expr'
--- vim.o.foldmethod = 'manual'
+-- vim.o.foldmethod = 'expr'
+vim.o.foldmethod = 'manual'
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.foldcolumn = '0'
 vim.o.foldtext = ''

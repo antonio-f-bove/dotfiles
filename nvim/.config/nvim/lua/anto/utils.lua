@@ -5,7 +5,7 @@ M.close_other_buffers = function()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if buf ~= current_buf then
       -- TODO: ask if written buffer may save the changes?
-      require 'mini.bufremove'.delete(buf)
+      require('mini.bufremove').delete(buf)
     end
   end
 end
@@ -55,14 +55,18 @@ M.throttle = function(callback, id, debounce_time)
   end
 
   active_throttles[id] = true
-  vim.defer_fn(function() active_throttles[id] = nil end, debounce_time)
+  vim.defer_fn(function()
+    active_throttles[id] = nil
+  end, debounce_time)
   callback()
 end
 
 -- NOTE: shamelessly stolen from https://github.com/ibhagwan/fzf-lua/blob/f7f54dd685cfdf5469a763d3a00392b9291e75f2/lua/fzf-lua/utils.lua#L240
 local tbl_length = function(T)
   local count = 0
-  for _ in pairs(T) do count = count + 1 end
+  for _ in pairs(T) do
+    count = count + 1
+  end
   return count
 end
 
@@ -73,31 +77,35 @@ M.get_visual_selection = function()
   local mode = vim.fn.mode()
   if mode == 'v' or mode == 'V' or mode == '' then
     -- if we are in visual mode use the live position
-    _, csrow, cscol, _ = unpack(vim.fn.getpos("."))
-    _, cerow, cecol, _ = unpack(vim.fn.getpos("v"))
+    _, csrow, cscol, _ = unpack(vim.fn.getpos '.')
+    _, cerow, cecol, _ = unpack(vim.fn.getpos 'v')
     if mode == 'V' then
       -- visual line doesn't provide columns
       cscol, cecol = 0, 999
     end
     -- exit visual mode
-    vim.api.nvim_feedkeys(
-      vim.api.nvim_replace_termcodes("<Esc>",
-        true, false, true), 'n', true)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', true)
   else
     -- otherwise, use the last known visual position
-    _, csrow, cscol, _ = unpack(vim.fn.getpos("'<"))
-    _, cerow, cecol, _ = unpack(vim.fn.getpos("'>"))
+    _, csrow, cscol, _ = unpack(vim.fn.getpos "'<")
+    _, cerow, cecol, _ = unpack(vim.fn.getpos "'>")
   end
   -- swap vars if needed
-  if cerow < csrow then csrow, cerow = cerow, csrow end
-  if cecol < cscol then cscol, cecol = cecol, cscol end
+  if cerow < csrow then
+    csrow, cerow = cerow, csrow
+  end
+  if cecol < cscol then
+    cscol, cecol = cecol, cscol
+  end
   local lines = vim.fn.getline(csrow, cerow)
   -- local n = cerow-csrow+1
   local n = tbl_length(lines)
-  if n <= 0 then return '' end
+  if n <= 0 then
+    return ''
+  end
   lines[n] = string.sub(lines[n], 1, cecol)
   lines[1] = string.sub(lines[1], cscol)
-  return table.concat(lines, "\n")
+  return table.concat(lines, '\n')
 end
 
 M.get_path_to_deps = function()
@@ -112,8 +120,8 @@ M.get_path_to_deps = function()
     lua = {
       -- FIX: this is generic to a lua project, should be more specific to nvim config
       test = { 'init.lua', 'main.lua', '.luarc.json' },
-      target = vim.fn.expand('~') .. '/.local/share/nvim/lazy',
-    }
+      target = vim.fn.expand '~' .. '/.local/share/nvim/lazy',
+    },
   }
 
   for _, v in pairs(lang_to_meta_map) do
@@ -125,29 +133,33 @@ M.get_path_to_deps = function()
     end
   end
 
-  error('No valid dependency path found for this project!')
+  error 'No valid dependency path found for this project!'
 end
 
 M.move_lines = function(direction)
   -- Get visual selection range
-  local start_line = vim.fn.line("'<")
-  local end_line = vim.fn.line("'>")
+  local start_line = vim.fn.line "'<"
+  local end_line = vim.fn.line "'>"
 
   -- Get cursor and visual start positions to determine selection direction
-  local cursor_line = vim.fn.line(".")
-  local visual_line = vim.fn.getpos("v")[2]
+  local cursor_line = vim.fn.line '.'
+  local visual_line = vim.fn.getpos('v')[2]
   local is_cursor_on_top = cursor_line <= visual_line
 
   -- Can't move above line 1 or below last line
-  if direction == "up" and start_line == 1 then return end
-  if direction == "down" and end_line == vim.fn.line("$") then return end
+  if direction == 'up' and start_line == 1 then
+    return
+  end
+  if direction == 'down' and end_line == vim.fn.line '$' then
+    return
+  end
 
   -- Move lines
-  local target_line = (direction == "up" and start_line or end_line) + (direction == "up" and -1 or 1)
+  local target_line = (direction == 'up' and start_line or end_line) + (direction == 'up' and -1 or 1)
   vim.cmd(string.format(":'<,'>move %d", target_line))
 
   -- Adjust lines after move
-  local delta = direction == "up" and -1 or 1
+  local delta = direction == 'up' and -1 or 1
   start_line = start_line + delta
   end_line = end_line + delta
 
@@ -157,11 +169,20 @@ M.move_lines = function(direction)
 
   -- Restore selection
   vim.api.nvim_win_set_cursor(0, { new_cursor_line, 0 })
-  vim.cmd("normal! V")
+  vim.cmd 'normal! V'
   vim.api.nvim_win_set_cursor(0, { new_anchor_line, 0 })
-  vim.cmd("normal! V")
+  vim.cmd 'normal! V'
 
   -- Re-indent
-  vim.cmd("normal! =")
+  vim.cmd 'normal! ='
 end
+
+M.client_supports_method = function(client, method, bufnr)
+  if vim.fn.has 'nvim-0.11' == 1 then
+    return client:supports_method(method, bufnr)
+  else
+    return client.supports_method(method, { bufnr = bufnr })
+  end
+end
+
 return M

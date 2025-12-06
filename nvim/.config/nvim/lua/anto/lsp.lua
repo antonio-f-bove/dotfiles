@@ -1,4 +1,4 @@
-local set = vim.keymap.set -- for conciseness
+local utils = require 'anto.utils'
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -11,23 +11,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('<leader>ra', vim.lsp.buf.rename, '[R]ename [A]ll')
     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
-    local function client_supports_method(client, method, bufnr)
-      if vim.fn.has 'nvim-0.11' == 1 then
-        return client:supports_method(method, bufnr)
-      else
-        return client.supports_method(method, { bufnr = bufnr })
-      end
-    end
-
-    -- This may be unwanted, since they displace some of your code
-    -- FIX: toggle inlay hints
-    local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-      map('<leader>th', function()
-        vim.notify 'toggle inlay hints'
-        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-      end, '[T]oggle Inlay [H]ints')
-    end
+    -- local client = vim.lsp.get_client_by_id(event.data.client_id)
+    -- if client and utils.client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+    --   map('<leader>th', function()
+    --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+    --   end, '[T]oggle Inlay [H]ints')
+    -- end
 
     -- Buffer local mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -99,8 +88,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, 100)
   end,
 })
-
--- vim.lsp.inlay_hint.enable(true)
 
 local severity = vim.diagnostic.severity
 

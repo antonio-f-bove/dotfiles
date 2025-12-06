@@ -1,6 +1,3 @@
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
 local set = vim.keymap.set
 
 local toggle_option = function(...)
@@ -93,14 +90,14 @@ set('n', 'U', '<c-r>')
 
 set('n', '<Esc>', '<cmd> noh <cr>', { desc = 'Clear highlights' })
 
-set('n', '|', '<c-w>|')
-set('n', '_', '<c-w>_')
+-- comments
+set('n', '<leader>/', 'gcc', { remap = true })
+set('x', '<leader>/', 'gcc<esc>', { remap = true })
 
 -- Toggles
 set('n', '<leader>tr', function()
   toggle_option 'relativenumber'
 end, { desc = 'Toggle relnum' })
--- set('n', '<leader>ti', '<cmd> IBLToggle <cr>', { desc = 'Toggle indent line' })
 set('n', '<leader>tw', function()
   toggle_option('wrap', 'linebreak')
 end, { desc = 'Toggle wrap' })
@@ -108,9 +105,6 @@ end, { desc = 'Toggle wrap' })
 set('n', '<leader>ts', function()
   toggle_option 'spell'
 end, { desc = 'Toggle spell' })
-
--- fix buffer's treesitter hightlight problem
-set('n', '<leader>te', '<cmd> write | edit | TSBufEnable highlight <cr>')
 
 -- set('n', '<leader>zf', 'vafojzf', { desc = 'fold aFunction' }) -- FIXME: why does it not work
 set('n', '<leader>zf', 'zfai', { desc = 'fold aFunction' }) -- FIXME: why does it not work

@@ -5,11 +5,11 @@ vim.api.nvim_create_user_command('GrepRange', function(opts)
 
   print(pattern, range_start, range_end)
 
-  if pattern == "" then
+  if pattern == '' then
     vim.notify(':GrepRange needs a <pattern>', vim.log.levels.ERROR)
   end
 
-  vim.cmd("vim /" .. pattern .. '/ %')
+  vim.cmd('vim /' .. pattern .. '/ %')
 
   local qf = vim.fn.getqflist()
   local filtered = {}
@@ -21,5 +21,9 @@ vim.api.nvim_create_user_command('GrepRange', function(opts)
   end
 
   vim.fn.setqflist(filtered, 'r')
-  vim.cmd("copen")
-end, { nargs = "+", range = true })
+  vim.cmd 'copen'
+end, { nargs = '+', range = true })
+
+vim.api.nvim_create_user_command('FixTreeSitterHighlight', function(opts)
+  vim.cmd 'write | edit | TSBufEnable highlight'
+end, { desc = 'Fix treesitter highlight' })
