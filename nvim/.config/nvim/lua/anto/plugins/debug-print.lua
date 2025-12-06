@@ -7,11 +7,8 @@ local js_like = {
 
 return {
   'andrewferrier/debugprint.nvim',
-
-  -- opts = { … },
-
   dependencies = {
-    'echasnovski/mini.nvim', -- Optional: Needed for line highlighting (full mini.nvim plugin)
+    -- 'echasnovski/mini.nvim', -- Optional: Needed for line highlighting (full mini.nvim plugin)
     -- ... or ...
     'echasnovski/mini.hipatterns', -- Optional: Needed for line highlighting ('fine-grained' hipatterns plugin)
 
