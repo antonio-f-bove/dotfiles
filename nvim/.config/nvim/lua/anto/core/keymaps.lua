@@ -22,6 +22,12 @@ end, { desc = 'Go to previous diagnostic message' })
 set('n', ']d', function()
   vim.diagnostic.goto_next { severity = severity.ERROR }
 end, { desc = 'Go to next diagnostic message' })
+-- set('n', '[D', function()
+--   vim.diagnostic.goto_prev()
+-- end, { desc = 'Go to previous diagnostic message' })
+-- set('n', ']D', function()
+--   vim.diagnostic.goto_next()
+-- end, { desc = 'Go to next diagnostic message' })
 
 set('i', 'jk', '<c-[>')
 set('n', '<leader><leader>', '<cmd> e # <cr>')
@@ -126,9 +132,6 @@ set('n', '<leader>gd', function()
     -- Handle both single result and array of results
     local location = vim.tbl_islist(result) and result[1] or result
 
-    -- Save current window
-    local current_win = vim.api.nvim_get_current_win()
-
     -- close other splits if any
     vim.cmd 'only'
 
@@ -136,6 +139,7 @@ set('n', '<leader>gd', function()
     vim.cmd 'vsplit'
 
     -- Jump to the definition in the new split
-    vim.lsp.util.jump_to_location(location, 'utf-8')
+    -- vim.lsp.util.jump_to_location(location, 'utf-8')
+    vim.lsp.util.show_document(location, 'utf-8')
   end)
 end, { desc = 'Goto Definition in vsplit' })
