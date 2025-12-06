@@ -1,5 +1,7 @@
 local set = vim.keymap.set
 
+local window_stack = require 'anto.core.window_stack'
+
 local toggle_option = function(...)
   local opts = { ... }
   for _, option in ipairs(opts) do
@@ -130,7 +132,10 @@ set('n', '<leader>gd', function()
     end
 
     -- Handle both single result and array of results
-    local location = vim.tbl_islist(result) and result[1] or result
+    local location = vim.islist(result) and result[1] or result
+    print(vim.inspect(location))
+
+    window_stack.push_jump()
 
     -- close other splits if any
     vim.cmd 'only'
@@ -143,3 +148,11 @@ set('n', '<leader>gd', function()
     vim.lsp.util.show_document(location, 'utf-8')
   end)
 end, { desc = 'Goto Definition in vsplit' })
+
+local function custom_back()
+  if not window_stack.pop_jump() then
+    vim.cmd 'normal! <c-t>'
+  end
+end
+
+set('n', '<c-t>', custom_back, { desc = 'Custom back or tag pop' })
