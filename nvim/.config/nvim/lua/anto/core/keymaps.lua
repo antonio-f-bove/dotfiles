@@ -1,7 +1,5 @@
 local set = vim.keymap.set
 
-local window_stack = require 'anto.core.window_stack'
-
 local toggle_option = function(...)
   local opts = { ... }
   for _, option in ipairs(opts) do
@@ -62,9 +60,6 @@ set('n', '[l', '<cmd> lprev <cr>')
 set('n', ']L', '<cmd> llast <cr>')
 set('n', '[L', '<cmd> lfirst <cr>')
 
--- set({ 'n', 'v', 'o' }, 'gh', '^')
--- set({ 'n', 'v', 'o' }, 'gl', '$')
-
 set('n', '>', '>>')
 set('n', '<', '<<')
 set('v', '>', '>gv')
@@ -119,8 +114,8 @@ set('n', '<leader>zf', 'zfai', { desc = 'fold aFunction' }) -- FIXME: why does i
 set('n', '<leader>zt', 'vatojzf', { desc = 'fold aTag' })
 
 set('n', '<leader>gd', function()
-  local params = vim.lsp.util.make_position_params()
-  vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, _)
+  local params = vim.lsp.util.make_position_params(0, 'utf-8')
+  vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, _, _)
     if err then
       vim.notify('LSP error: ' .. tostring(err), vim.log.levels.ERROR)
       return
@@ -133,14 +128,8 @@ set('n', '<leader>gd', function()
 
     -- Handle both single result and array of results
     local location = vim.islist(result) and result[1] or result
-    print(vim.inspect(location))
 
-    window_stack.push_jump()
-
-    -- close other splits if any
     vim.cmd 'only'
-
-    -- Open vertical split
     vim.cmd 'vsplit'
 
     -- Jump to the definition in the new split
@@ -148,11 +137,3 @@ set('n', '<leader>gd', function()
     vim.lsp.util.show_document(location, 'utf-8')
   end)
 end, { desc = 'Goto Definition in vsplit' })
-
-local function custom_back()
-  if not window_stack.pop_jump() then
-    vim.cmd 'normal! <c-t>'
-  end
-end
-
-set('n', '<c-t>', custom_back, { desc = 'Custom back or tag pop' })
