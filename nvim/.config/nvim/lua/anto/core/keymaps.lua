@@ -128,6 +128,9 @@ set('n', '<leader>gd', function()
 
     -- Handle both single result and array of results
     local location = vim.islist(result) and result[1] or result
+    -- print('location', vim.inspect(locaion))
+
+    -- save_layout
 
     vim.cmd 'only'
     vim.cmd 'vsplit'

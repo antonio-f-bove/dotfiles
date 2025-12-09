@@ -2,6 +2,7 @@
 -- https://vi.stackexchange.com/questions/22543/parsing-winlayout-for-toggling-multiple-windows-at-once/22545#22545
 
 -- Storage for the layout state (now a list of states)
+-- {buf_layout, resize_cmd, bufnr}
 local state = {}
 
 -- Recursive function to add buffer numbers to the layout tree
@@ -73,8 +74,10 @@ local function restore_buffer_layout(bufnr)
     -- Find the state with the matching buf_number
     for i, s in ipairs(state) do
       if s.bufnr == bufnr then
-        -- HERE: instead of removing just this element, we should truncate the list at i (excluding i)
-        state_to_restore = table.remove(state, i)
+        -- truncate the list at i
+        for j = #state, i, -1 do
+          state_to_restore = table.remove(state, j)
+        end
         break
       end
     end
