@@ -6,7 +6,7 @@ return {
         exclude = {
           'ts_ls',
           -- 'angularls',
-          'tailwindcss',
+          -- 'tailwindcss',
         },
       },
       -- list of servers for mason to install
