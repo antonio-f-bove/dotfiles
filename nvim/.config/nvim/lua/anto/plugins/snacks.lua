@@ -41,6 +41,13 @@ return {
           dim = false,
           git_signs = true,
         },
+        show = { statusline = true },
+        win = {
+          style = {
+            width = 160,
+            backdrop = { transparent = true, blend = 30 },
+          },
+        },
       },
       quickfile = { enabled = true },
       bigfile = { enabled = true },
