@@ -17,6 +17,7 @@ return {
         'cssls',
         'tailwindcss',
         'lua_ls',
+        'astro',
         -- 'emmet_ls',
         -- 'eslint',
       },
@@ -35,24 +36,17 @@ return {
         },
       },
       'neovim/nvim-lspconfig',
+      {
+        'WhoIsSethDaniel/mason-tool-installer.nvim',
+        opts = {
+          ensure_installed = {
+            'prettier',
+            'prettierd',
+          },
+        },
+      },
     },
   },
-  -- {
-  --   'WhoIsSethDaniel/mason-tool-installer.nvim',
-  --   opts = {
-  --     ensure_installed = {
-  --       'prettier', -- prettier formatter
-  --       'stylua', -- lua formatter
-  --       'isort', -- python formatter
-  --       'black', -- python formatter
-  --       'pylint',
-  --       'eslint_d',
-  --     },
-  --   },
-  --   dependencies = {
-  --     'williamboman/mason.nvim',
-  --   },
-  -- },
 
   {
     'pmizio/typescript-tools.nvim',
@@ -79,23 +73,52 @@ return {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
-    opts = {
-      notify_on_error = false,
-      format_on_save = function(bufnr)
-        local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
-          return nil
+    config = function()
+      require('conform').setup {
+        notify_on_error = false,
+        format_on_save = function(bufnr)
+          if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+            return
+          end
+
+          local disable_filetypes = { c = true, cpp = true }
+          if disable_filetypes[vim.bo[bufnr].filetype] then
+            return nil
+          else
+            return {
+              timeout_ms = 500,
+              lsp_format = 'fallback',
+            }
+          end
+        end,
+        formatters_by_ft = {
+          lua = { 'stylua' },
+          -- javascript = { 'prettierd', 'prettier', stop_after_first = true },
+          -- typescript = { 'prettierd', 'prettier', stop_after_first = true },
+          -- html = { 'prettierd', 'prettier', stop_after_first = true },
+          -- htmlangular = { 'prettierd', 'prettier', stop_after_first = true },
+          -- typescript = function(bufnr)
+          --   local cwd = require('conform.utils').root_file { '.prettierrc' }
+          --   vim.notify 'hello!'
+          --   vim.notify(vim.inspect(cwd))
+          --   return { 'prettierd', 'prettier', stop_after_first = true }
+          -- end,
+        },
+      }
+
+      -- https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#command-to-toggle-format-on-save
+      vim.api.nvim_create_user_command('ToggleAutoFormat', function(args)
+        if args.bang then
+          -- FormatDisable! will disable formatting just for this buffer
+          vim.b.disable_autoformat = not vim.b.disable_autoformat
         else
-          return {
-            timeout_ms = 500,
-            lsp_format = 'fallback',
-          }
+          vim.g.disable_autoformat = not vim.g.disable_autoformat
         end
-      end,
-      formatters_by_ft = {
-        lua = { 'stylua' },
-      },
-    },
+      end, {
+        desc = 'Toggle autoformat-on-save',
+        bang = true,
+      })
+    end,
   },
 
   { -- Autocompletion
