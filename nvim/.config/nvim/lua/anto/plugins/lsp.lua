@@ -19,7 +19,6 @@ return {
         'lua_ls',
         'astro',
         -- 'emmet_ls',
-        -- 'eslint',
       },
     },
     dependencies = {
@@ -42,6 +41,7 @@ return {
           ensure_installed = {
             'prettier',
             'prettierd',
+            -- 'eslint_d',
           },
         },
       },
@@ -74,6 +74,10 @@ return {
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     config = function()
+      local util = require 'conform.util'
+      local js_based_config = { 'prettierd', 'prettier', lsp_format = 'fallback', stop_after_first = true }
+      local prettier_config = { cwd = util.root_file { '.prettierrc' }, require_cwd = true }
+
       require('conform').setup {
         notify_on_error = false,
         format_on_save = function(bufnr)
@@ -92,17 +96,15 @@ return {
           end
         end,
         formatters_by_ft = {
-          lua = { 'stylua' },
-          -- javascript = { 'prettierd', 'prettier', stop_after_first = true },
-          -- typescript = { 'prettierd', 'prettier', stop_after_first = true },
+          typescript = js_based_config,
+          javascript = js_based_config,
+          astro = js_based_config,
           -- html = { 'prettierd', 'prettier', stop_after_first = true },
-          -- htmlangular = { 'prettierd', 'prettier', stop_after_first = true },
-          -- typescript = function(bufnr)
-          --   local cwd = require('conform.utils').root_file { '.prettierrc' }
-          --   vim.notify 'hello!'
-          --   vim.notify(vim.inspect(cwd))
-          --   return { 'prettierd', 'prettier', stop_after_first = true }
-          -- end,
+          lua = { 'stylua' },
+        },
+        formatters = {
+          prettier = prettier_config,
+          prettierd = prettier_config,
         },
       }
 
