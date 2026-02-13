@@ -14,6 +14,8 @@ alias v=nvim
 alias ls='ls --color=auto'
 alias ll='ls --color=auto -latr'
 alias grep='grep --color=auto'
+alias cpc='xsel --input --clipboard'
+alias fzcp='fzf | xsel --input --clipboard'
 
 # functions
 function y() {

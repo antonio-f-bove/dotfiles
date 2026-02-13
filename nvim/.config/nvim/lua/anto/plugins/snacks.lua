@@ -195,9 +195,14 @@ return {
       {
         '<leader>gl',
         function()
-          Snacks.picker.git_log()
+          -- Snacks.picker.git_log()
+          Snacks.picker.git_log_file {
+            confirm = function()
+              vim.notify 'gitlogfile'
+            end,
+          }
         end,
-        desc = 'Git Log',
+        desc = 'Git Log File',
       },
       {
         '<leader>gL',

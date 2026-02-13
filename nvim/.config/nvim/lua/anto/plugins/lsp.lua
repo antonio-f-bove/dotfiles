@@ -18,6 +18,7 @@ return {
         'tailwindcss',
         'lua_ls',
         'astro',
+        'rust_analyzer',
         -- 'emmet_ls',
       },
     },
@@ -57,6 +58,14 @@ return {
       },
     },
   },
+
+  -- {
+  --   'Sebastian-Nielsen/better-type-hover',
+  --   ft = { 'typescript', 'typescriptreact' },
+  --   config = function()
+  --     require('better-type-hover').setup()
+  --   end,
+  -- },
 
   {
     'folke/lazydev.nvim',
@@ -99,7 +108,9 @@ return {
           typescript = js_based_config,
           javascript = js_based_config,
           astro = js_based_config,
+          json = js_based_config,
           -- html = { 'prettierd', 'prettier', stop_after_first = true },
+          htmlangular = { 'prettierd', 'prettier', stop_after_first = true },
           lua = { 'stylua' },
         },
         formatters = {

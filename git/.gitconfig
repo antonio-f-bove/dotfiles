@@ -16,7 +16,9 @@
 	co = checkout
 	st = status
 	cp = cherry-pick
-	lol = log --oneline
+  lol = log --pretty=format:'%C(yellow)%h %Cred%an%Cgreen%d %Creset%s'
+  gol = log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short
+  cb = branch --show-current
 [core]
 	editor = nvim -f
 [branch]
