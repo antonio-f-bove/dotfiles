@@ -21,9 +21,34 @@ return {
       picker = {
         enabled = true,
         sources = picker_sources,
+        actions = {
+          filter_current_file = function(picker)
+            local current_file = vim.fn.expand '#:t'
+            local filter = picker.input.filter
+            local pattern = filter.pattern or ''
+
+            local filter_marker = 'file:' .. current_file .. '$'
+
+            if pattern:find(filter_marker, 1, true) then
+              pattern = pattern:gsub('%s?' .. vim.pesc(filter_marker) .. '%s*', '')
+              filter.pattern = pattern
+              picker:find()
+            else
+              local new_pattern = pattern .. (pattern ~= '' and ' ' or '') .. filter_marker
+              filter.pattern = new_pattern
+              picker:find()
+            end
+          end,
+        },
+        win = {
+          input = {
+            keys = {
+              ['<c-j>'] = { 'filter_current_file', mode = { 'n', 'i' } },
+            },
+          },
+        },
       },
       explorer = {
-        -- TODO: wider explorer, on the right? Won't configure
         enabled = true,
       },
       input = { enabled = true },
