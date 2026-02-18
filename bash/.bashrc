@@ -30,13 +30,34 @@ function y() {
 # vim motions are the best!
 set -o vi
 
+# PS1='[\u@\h \W]\$ '
+eval "$(starship init bash)"
+eval "$(zoxide init bash)"
+
 # source local_env to get machine specific environtment variables sourced
-[ -f ~/.local_env ] && source ~/.local_env
+# [ -f ~/.local_env ] && source ~/.local_env
+export NOTES_HOME="$HOME/notes"
+# TODO: auto git pull notes repo
 
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
-eval "$(starship init bash)"
-eval "$(zoxide init bash)"
+# pnpm
+export PNPM_HOME="/home/anto/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+export PATH="$PATH:/home/anto/.turso"
+
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+export FLYCTL_INSTALL="/home/anto/.fly"
+export PATH=$FLYCTL_INSTALL/bin:$PATH
+
+. "$HOME/.cargo/env"
 
 export PATH=$PATH:/usr/local/bin
