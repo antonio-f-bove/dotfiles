@@ -1,5 +1,5 @@
-local vault_path = vim.fn.getenv 'VAULT_PATH'
--- print('init', vault_path)
+local notes_dir = vim.fn.getenv 'NOTES_HOME'
+-- local notes_dir = '/home/anto/notes'
 
 local function to_id_string(str)
   return str:gsub('[^%w%s]', ''):lower():gsub('^%s+', ''):gsub('%s+$', ''):gsub('%s+', '-')
@@ -14,31 +14,32 @@ local function get_date_string(human_readable)
 end
 
 return {
-  -- {
-  --   'MeanderingProgrammer/render-markdown.nvim',
-  --   dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
-  --
-  --   ---@module 'render-markdown'
-  --   ---@type render.md.UserConfig
-  --   opts = {
-  --     heading = {
-  --       sign = false,
-  --       -- signs = {},
-  --       backgrounds = {},
-  --     },
-  --     checkbox = {
-  --       custom = {
-  --         todo = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
-  --         cancelled = { raw = '[!]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
-  --       },
-  --     },
-  --   },
-  -- },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons', 'saghen/blink.cmp' },
+    ---
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {
+      heading = {
+        sign = false,
+        -- signs = {},
+        backgrounds = {},
+      },
+      checkbox = {
+        custom = {
+          todo = { raw = '[-]', rendered = '󰥔 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
+          cancelled = { raw = '[!]', rendered = '󰜺 ', highlight = 'RenderMarkdownTodo', scope_highlight = nil },
+        },
+      },
+      completions = { blinck = { enabled = true } },
+    },
+  },
   {
     'zk-org/zk-nvim',
     event = {
-      'BufReadPre ' .. vault_path .. '/*.md',
-      'BufNewFile ' .. vault_path .. '/*.md',
+      'BufReadPre ' .. notes_dir .. '/*.md',
+      'BufNewFile ' .. notes_dir .. '/*.md',
     },
     config = function()
       require('zk').setup {

@@ -16,6 +16,9 @@ alias ll='ls --color=auto -latr'
 alias grep='grep --color=auto'
 alias cpc='xsel --input --clipboard'
 alias fzcp='fzf | xsel --input --clipboard'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
 # functions
 function y() {
