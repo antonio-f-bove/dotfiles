@@ -1,17 +1,4 @@
 local notes_dir = vim.fn.getenv 'NOTES_HOME'
--- local notes_dir = '/home/anto/notes'
-
-local function to_id_string(str)
-  return str:gsub('[^%w%s]', ''):lower():gsub('^%s+', ''):gsub('%s+$', ''):gsub('%s+', '-')
-end
-
-local function get_date_string(human_readable)
-  if human_readable then
-    return os.date '%A %d %b %Y, %H:%M'
-  end
-
-  return os.date '%Y%m%d%H%M'
-end
 
 return {
   {
