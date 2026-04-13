@@ -85,7 +85,7 @@ return {
     config = function()
       local util = require 'conform.util'
       local js_based_config = { 'prettierd', 'prettier', lsp_format = 'fallback', stop_after_first = true }
-      local prettier_config = { cwd = util.root_file { '.prettierrc' }, require_cwd = true }
+      local prettier_config = { cwd = util.root_file { '.prettierrcccccccc' }, require_cwd = true } -- HACK: do not format with prettier for now
 
       require('conform').setup {
         notify_on_error = false,
