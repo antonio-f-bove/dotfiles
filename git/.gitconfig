@@ -16,8 +16,10 @@
 	co = checkout
 	st = status
 	cp = cherry-pick
+  wt = worktree
   lol = log --pretty=format:'%C(yellow)%h %Cred%an%Cgreen%d %Creset%s'
   gol = log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short
+  b = branch
   cb = branch --show-current
 [core]
 	editor = nvim -f

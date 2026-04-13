@@ -36,7 +36,7 @@ return {
   keys = {
     {
       '<leader>fd',
-      '<cmd> SearchDebugPrints <cr>',
+      '<cmd> Debugprint search <cr>',
       mode = '',
       desc = '[Find] [D]ebug statements',
     },

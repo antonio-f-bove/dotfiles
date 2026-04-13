@@ -102,6 +102,7 @@ return {
       {
         '<leader>zn',
         list_zk_commands,
+        mode = { 'n', 'x' },
         desc = 'List zk commands',
       },
     },
