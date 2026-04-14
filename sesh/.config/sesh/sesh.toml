@@ -1,3 +1,5 @@
+#:schema https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json
+
 # [default_session]
 # name = "home"
 # path = "~"
@@ -6,6 +8,7 @@
 name = "tmux"
 path = "~/dotfiles/tmux/.config/tmux/"
 startup_command = "nvim tmux.conf"
+preview_command = "eza --all --git --icons --color=always {}"
 # preview_command = "bat --color=always ~/dotfiles/tmux/.config/tmux/tmux.conf"
 
 [[session]]
@@ -28,6 +31,11 @@ startup_command = "nvim sesh.toml"
 name = "dotfiles"
 path = "~/dotfiles"
 startup_command = "yazi"
+
+[[session]]
+name = "pi"
+path = "~/.pi"
+startup_command = "nvim"
 
 # [[session]]
 # name = "v5"

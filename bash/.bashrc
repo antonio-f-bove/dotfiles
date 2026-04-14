@@ -5,6 +5,11 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Check if Windows interop is working
+if ! /mnt/c/Windows/System32/cmd.exe /c "exit" &> /dev/null; then
+    echo "Warning: Windows Interop is broken. You may need to run 'wsl --shutdown' from PowerShell."
+fi
+
 export EDITOR=nvim
 export MANPAGER='nvim +Man!'
 
