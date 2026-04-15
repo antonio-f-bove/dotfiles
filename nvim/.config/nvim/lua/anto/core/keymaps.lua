@@ -111,6 +111,7 @@ end, { desc = 'Toggle wrap' })
 set('n', '<leader>ts', function()
   toggle_option 'spell'
 end, { desc = 'Toggle spell' })
+set('n', '<leader>tt', '<cmd>TSToggle highlight<cr>', { desc = 'Toggle treesitter highlight' })
 
 -- set('n', '<leader>zf', 'vafojzf', { desc = 'fold aFunction' }) -- FIXME: why does it not work
 set('n', '<leader>zf', 'zfai', { desc = 'fold aFunction' }) -- FIXME: why does it not work
