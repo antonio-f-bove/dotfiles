@@ -1,11 +1,15 @@
 #:schema https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json
 
-# [default_session]
+blacklist = []
+
+[default_session]
+startup_command = "nvim"
+preview_command = "eza --all --git --icons --color=always {}"
 # name = "home"
 # path = "~"
 
 [[session]]
-name = "tmux"
+name = "tmux config"
 path = "~/dotfiles/tmux/.config/tmux/"
 startup_command = "nvim tmux.conf"
 preview_command = "eza --all --git --icons --color=always {}"

@@ -16,14 +16,16 @@ export MANPAGER='nvim +Man!'
 # aliases
 alias g=git
 alias v=nvim
-alias ls='ls --color=auto'
-alias ll='ls --color=auto -latr'
+# alias ls='ls --color=auto'
+alias ls='eza --all --grid --icons'
+# alias ll='ls --color=auto -latr'
+alias ll='eza -al'
 alias grep='grep --color=auto'
 alias cpc='xsel --input --clipboard'
 alias fzcp='fzf | xsel --input --clipboard'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
+alias ..='cd .. && ll'
+alias ...='cd ../.. && ll'
+alias ....='cd ../../.. && ll'
 
 # functions
 function y() {
