@@ -1,5 +1,5 @@
 local js_like = {
-  left = 'console.info("',
+  left = 'console.trace("',
   right = '")',
   mid_var = '", ',
   right_var = ')',
@@ -16,7 +16,7 @@ return {
     'folke/snacks.nvim', -- Optional: If you want to use the `:Debugprint search` command with snacks.nvim
   },
 
-  lazy = false, -- Required to make line highlighting work before debugprint is first used
+  lazy = false,  -- Required to make line highlighting work before debugprint is first used
   version = '*', -- Remove if you DON'T want to use the stable version
   opts = {
     display_counter = false,

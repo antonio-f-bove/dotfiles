@@ -37,6 +37,18 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+function wmv() {
+	if [ "$#" -ne 2 ]; then
+		echo "usage: wmv <windows-path> <relative-destination>" >&2
+		return 1
+	fi
+
+	local src dst
+	src="$(wslpath -u -- "$1")" || return 1
+	dst="$PWD/$2"
+	mv -- "$src" "$dst"
+}
+
 # vim motions are the best!
 set -o vi
 
