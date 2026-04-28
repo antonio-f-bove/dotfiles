@@ -26,6 +26,10 @@ alias fzcp='fzf | xsel --input --clipboard'
 alias ..='cd .. && ll'
 alias ...='cd ../.. && ll'
 alias ....='cd ../../.. && ll'
+# alias chrome to the Window's installation, this breaks a "real" linux install
+# TODO: run only if in WSL!!!
+alias chrome="\"/mnt/c/Program Files/Google/Chrome/Application/chrome.exe\""
+alias open=xdg-open
 
 # functions
 function y() {

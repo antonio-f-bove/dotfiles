@@ -12,13 +12,18 @@
 	autostash = true
 [pull]
 	rebase = true
+[above]
+	mainBranch = main
 [alias]
 	co = checkout
 	st = status
 	cp = cherry-pick
   wt = worktree
-  lol = log --pretty=format:'%C(yellow)%h %Cred%an%Cgreen%d %Creset%s'
-  gol = log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short
+  lol = log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short
+  ; gol uses shell alias (`!`). Builds ref list dynamically: always HEAD,
+  ; plus origin/<current-branch> and origin/<main-branch> if those refs exist.
+  ; Main branch comes from `above.mainBranch`, defaulting to `main`. Extra args pass through.
+  gol = "!f() { refs=HEAD; b=$(git branch --show-current); mb=$(git config --get above.mainBranch || echo main); if [ -n \"$b\" ] && git show-ref --verify --quiet \"refs/remotes/origin/$b\"; then refs=\"$refs origin/$b\"; fi; if [ -n \"$mb\" ] && [ \"$mb\" != \"$b\" ] && git show-ref --verify --quiet \"refs/remotes/origin/$mb\"; then refs=\"$refs origin/$mb\"; fi; git log --graph --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short $refs \"$@\"; }; f"
   b = branch
   cb = branch --show-current
 [core]
