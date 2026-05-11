@@ -3,7 +3,7 @@
 blacklist = []
 
 [default_session]
-startup_command = "nvim"
+# startup_command = "ll"
 preview_command = "eza --all --git --icons --color=always {}"
 # name = "home"
 # path = "~"
@@ -34,11 +34,11 @@ startup_command = "nvim sesh.toml"
 [[session]]
 name = "dotfiles"
 path = "~/dotfiles"
-startup_command = "yazi"
+# startup_command = "ll"
 
 [[session]]
 name = "pi"
-path = "~/.pi"
+path = "~/dotfiles/pi/"
 startup_command = "nvim"
 
 # [[session]]
