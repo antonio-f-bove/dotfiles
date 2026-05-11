@@ -1,0 +1,133 @@
+/**
+ * Modal Editor - vim-like modal editing example
+ *
+ * Usage: pi --extension ./examples/extensions/modal-editor.ts
+ *
+ * - Escape: insert → normal mode (in normal mode, aborts agent)
+ * - i: normal → insert mode
+ * - hjkl: navigation in normal mode
+ * - ctrl+c, ctrl+d, etc. work in both modes
+ */
+
+import { CustomEditor, type ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { matchesKey, truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
+
+function makeEditorThemeWithAccentBorder(theme: any): any {
+  // Create a proxy theme that remaps border colors to borderAccent.
+  // This lets the built-in Editor keep drawing its own box, but with a different border color.
+  return new Proxy(theme, {
+    get(target, prop, receiver) {
+      if (prop === "fg") {
+        return (color: string, text: string) => {
+          if (color === "border" || color === "borderMuted") {
+            return target.fg("borderAccent", text);
+          }
+          return target.fg(color, text);
+        };
+      }
+      return Reflect.get(target, prop, receiver);
+    },
+  });
+}
+
+// Normal mode key mappings: key -> escape sequence (or null for mode switch)
+const NORMAL_KEYS: Record<string, string | null> = {
+  h: "\x1b[D", // left
+  j: "\x1b[B", // down
+  k: "\x1b[A", // up
+  l: "\x1b[C", // right
+  "^": "\x01", // line start
+  $: "\x05", // line end
+  x: "\x1b[3~", // delete char
+  i: null, // insert mode
+  a: null, // append (insert + right)
+};
+
+class ModalEditor extends CustomEditor {
+  private mode: "normal" | "insert" = "insert";
+  private tui: any;
+  private baseTheme: any;
+  private normalTheme: any;
+
+  constructor(tui: any, theme: any, keybindings: any) {
+    super(tui, theme, keybindings);
+    this.tui = tui;
+    this.baseTheme = theme;
+    this.normalTheme = makeEditorThemeWithAccentBorder(theme);
+  }
+
+  handleInput(data: string): void {
+    // Escape toggles to normal mode, or passes through for app handling
+    if (matchesKey(data, "escape")) {
+      if (this.mode === "insert") {
+        this.mode = "normal";
+        this.tui.requestRender();
+      } else {
+        super.handleInput(data); // abort agent, etc.
+      }
+      return;
+    }
+
+    // Insert mode: pass everything through
+    if (this.mode === "insert") {
+      super.handleInput(data);
+      return;
+    }
+
+    // Normal mode: check mapped keys
+    if (data in NORMAL_KEYS) {
+      const seq = NORMAL_KEYS[data];
+
+      if (data === "i") {
+        this.mode = "insert";
+        this.tui.requestRender();
+      } else if (data === "a") {
+        this.mode = "insert";
+        this.tui.requestRender();
+        super.handleInput("\x1b[C"); // move right first
+      } else if (seq) {
+        super.handleInput(seq);
+      }
+      return;
+    }
+
+    // Pass control sequences (ctrl+c, etc.) to super, ignore printable chars
+    if (data.length === 1 && data.charCodeAt(0) >= 32) return;
+    super.handleInput(data);
+  }
+
+  render(width: number): string[] {
+    // Temporarily swap the theme used by the underlying Editor so its border draws differently.
+    // We do it here (rather than permanently) so we don't interfere with other styling.
+    const self: any = this as any;
+    const themePropCandidates = ["theme", "editorTheme", "_theme"];
+    const themeProp = themePropCandidates.find((p) => p in self);
+    const oldTheme = themeProp ? self[themeProp] : undefined;
+
+    if (themeProp) {
+      self[themeProp] = this.mode === "normal" ? this.normalTheme : this.baseTheme;
+    }
+
+    const lines = super.render(width);
+
+    if (themeProp) {
+      self[themeProp] = oldTheme;
+    }
+
+    if (lines.length === 0) return lines;
+
+    // Add mode indicator to bottom border
+    const label = this.mode === "normal" ? " NORMAL " : " INSERT ";
+    const last = lines.length - 1;
+    if (visibleWidth(lines[last]!) >= label.length) {
+      lines[last] = truncateToWidth(lines[last]!, width - label.length, "") + label;
+    }
+    return lines;
+  }
+}
+
+export default function (pi: ExtensionAPI) {
+  pi.on("session_start", (_event, ctx) => {
+    ctx.ui.setEditorComponent((tui, theme, kb) => new ModalEditor(tui, theme, kb));
+  });
+}
