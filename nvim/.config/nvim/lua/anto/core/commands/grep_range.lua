@@ -23,7 +23,3 @@ vim.api.nvim_create_user_command('GrepRange', function(opts)
   vim.fn.setqflist(filtered, 'r')
   vim.cmd 'copen'
 end, { nargs = '+', range = true })
-
-vim.api.nvim_create_user_command('FixTreeSitterHighlight', function(opts)
-  vim.cmd 'write | edit | TSBufEnable highlight'
-end, { desc = 'Fix treesitter highlight' })

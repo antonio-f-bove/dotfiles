@@ -46,7 +46,8 @@ return {
       -- { '<leader>gB', '<cmd>G blame<cr>' }
     },
     config = function()
-      local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode', { clear = true })
+      local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode',
+        { clear = true })
       vim.api.nvim_create_autocmd('FileType', {
         callback = function()
           vim.cmd ':startinsert'
@@ -61,6 +62,8 @@ return {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
+      -- Keep LSP/diagnostic signs above git signs in signcolumn.
+      -- sign_priority = 5,
       -- See `:help gitsigns.txt`
       signs = {
         add = { text = '+' },
