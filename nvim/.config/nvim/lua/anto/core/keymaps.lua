@@ -117,6 +117,10 @@ set('n', '<leader>tt', '<cmd>TSToggle highlight<cr>', { desc = 'Toggle treesitte
 set('n', '<leader>zf', 'zfai', { desc = 'fold aFunction' }) -- FIXME: why does it not work
 set('n', '<leader>zt', 'vatojzf', { desc = 'fold aTag' })
 
+-- TODO: should be in some kind of angular "filetype"? so it only becomes available in angular projects
+set('n', '<leader>aa', '<cmd>AngularComponentLayout<cr>')
+set('n', '<leader>as', '<cmd>AngularTemplateStyleLayout<cr>')
+
 set('n', '<leader>gd', function()
   local params = vim.lsp.util.make_position_params(0, 'utf-8')
   vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, _, _)

@@ -1,20 +1,4 @@
-local function file_exists(path)
-  return path and vim.uv.fs_stat(path) ~= nil
-end
-
-local function component_stem(path)
-  return path:match('^(.*)%.component%.ts$')
-      or path:match('^(.*)%.component%.html$')
-      or path:match('^(.*)%.component%.css$')
-      or path:match('^(.*)%.component%.scss$')
-end
-
-local function open_file(win, path)
-  if win and path and file_exists(path) then
-    vim.api.nvim_set_current_win(win)
-    vim.cmd.edit(vim.fn.fnameescape(path))
-  end
-end
+local component = require 'anto.core.commands.angular_component_utils'
 
 local function set_left_height(html_win, style_win)
   if not (html_win and style_win) then
@@ -31,7 +15,7 @@ vim.api.nvim_create_user_command('AngularComponentLayout', function()
   local current_win = vim.api.nvim_get_current_win()
   local current_view = vim.fn.winsaveview()
   local current_path = vim.api.nvim_buf_get_name(current_buf)
-  local stem = component_stem(current_path)
+  local stem = component.component_stem(current_path)
 
   if not stem then
     vim.notify('Not in Angular component file', vim.log.levels.WARN)
@@ -42,18 +26,8 @@ vim.api.nvim_create_user_command('AngularComponentLayout', function()
   vim.cmd('silent! wincmd o')
   current_win = vim.api.nvim_get_current_win()
 
-  local ts = stem .. '.component.ts'
-  local html = stem .. '.component.html'
-  local style = file_exists(stem .. '.component.css') and (stem .. '.component.css') or nil
-  if not style and file_exists(stem .. '.component.scss') then
-    style = stem .. '.component.scss'
-  end
-
-  local has_ts = file_exists(ts)
-  local has_html = file_exists(html)
-  local has_style = style ~= nil
-
-  if not (has_ts or has_html or has_style) then
+  local files = component.resolve_files(stem)
+  if not (files.has_ts or files.has_html or files.has_style) then
     vim.notify('No component files found', vim.log.levels.WARN)
     return
   end
@@ -63,7 +37,7 @@ vim.api.nvim_create_user_command('AngularComponentLayout', function()
   local html_win = ext == 'html' and current_win or nil
   local style_win = (ext == 'css' or ext == 'scss') and current_win or nil
 
-  local left_count = (has_html and 1 or 0) + (has_style and 1 or 0)
+  local left_count = (files.has_html and 1 or 0) + (files.has_style and 1 or 0)
   local left_win = current_win
 
   if ts_win == current_win then
@@ -74,35 +48,35 @@ vim.api.nvim_create_user_command('AngularComponentLayout', function()
     vim.api.nvim_set_current_win(current_win)
     vim.cmd('leftabove vsplit')
     left_win = vim.api.nvim_get_current_win()
-  elseif not ts_win and has_ts then
+  elseif not ts_win and files.has_ts then
     vim.api.nvim_set_current_win(current_win)
     vim.cmd('rightbelow vsplit')
     ts_win = vim.api.nvim_get_current_win()
-    open_file(ts_win, ts)
+    component.open_file(ts_win, files.ts)
     left_win = current_win
   end
 
-  if has_html and not html_win then
+  if files.has_html and not html_win then
     if style_win == left_win then
       vim.api.nvim_set_current_win(left_win)
       vim.cmd('leftabove split')
       html_win = vim.api.nvim_get_current_win()
-      open_file(html_win, html)
+      component.open_file(html_win, files.html)
     else
       html_win = left_win
-      open_file(html_win, html)
+      component.open_file(html_win, files.html)
     end
   end
 
-  if has_style and not style_win then
+  if files.has_style and not style_win then
     if html_win and left_count > 1 then
       vim.api.nvim_set_current_win(html_win)
       vim.cmd('belowright split')
       style_win = vim.api.nvim_get_current_win()
-      open_file(style_win, style)
+      component.open_file(style_win, files.style)
     else
       style_win = left_win
-      open_file(style_win, style)
+      component.open_file(style_win, files.style)
     end
   end
 
@@ -113,5 +87,3 @@ vim.api.nvim_create_user_command('AngularComponentLayout', function()
     pcall(vim.fn.winrestview, current_view)
   end
 end, { desc = 'Open Angular component layout' })
-
-vim.keymap.set('n', '<leader>aa', '<cmd>AngularComponentLayout<cr>')
