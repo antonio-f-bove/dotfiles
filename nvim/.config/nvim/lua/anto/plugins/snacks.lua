@@ -218,23 +218,30 @@ return {
       },
       -- TODO: confirm => show instead of checkout
       {
-        '<leader>gl',
+        '<leader>glg',
         function()
           Snacks.picker.git_log()
-          --   Snacks.picker.git_log_file {
-          --     confirm = function()
-          --       vim.notify 'gitlogfile'
-          --     end,
-          --   }
         end,
-        desc = 'Git Log File',
+        desc = 'Git Log',
       },
       {
-        '<leader>gL',
+        '<leader>gll',
         function()
-          Snacks.picker.git_log_line()
+          -- Snacks.picker.git_log()
+          Snacks.picker.git_log_line {
+            confirm = function()
+              vim.notify 'gitlogfile'
+            end,
+          }
         end,
-        desc = 'Git Log Line',
+        desc = 'Git Log line',
+      },
+      {
+        '<leader>glf',
+        function()
+          Snacks.picker.git_log_file()
+        end,
+        desc = 'Git Log File',
       },
       -- TODO: picker should grep revision contents instead of file names
       {

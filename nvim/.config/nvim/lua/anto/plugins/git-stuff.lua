@@ -43,7 +43,7 @@ return {
           vim.cmd 'ccl'
         end,
       },
-      -- { '<leader>gB', '<cmd>G blame<cr>' }
+      { '<leader>gB', '<cmd>G blame<cr>' }
     },
     config = function()
       local enter_commit_mess_in_insert_mode = vim.api.nvim_create_augroup('EnterCommitMessInInsertMode',

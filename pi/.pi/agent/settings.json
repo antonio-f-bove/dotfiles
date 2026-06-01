@@ -2,9 +2,10 @@
   "lastChangelogVersion": "0.73.0",
   "hideThinkingBlock": false,
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.4",
-  "defaultThinkingLevel": "medium",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "low",
   "packages": [
-    "npm:pi-agent-browser"
+    "npm:pi-agent-browser",
+    "https://github.com/mitsuhiko/pi-draw"
   ]
 }
