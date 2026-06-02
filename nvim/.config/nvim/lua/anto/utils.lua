@@ -185,4 +185,26 @@ M.client_supports_method = function(client, method, bufnr)
   end
 end
 
+M.angular_root = function(bufnr)
+  local util = require 'lspconfig.util'
+  local fname = vim.api.nvim_buf_get_name(bufnr)
+
+  local root_files = {
+    'angular.json',
+  }
+
+  root_files = util.insert_package_json(root_files, '@angular/core', fname)
+
+  local root_file = vim.fs.find(root_files, {
+    path = fname,
+    upward = true,
+  })[1]
+
+  return root_file and vim.fs.dirname(root_file) or nil
+end
+
+M.is_angular_project = function(bufnr)
+  return M.angular_root(bufnr) ~= nil
+end
+
 return M

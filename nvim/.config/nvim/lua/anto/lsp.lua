@@ -65,26 +65,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- opts.desc = "Restart LSP"
     -- keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-    vim.defer_fn(function()
-      local clients = vim.lsp.get_clients { bufnr = event.buf }
-      local has_ts_ls = false
-      local has_angularls = false
-      local ts_client = nil
-
-      for _, client in ipairs(clients) do
-        if client.name == 'typescript-tools' then
-          has_ts_ls = true
-          ts_client = client
-        elseif client.name == 'angularls' then
-          has_angularls = true
-        end
-      end
-
-      if has_ts_ls and has_angularls and ts_client then
-        ts_client.server_capabilities.referencesProvider = false
-        ts_client.server_capabilities.renameProvider = false
-      end
-    end, 100)
   end,
 })
 

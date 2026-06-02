@@ -187,7 +187,12 @@ return {
         end,
         desc = '',
       },
-      -- TODO: fj (files in same directory? same name?)
+      {
+        '<leader>d',
+        function()
+          Snacks.picker.diagnostics()
+        end
+      },
 
       -- TODO: abstract! I want to be able to also navigate node_modules
       {
