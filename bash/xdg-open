@@ -1,0 +1,10 @@
+#!/bin/bash
+# xdg-open wrapper for WSL - opens URLs in Windows Chrome
+CHROME="/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
+
+if [ -x "$CHROME" ]; then
+    "$CHROME" "$@" &
+else
+    echo "Error: Chrome not found at $CHROME" >&2
+    exit 1
+fi

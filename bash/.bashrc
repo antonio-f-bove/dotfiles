@@ -31,6 +31,9 @@ alias ....='cd ../../.. && ll'
 alias chrome="\"/mnt/c/Program Files/Google/Chrome/Application/chrome.exe\""
 alias open=xdg-open
 
+# Browser automation for WSL - use Windows Chrome
+export BROWSER="/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
+
 # functions
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -66,15 +69,8 @@ export NOTES_HOME="$HOME/notes"
 # TODO: auto git pull notes repo
 
 export VOLTA_HOME="$HOME/.volta"
+export VOLTA_FEATURE_PNPM=1
 export PATH="$VOLTA_HOME/bin:$PATH"
-
-# pnpm
-export PNPM_HOME="/home/anto/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
 
 export PATH="$PATH:/home/anto/.turso"
 
@@ -89,3 +85,6 @@ export PATH=$FLYCTL_INSTALL/bin:$PATH
 export PATH=$PATH:/usr/local/bin
 
 export PATH="$HOME/.local/bin:$PATH"
+
+# cloudflare auth
+[ -f ~/.cloudflare ] && source ~/.cloudflare

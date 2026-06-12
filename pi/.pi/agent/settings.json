@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.73.0",
+  "lastChangelogVersion": "0.79.0",
   "hideThinkingBlock": false,
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
@@ -7,5 +7,9 @@
   "packages": [
     "npm:pi-agent-browser",
     "https://github.com/mitsuhiko/pi-draw"
+  ],
+  "enabledModels": [
+    "openai-codex/gpt-5.5",
+    "opencode-go/qwen3.7-plus"
   ]
 }
