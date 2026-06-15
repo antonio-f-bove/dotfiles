@@ -62,17 +62,4 @@ vim.o.winborder = 'rounded'
 -- vim.o.conceallevel = 1
 vim.o.conceallevel = 0
 
--- folding cf. https://www.jackfranklin.co.uk/blog/code-folding-in-vim-neovim/
--- FIX: folding!!
--- vim.o.foldmethod = 'expr'
--- vim.o.foldmethod = 'manual'
--- vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
--- vim.o.foldcolumn = '0'
--- vim.o.foldtext = ''
---
--- vim.o.foldlevel = 99
--- vim.o.foldlevelstart = 99
---
--- vim.o.foldnestmax = 4
-
 -- vim.o.cmdheight = 0
