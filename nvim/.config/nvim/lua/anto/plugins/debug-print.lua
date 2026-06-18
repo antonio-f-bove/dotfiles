@@ -5,6 +5,22 @@ local js_like = {
   right_var = ')',
 }
 
+local function signal_name(expr)
+  return expr:gsub('^this%.', ''):gsub('%(%s*%)$', '')
+end
+
+local function insert_signal_effect(expr)
+  expr = expr or vim.fn.expand('<cword>')
+  local name = signal_name(expr)
+  local id = 'DEBUGPRINT_' .. name
+  local line = ('#%s = effect(() => console.log(%q, this.%s()));'):format(id, name, expr)
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local indent = vim.fn.matchstr(vim.api.nvim_get_current_line(), '^%s*')
+
+  vim.api.nvim_buf_set_lines(0, row, row, false, { indent .. line })
+  vim.cmd('silent! normal! ==')
+end
+
 return {
   'andrewferrier/debugprint.nvim',
   dependencies = {
@@ -39,6 +55,14 @@ return {
       '<cmd> Debugprint search <cr>',
       mode = '',
       desc = '[Find] [D]ebug statements',
+    },
+    {
+      'g?s',
+      function()
+        insert_signal_effect()
+      end,
+      ft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+      desc = '[D]ebug [S]ignal with effect',
     },
   },
 }
