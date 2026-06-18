@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.79.0",
+  "lastChangelogVersion": "0.79.4",
   "hideThinkingBlock": false,
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
@@ -11,5 +11,6 @@
   "enabledModels": [
     "openai-codex/gpt-5.5",
     "opencode-go/qwen3.7-plus"
-  ]
+  ],
+  "theme": "dark"
 }
