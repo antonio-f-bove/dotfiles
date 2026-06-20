@@ -1,3 +1,20 @@
+local function git_log_fugitive_confirm(picker, item)
+  picker:close()
+
+  local commit = item and item.commit
+  if not commit then
+    vim.notify('No commit found for git log item', vim.log.levels.WARN)
+    return
+  end
+
+  local cwd = item.cwd or vim.fn.getcwd()
+  local previous_cwd = vim.fn.getcwd()
+
+  vim.cmd.lcd(vim.fn.fnameescape(cwd))
+  vim.cmd.Gedit(vim.fn.fnameescape(commit))
+  vim.cmd.lcd(vim.fn.fnameescape(previous_cwd))
+end
+
 local picker_sources = {
   explorer = {
     layout = {
@@ -217,34 +234,28 @@ return {
         '<leader>gb',
         function()
           -- vim.notify(vim.fn.getcwd())
-          Snacks.picker.git_branches() -- FIX: checkout on enter is broken
+          Snacks.picker.git_branches()
         end,
         desc = 'Git Branches',
       },
-      -- TODO: confirm => show instead of checkout
       {
         '<leader>glg',
         function()
-          Snacks.picker.git_log()
+          Snacks.picker.git_log { confirm = git_log_fugitive_confirm }
         end,
         desc = 'Git Log',
       },
       {
         '<leader>gll',
         function()
-          -- Snacks.picker.git_log()
-          Snacks.picker.git_log_line {
-            confirm = function()
-              vim.notify 'gitlogfile'
-            end,
-          }
+          Snacks.picker.git_log_line { confirm = git_log_fugitive_confirm }
         end,
         desc = 'Git Log line',
       },
       {
         '<leader>glf',
         function()
-          Snacks.picker.git_log_file()
+          Snacks.picker.git_log_file { confirm = git_log_fugitive_confirm }
         end,
         desc = 'Git Log File',
       },
@@ -267,7 +278,7 @@ return {
       {
         '<leader>gf',
         function()
-          Snacks.picker.git_log_file()
+          Snacks.picker.git_log_file { confirm = git_log_fugitive_confirm }
         end,
         desc = 'Git Log File',
       },
