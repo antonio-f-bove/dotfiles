@@ -45,15 +45,27 @@ function y() {
 }
 
 function wmv() {
+	local copy=0
+
+	if [ "$1" = "-c" ]; then
+		copy=1
+		shift
+	fi
+
 	if [ "$#" -ne 2 ]; then
-		echo "usage: wmv <windows-path> <relative-destination>" >&2
+		echo "usage: wmv [-c] <windows-path> <relative-destination>" >&2
 		return 1
 	fi
 
 	local src dst
 	src="$(wslpath -u -- "$1")" || return 1
 	dst="$PWD/$2"
-	mv -- "$src" "$dst"
+
+	if [ "$copy" -eq 1 ]; then
+		cp -r -- "$src" "$dst"
+	else
+		mv -- "$src" "$dst"
+	fi
 }
 
 # vim motions are the best!
