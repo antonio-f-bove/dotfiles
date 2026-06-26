@@ -1,3 +1,67 @@
+local fugitive_diff_mode = 'parent'
+
+local function fugitive_diff_command()
+  if fugitive_diff_mode == 'working' then
+    return 'keepalt Gvdiffsplit'
+  end
+
+  return 'keepalt Gvdiffsplit!'
+end
+
+local function only_with_quickfix()
+  vim.cmd 'only'
+  vim.cmd 'silent! copen'
+  vim.cmd 'wincmd p'
+end
+
+local function sync_diff_folds()
+  local current_win = vim.api.nvim_get_current_win()
+
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if vim.api.nvim_win_get_option(win, 'diff') then
+      vim.api.nvim_set_current_win(win)
+      vim.wo.foldmethod = 'diff'
+      vim.wo.foldlevel = 0
+    end
+  end
+
+  vim.api.nvim_set_current_win(current_win)
+end
+
+local function fugitive_diff_current_commit()
+  only_with_quickfix()
+  vim.cmd(fugitive_diff_command())
+  sync_diff_folds()
+end
+
+local function fugitive_diff_quickfix_commit(command)
+  local cursor_pos = vim.api.nvim_win_get_cursor(0)
+
+  only_with_quickfix()
+  vim.cmd(command)
+  vim.api.nvim_win_set_cursor(0, cursor_pos)
+  vim.cmd(fugitive_diff_command())
+  sync_diff_folds()
+end
+
+local function fugitive_diff_quickfix_entry()
+  local idx = vim.fn.line '.'
+  only_with_quickfix()
+  vim.cmd('cc ' .. idx)
+  vim.cmd(fugitive_diff_command())
+  sync_diff_folds()
+end
+
+local function toggle_fugitive_diff_mode()
+  fugitive_diff_mode = fugitive_diff_mode == 'parent' and 'working' or 'parent'
+  vim.notify('Fugitive diff mode: ' .. fugitive_diff_mode)
+
+  local qflist = vim.fn.getqflist { idx = 0, size = 0 }
+  if qflist.size > 0 and qflist.idx > 0 then
+    fugitive_diff_quickfix_commit('cc ' .. qflist.idx)
+  end
+end
+
 return {
   {
     'tpope/vim-fugitive',
@@ -9,26 +73,24 @@ return {
       {
         '<leader>gh',
         function()
-          vim.keymap.del('n', '<c-n>')
-          vim.keymap.del('n', '<c-p>')
+          pcall(vim.keymap.del, 'n', '<c-n>')
+          pcall(vim.keymap.del, 'n', '<c-p>')
+          pcall(vim.keymap.del, 'n', '<c-j>')
 
           vim.keymap.set('n', '<c-n>', function()
-            local cursor_pos = vim.api.nvim_win_get_cursor(0)
-            -- print(unpack(cursor_pos))
-            vim.cmd 'cnext'
-            vim.api.nvim_win_set_cursor(0, cursor_pos)
+            fugitive_diff_quickfix_commit 'cnext'
           end)
 
           vim.keymap.set('n', '<c-p>', function()
-            local cursor_pos = vim.api.nvim_win_get_cursor(0)
-            -- print(unpack(cursor_pos))
-            vim.cmd 'cprev'
-            vim.api.nvim_win_set_cursor(0, cursor_pos)
+            fugitive_diff_quickfix_commit 'cprev'
           end)
+
+          vim.keymap.set('n', '<c-j>', toggle_fugitive_diff_mode)
 
           local cursor_pos = vim.api.nvim_win_get_cursor(0)
           vim.cmd '0Gclog'
           vim.api.nvim_win_set_cursor(0, cursor_pos)
+          fugitive_diff_current_commit()
         end,
       },
       {
@@ -37,10 +99,12 @@ return {
           -- "<cmd> Gedit | ccl <cr>" },
           vim.keymap.del('n', '<c-n>')
           vim.keymap.del('n', '<c-p>')
+          pcall(vim.keymap.del, 'n', '<c-j>')
           vim.keymap.set('n', '<c-n>', '<cmd> cnext <cr>')
           vim.keymap.set('n', '<c-p>', '<cmd> cprev <cr>')
           vim.cmd 'Gedit'
           vim.cmd 'ccl'
+          vim.cmd 'only'
         end,
       },
       { '<leader>gB', '<cmd>G blame<cr>' }
@@ -54,6 +118,13 @@ return {
         end,
         group = enter_commit_mess_in_insert_mode,
         pattern = 'gitcommit',
+      })
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(event)
+          vim.keymap.set('n', '<CR>', fugitive_diff_quickfix_entry, { buffer = event.buf })
+        end,
+        pattern = 'qf',
       })
     end,
   },
