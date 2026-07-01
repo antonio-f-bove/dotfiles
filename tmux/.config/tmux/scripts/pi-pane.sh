@@ -52,7 +52,12 @@ manage_pi_pane() {
     pi_pane_id="$(awk -F'|' '{print $3}' <<< "$pi_record")"
 
     if [[ "$pi_window_id" == "$window_id" ]]; then
-      tmux break-pane -d -s "$pi_pane_id"
+      current_window_id="$(current_window_id)"
+      pi_pane_path="$(tmux display-message -p -t "$pi_pane_id" '#{pane_current_path}')"
+      placeholder_pane_id="$(tmux new-window -d -P -F '#{pane_id}' -c "$pi_pane_path" 'sleep 2147483647')"
+      tmux swap-pane -s "$pi_pane_id" -t "$placeholder_pane_id"
+      tmux kill-pane -t "$placeholder_pane_id"
+      tmux select-window -t "$current_window_id"
     else
       tmux join-pane -h -s "$pi_pane_id" -t "$pane_id"
     fi
